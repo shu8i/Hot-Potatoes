@@ -1,10 +1,14 @@
 package model;
 
 /**
- * Created by Shahab Shekari on 10/13/14.
+ * @author Allant Gomez
+ * @author Chris Mnich
+ * @author Shahab Shekari
+ * @author Steven Rengifo
+ * @author Zachary Guadagno
  */
 public class Coordinate {
 
-    //TODO implement api headers
+    //TODO implement
 
 }
