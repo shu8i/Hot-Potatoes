@@ -1,4 +1,4 @@
-package view;
+package util;
 
 /**
  * @author Allant Gomez
@@ -7,8 +7,8 @@ package view;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class CodeBlockView {
+public class Constants {
 
-    //TODO implement apis
+    //TODO implement
 
 }
