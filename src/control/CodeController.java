@@ -10,7 +10,8 @@ import view.CodeView;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  * 
- * @see Code, CodeView
+ * @see Code
+ * @see CodeView
  */
 public class CodeController {
 	

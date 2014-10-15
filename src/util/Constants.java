@@ -7,7 +7,7 @@ package util;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class Constants {
+public abstract class Constants {
 
     //TODO implement
 

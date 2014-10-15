@@ -37,7 +37,7 @@ public class Block {
 
     /**
      * Gets the coordinates of the grid
-     * @return
+     * @return the coordinates of this block
      */
     public Coordinate coordinates() {
         return this.coordinate;

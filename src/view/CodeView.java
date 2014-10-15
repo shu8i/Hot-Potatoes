@@ -13,7 +13,6 @@ public class CodeView {
 
 	/**
 	 * list codeblocks
-	 * @return void
 	 * @see CodeView
 	 */	
     public  void ListCBV(){
@@ -22,7 +21,6 @@ public class CodeView {
     
 	/**
 	 * remove code block from list
-	 * @return void
 	 * @see CodeView
 	 */    
     public  void remove (){
@@ -31,7 +29,6 @@ public class CodeView {
     
 	/**
 	 * add code block to list
-	 * @return void
 	 * @see CodeView
 	 */    
     public  void add(){

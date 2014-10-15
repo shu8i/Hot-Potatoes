@@ -13,7 +13,6 @@ public class CodeBlockView extends JFrame{
 
 	/**
 	 * Print the code on gridview
-	 * @return void
 	 * @see CodeView
 	 */	
 	public  void paintCode(){
@@ -22,7 +21,6 @@ public class CodeBlockView extends JFrame{
 
 	/**
 	 * Refresh the view
-	 * @return void
 	 * @see CodeView
 	 */    
 	public  void refresh (){
@@ -31,7 +29,6 @@ public class CodeBlockView extends JFrame{
 
 	/**
 	 * Delete specific code from block
-	 * @return void
 	 * @see CodeView
 	 */    
 	public  void delete(){
