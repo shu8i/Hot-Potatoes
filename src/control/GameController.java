@@ -1,5 +1,7 @@
 package control;
 
+import model.Grid;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -58,7 +60,7 @@ public class GameController
 	 * @return true if previous save file found, false if no previous save file exists
 	 */
 	public boolean load(){
-		
+		return true;
 	}
 	
 	/**
@@ -66,7 +68,7 @@ public class GameController
 	 * @return  true if saved successfully, false if unsuccessful
 	 */
 	public boolean save(){
-		
+		return true;
 	}
 	
 	/**

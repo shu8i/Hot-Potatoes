@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -9,133 +11,140 @@ package model;
  */
 public class Grid {
 
-    private int gridId;
-    private int grid_size;
-    private Block[] blocks;
-    private Coordinate[] coordinates;
-    
+    private int gridHeight, gridWidth, gridSize;
+    private Block[][] grid;
+    private Block startingPosition, targetPosition;
+    private int numPotatoes;
+
     /**
-     * Creates a new grid
-     * @param the size of the grid
+     * Creates a new grid (through the grid builder)
+     * @param builder the grid builder
      */
-    public Grid(int gridsize)
-    {
-        this.grid_size = gridsize;
-        this.gridId = 123; //TODO create a randomized grid id
-        this.blocks = new Block[gridsize];
-        this.coordinates = new Coordinate[gridsize];
+    private Grid(Builder builder) {
+        this.grid = builder.grid;
+        this.startingPosition = builder.startingPosition;
+        this.targetPosition = builder.targetPosition;
+        //TODO init potatoes
     }
-    
+
     /**
-     * Builds the grid
-     * @param the grid you want to build
-     * @return the grid you built
+     * Gets the starting position of the robot
+     * @return the starting position of the robot
      */
-    public build(Grid grid)
-    {
-        //TODO implement
-        return this;
+    public Block getStartingPosition() {
+        return this.startingPosition;
     }
-    
+
     /**
-     * Sets the block state of the block to start
-     * @param the block that will become the start
-     * @return the start block
+     * Gets the target position of the robot
+     * @return the target position of the robot
      */
-    public Block setStart(Block start)
-    {
-        this.block_state = "START";
-        return this;
+    public Block getTargetPosition() {
+        return this.targetPosition;
     }
-    
+
     /**
-     * Gets the starting block
-     * @param the grid you want the starting block for
-     * @return the start block
-     */
-    public Grid getStart(Grid grid)
-    {
-        Block start;
-        //TODO find the starting block
-        return start;
-    }
-    
-    /**
-     * Sets the block state of the block to target
-     * @param the block that will become the target
-     * @return the target block
-     */
-    public Block setTarget(Block target)
-    {
-        this.block_state = "TARGET";
-        return this;
-    }
-    
-    /**
-     * Gets the target block
-     * @param the grid you want the target block for
-     * @return the target block
-     */
-    public Grid getTarget(Grid grid)
-    {
-        Block target;
-        //TODO find the target block
-        return target;
-    }
-    
-    /**
-     * Puts block in the grid
-     * @param the block to be put in the grid
-     * @return grid
-     */
-    public Grid setBlock(Block new_block)
-    {
-        //TODO find the spot in the grid's block array that the new block belongs in
-        return this;
-    }
-    
-    /**
-     * Gets the wanted block in the grid
-     * @param the grid the block is in
-     * @return the wanted block
-     */
-    public Block getBlock(Grid grid)
-    {
-        Block wanted_block;
-        //TODO find the wanted block
-        return wanted_block;
-    }
-    
-    /**
-     * Gets the grid size
-     * @return the grid's size
-     */
-    public Grid getGridSize()
-    {
-        return this.grid_size;
-    }
-    
-    /**
-     * Sets the grid size
-     * @param the new grid size
+     * Sets the starting position of the robot on the grid
+     * @param block the block where the robot starts
      * @return the grid
      */
-    private Grid setGridSize(int new_size)
-    {
-        this.grid_size = new_size;
+    public Grid setStartingPosition(Block block) {
+        this.startingPosition = block;
         return this;
     }
-    
+
     /**
-     * Gets the potato count in the grid
-     * @return the amount of potato's in the grid
+     * Sets the target position of the robot
+     * @param block the block where the robot should go to
+     * @return the grid
      */
-    public int potatoCount()
-    {
-        int potato_count = 0;
-        //TODO count the potatos
-        return potato_count;
+    public Grid setTargetPosition(Block block) {
+        this.targetPosition = block;
+        return this;
     }
+
+    /**
+     * Given a coordinate, returns the block on the grid
+     * @param coordinate the coordinate of the grid
+     * @return the block, corresponding to the coordinate
+     */
+    public Block getBlock(Coordinate coordinate) {
+        //TODO implement
+        return null;
+    }
+
+    /**
+     * Gets the number of potatoes on the grid
+     * @return the number of potatoes on the grid
+     */
+    public int numPotatoes() {
+        return this.numPotatoes;
+    }
+
+
+    @Override
+    public String toString() {
+        //TODO implement
+        return new String();
+    }
+
+    public static class Builder {
+
+        private int gridHeight, gridWidth, gridSize;
+        private Block[][] grid;
+        private Block startingPosition, targetPosition;
+        private List<Coordinate> potatoCoordinates;
+
+        /**
+         * Creates a new instance of the Grid builder
+         */
+        public Builder() {
+            //TODO implement
+        }
+
+        /**
+         * Sets the starting position of the robot on the grid
+         * @param coordinate the coordinate of the block where the robot starts
+         * @return the builder
+         */
+        public Builder startingPosition(Coordinate coordinate) {
+            //TODO implement
+            return this;
+        }
+
+        /**
+         * Sets the target position of the robot
+         * @param coordinate the coordinate of the block where the robot should go to
+         * @return the builder
+         */
+        public Builder targetPosition(Coordinate coordinate) {
+            //TODO implement
+            return this;
+        }
+
+        /**
+         * Puts a potato on this coordinate on the grid.
+         * @param coordinate the coordinate on which a potato should be set
+         * @return the builder
+         */
+        public Builder potatoPosition(Coordinate coordinate) {
+            //TODO implement
+            return this;
+        }
+
+        /**
+         * Creates an instance of a Grid, using attributes of the builder
+         * @return the grid
+         */
+        public Grid build() {
+            //TODO implement
+            return new Grid(this);
+        }
+
+
+
+    }
+
 }
 
 

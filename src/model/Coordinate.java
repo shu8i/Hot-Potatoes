@@ -9,51 +9,47 @@ package model;
  */
 public class Coordinate {
 
-    private int x-axis,
-    private int y-axis;
-    private Grid grid;
-    
+    private int x, y;
+
     /**
-     * Creates a new coordinate.
-     * @param graph the coordinate belongs to and the 
-     * @param x coordinate element
-     * @param y coordinate element
+     * Creates a new Coordinate object
+     * @param x the x coordinate
+     * @param y the y coordinate
      */
-    public Coordinate(Grid grid, int x, int y)
-    {
-        this.grid = grid;
-        this.x-axis = x;
-        this.y-axis = y;
+    public Coordinate(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
-    
+
     /**
-     * Changes the current coordinate
-     * @param the new x coordinate element
-     * @param the new y coordinate element
-     * @return this coordiante
+     * Gets the x coordinate
+     * @return the x coordinate
      */
-    public Coordinate setCoordinate(int x, int y)
-    {
-        this.x-axis = x;
-        this.y-axis = y;
-        return this;
+    public int getX() {
+        return this.x;
     }
-    
+
     /**
-     * Gets this coordinate's x element
-     * @return coordinate's x element
+     * Gets the y coordinate
+     * @return the y coordinate
      */
-    public String getCoordinateX()
-    {
-        return this.x-axis;
+    public int getY() {
+        return this.y;
     }
-    
-    /**
-     * Gets this coordinate's y element
-     * @return coordinate's y element
-     */
-    public String getCoordinateY()
-    {
-        return this.y-axis;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        Coordinate coordinate = (Coordinate) o;
+        return coordinate.getX() == this.getX() &&
+                coordinate.getY() == this.getY();
+    }
+
+    @Override
+    public String toString() {
+        return this.x + ", " + this.y;
     }
 }

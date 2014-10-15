@@ -7,6 +7,8 @@ import model.BlockState;
 import model.Robot;
 import model.Direction;
 
+import javax.swing.*;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -18,20 +20,26 @@ public class GridView extends JFrame
 {
     /**
      * will draw the grid that is initially suppose to appear at a given screen
-     * @param the grid to be painted
+     * @param starting_grid the grid to be painted
      */
     public void paintGrid(Grid starting_grid)
     {
         //TODO draw a specified grid
         return;
     }
-    //clears the grid that is already drawn on the screen
+
+    /**
+     * Clears the grid that is already drawn on the screen
+     */
     public void clearGrid()
     {
         //TODO draws the blank grid
         return;
     }
-    //redraws the grid to show the placement of objects, deletion of objects, etc.
+
+    /**
+     * Redraws the grid to show the placement of objects, deletion of objects, etc.
+     */
     public void refresh()
     {
         //TODO draw the grid in its current state

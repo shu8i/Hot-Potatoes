@@ -1,7 +1,4 @@
-/**
- * Class that holds all the codeblocks in a linkedlist
- */
-package src.model;
+package model;
 
 import java.util.*;
 

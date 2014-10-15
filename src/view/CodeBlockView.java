@@ -1,12 +1,6 @@
-/**
- * Class to paint the codeblock on screen. 
- */
 package view;
 
 import javax.swing.JFrame;
-
-import bt.PeerMessage;
-import bt.RUBTClient;
 
 /**
  * @author Allant Gomez
@@ -14,8 +8,6 @@ import bt.RUBTClient;
  * @author Shahab Shekari
  * @author Steven Rengifo
  * @author Zachary Guadagno
- * 
- * @see Codeblock
  */
 public class CodeBlockView extends JFrame{
 

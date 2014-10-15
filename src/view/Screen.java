@@ -1,5 +1,7 @@
 package view;
 
+import javax.swing.*;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich

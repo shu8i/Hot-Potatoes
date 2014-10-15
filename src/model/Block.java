@@ -7,61 +7,89 @@ package model;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class Block
-{
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Block {
+
+    private List<BlockState> blockState;
     private Coordinate coordinate;
-    private BlockState block_state;
-    private Grid grid;
 
     /**
-     * Creates a new block.
-     * @param grid the block belongs to
-     * @param coordinate the block is located at
+     * Creates a new instance of a block
+     * @param x the x coordinates of the block
+     * @param y the y coordinates of the block
      */
-    public Block(Grid grid, Coordinate coordinate)
-    {
-        this.grid = grid;
-        this.coordinate = coordinate;
-        this.block_state = null;
+    public Block(int x, int y) {
+        this.blockState = new ArrayList<BlockState>();
+        this.coordinate = new Coordinate(x, y);
     }
 
     /**
-     * Gets the block's coordinates
-     * @return the block's coordinates
+     * Checks whether a particular blockstate is contained within this grid
+     * @param state the blockstate that should be checked for
+     * @return whether this block contains the blockstate specified
      */
-    public Coordinate getCoordinate()
-    {
+    public boolean is(BlockState state) {
+        return this.blockState.contains(state);
+    }
+
+    /**
+     * Gets the coordinates of the grid
+     * @return
+     */
+    public Coordinate coordinates() {
         return this.coordinate;
     }
 
     /**
-     * Sets new coordinates for the block
-     * @param new coordinates for the block
+     * Adds a blockstate to this grid
+     * @param state the blockstate that should be added
      * @return the block
      */
-    private Block setCoordinate(Coordinate coordinate)
-    {
-        this.coordinate = coordinate;
+    public Block add(BlockState state) {
+        this.blockState.add(state);
         return this;
     }
 
     /**
-     * Changes the block state of the block
-     * @param the new block state
+     * Removes a blockstate from this block
+     * @param state the blockstate that should be removed
      * @return the block
      */
-    public Block setBlockState(BlockState blockstate)
-    {
-        this.block_state = blockstate;
+    public Block remove(BlockState state) {
+        this.blockState.remove(state);
         return this;
     }
 
-    /**
-     * Gets the current state of the block
-     * @return the block's state
-     */
-    public Block getBlockState()
-    {
-        return this.block_state;
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        Block block = (Block) o;
+        return block.coordinates() != null &&
+                block.coordinates().equals(this.coordinates());
     }
+
+    @Override
+    public String toString() {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        for(final BlockState state : this.blockState) {
+            stringBuffer.append(state + ", ");
+        }
+
+        return stringBuffer.substring(0, stringBuffer.length()-2);
+    }
+
+    /**
+     * Comparators for futue use.
+     */
+    public static class Comparators {
+        //TODO implement
+    }
+
 }

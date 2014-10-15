@@ -1,16 +1,11 @@
-/**
- * Class to paint code in the grid
- */
-package src.view;
+package view;
 
 /**
  * @author Allant Gomez
  * @author Chris Mnich
  * @author Shahab Shekari
  * @author Steven Rengifo
- * @author Zachary Guadagno 
- * 
- * @see Code
+ * @author Zachary Guadagno
  */
 public class CodeView {
 	

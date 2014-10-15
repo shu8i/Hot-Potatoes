@@ -1,10 +1,7 @@
-/**
- * Class to control the code class and codeview
- */
-package src.control;
+package control;
 
-import src.model.Code;
-import src.view.CodeView;
+import model.Code;
+import view.CodeView;
 
 /**
  * @author Allant Gomez
@@ -22,7 +19,6 @@ public class CodeController {
 	
 	/**
 	 * Main class that will control the code and view
-	 * @return void
 	 */	
 	public void run () {
 		
@@ -31,7 +27,6 @@ public class CodeController {
 	
 	/**
 	 * Edit part of the codeblock
-	 * @return void
 	 */	
 	public void editCodeBlock(){
 		
@@ -39,7 +34,6 @@ public class CodeController {
 	
 	/**
 	 * remove code from codeblock
-	 * @return void
 	 */	
 	public void removeCBlock(){
 		
@@ -48,7 +42,6 @@ public class CodeController {
 	
 	/**
 	 * add code to codeblock
-	 * @return void
 	 */	
 	public void addCBlock(){
 		

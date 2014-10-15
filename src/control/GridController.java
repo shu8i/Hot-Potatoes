@@ -21,7 +21,7 @@ public class GridController
     
     /**
      * Creates a new grid controller
-     * @param the new grid that will be used to play
+     * @param grid the new grid that will be used to play
      */
     public GridController(Grid grid)
     {
@@ -35,6 +35,6 @@ public class GridController
     public GridController update()
     {
         //TODO implement an update in the grid controller
-        return;
+        return null;
     }
 }

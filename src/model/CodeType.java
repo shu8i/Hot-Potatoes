@@ -1,8 +1,4 @@
-/**
- *  Class that determine the type of the code. 
- *  The types will depend on the condition. 
- */
-package src.model;
+package model;
 
 /**
  * @author Allant Gomez
@@ -10,62 +6,67 @@ package src.model;
  * @author Shahab Shekari
  * @author Steven Rengifo
  * @author Zachary Guadagno
- * 
- * @see Code
  */
 public class CodeType {
 	
-private int type;
-private int color;
-private int format;
+    private int type;
+    private int color;
+    private int format;
 
-/**
- * Delete a table from the codeblock
- */
-public void deleteTable{
-	
-}
+    /**
+     * Checks whether this code type is deletable or not.
+     * @return whether this code type is deletable
+     */
+    public boolean deleteTable() {
+        return true;
+    }
 
-/**
- * @return the type
- */
-public int getType() {
-	return type;
-}
+    /**
+     * Returns the type of this codeblock
+     * @return the type
+     */
+    public int getType() {
+        return type;
+    }
 
-/**
- * @param type the type to set
- */
-public void setType(int type) {
-	this.type = type;
-}
+    /**
+     * Sets the type of this codeblock
+     * @param type the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
 
-/**
- * @return the color
- */
-public int getColor() {
-	return color;
-}
+    /**
+     * Gets the color of the codeblock
+     * @return the color
+     */
+    public int getColor() {
+        return color;
+    }
 
-/**
- * @param color the color to set
- */
-public void setColor(int color) {
-	this.color = color;
-}
+    /**
+     * Sets the color of the codeblock
+     * @param color the color to set
+     */
+    public void setColor(int color) {
+        this.color = color;
+    }
 
-/**
- * @return the format
- */
-public int getFormat() {
-	return format;
-}
+    /**
+     * Gets the format of the codeblock
+     * @return the format
+     */
+    public int getFormat() {
+        return format;
+    }
 
-/**
- * @param format the format to set
- */
-public void setFormat(int format) {
-	this.format = format;
-}
+    /**
+     * Sets the format of the codeblock
+     * @param format the format to set
+     */
+    public void setFormat(int format) {
+        this.format = format;
+    }
 	
 }
