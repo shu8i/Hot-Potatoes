@@ -10,5 +10,5 @@ package view;
 
 public class Screen extends JFrame
 {
-	//TODO Basic Screen for UI of Program, other menus of the game will extend this class	
+	//TODO implement
 }

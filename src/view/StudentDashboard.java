@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 /**
  * @author Allant Gomez
