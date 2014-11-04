@@ -1,6 +1,7 @@
 package src.control;
 
 import src.model.Code;
+import src.model.CodeBlock;
 import src.view.CodeView;
 
 /**
@@ -22,19 +23,23 @@ public class CodeController {
 	 * Main class that will control the code and view
 	 */	
 	public void run () {
-		
+		//TODO add some code here
 	}
 	
 	
 	/**
 	 * Edit part of the codeblock
+	 * @param code 
+	 * @return  1 if fails 0 if not
 	 */	
-	public void editCodeBlock(CodeBlock code){
-		
+	public int editCodeBlock(CodeBlock code){
+		return 0;
 	}
 	
 	/**
 	 * remove entire code block from Code
+	 * @param code 
+	 * @return 1 if fails 0 if not
 	 */	
 	public int removeCodeBlock(CodeBlock code){
 		return 0;
@@ -43,9 +48,11 @@ public class CodeController {
 	
 	/**
 	 * add codeblock to the end of the code
+	 * @param code 
+	 * @return  1 if fails 0 if not
 	 */	
-	public void addCodeBlock(CodeBlock code){
-		
+	public int addCodeBlock(CodeBlock code){
+		return 0;
 	}
 
 }
