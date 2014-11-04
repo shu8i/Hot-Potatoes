@@ -1,7 +1,7 @@
-package control;
+package src.control;
 
-import model.Code;
-import view.CodeView;
+import src.model.Code;
+import src.view.CodeView;
 
 /**
  * @author Allant Gomez
@@ -29,22 +29,22 @@ public class CodeController {
 	/**
 	 * Edit part of the codeblock
 	 */	
-	public void editCodeBlock(){
+	public void editCodeBlock(CodeBlock code){
 		
 	}
 	
 	/**
-	 * remove code from codeblock
+	 * remove entire code block from Code
 	 */	
-	public void removeCBlock(){
-		
+	public int removeCodeBlock(CodeBlock code){
+		return 0;
 	}
 	
 	
 	/**
-	 * add code to codeblock
+	 * add codeblock to the end of the code
 	 */	
-	public void addCBlock(){
+	public void addCodeBlock(CodeBlock code){
 		
 	}
 
