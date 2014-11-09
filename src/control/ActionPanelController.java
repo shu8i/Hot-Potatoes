@@ -1,7 +1,6 @@
 package control;
 
 import view.ActionPanelView;
-import view.CodeView;
 
 /**
  * @author Allant Gomez
@@ -13,17 +12,14 @@ import view.CodeView;
 public class ActionPanelController {
     
     ActionPanelView actionPanel;
-    
-    CodeView codeView;
+
     
     /**
      * Creates a new Action Panel Controller
      * @param actionPanel the Action Panel
-     * @param codeView the Code View
      */
-    public ActionPanelController(ActionPanelView actionPanel, CodeView codeView){
+    public ActionPanelController(ActionPanelView actionPanel){
         this.actionPanel=actionPanel;
-        this.codeView=codeView;
     }
     
     /**
