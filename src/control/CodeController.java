@@ -1,7 +1,8 @@
-package control;
+package src.control;
 
-import model.Code;
-import view.CodeView;
+import src.model.Code;
+import src.model.CodeBlock;
+import src.view.CodeView;
 
 /**
  * @author Allant Gomez
@@ -22,30 +23,36 @@ public class CodeController {
 	 * Main class that will control the code and view
 	 */	
 	public void run () {
-		
+		//TODO add some code here
 	}
 	
 	
 	/**
 	 * Edit part of the codeblock
+	 * @param code 
+	 * @return  1 if fails 0 if not
 	 */	
-	public void editCodeBlock(){
-		
+	public int editCodeBlock(CodeBlock code){
+		return 0;
 	}
 	
 	/**
-	 * remove code from codeblock
+	 * remove entire code block from Code
+	 * @param code 
+	 * @return 1 if fails 0 if not
 	 */	
-	public void removeCBlock(){
-		
+	public int removeCodeBlock(CodeBlock code){
+		return 0;
 	}
 	
 	
 	/**
-	 * add code to codeblock
+	 * add codeblock to the end of the code
+	 * @param code 
+	 * @return  1 if fails 0 if not
 	 */	
-	public void addCBlock(){
-		
+	public int addCodeBlock(CodeBlock code){
+		return 0;
 	}
 
 }
