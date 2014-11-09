@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Allant Gomez
@@ -10,7 +11,7 @@ import javax.swing.*;
  * @author Zachary Guadagno
  */
 
-public class Screen extends JFrame
-{
-	//TODO implement
+public class Screen extends JFrame {
+
+
 }

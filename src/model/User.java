@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -7,11 +9,10 @@ package model;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class User {
+public class User implements Serializable {
 
     private String username, password;
     private boolean isAdmin;
-    private int userId;
 
     /**
      * Creates a new user account.
@@ -23,7 +24,6 @@ public class User {
         this.username = username;
         this.password = encrypt(password);
         this.isAdmin = isAdmin;
-        this.userId = 123; //TODO create a randomized user id
     }
 
     /**
@@ -86,7 +86,12 @@ public class User {
      * @return the encrypted password
      */
     public static String encrypt(String password) {
-        return new String();        //TODO encrypt password
+        return password;        //TODO encrypt password
+    }
+
+    @Override
+    public String toString() {
+        return this.username + (isAdmin ? " (admin)" : "");
     }
 
 

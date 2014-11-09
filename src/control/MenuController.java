@@ -1,7 +1,7 @@
 package control;
 
 import model.User;
-import view.MenuView;
+import view.Menu;
 import model.Grid;
 
 /**
@@ -13,13 +13,13 @@ import model.Grid;
  */
 public class MenuController {
     
-    private MenuView menu;
+    private Menu menu;
     
     /**
      * Creates a new Menu Controller
      * @param menu the menu
      */
-    public MenuController(MenuView menu){
+    public MenuController(Menu menu){
         this.menu=menu;
     }
     
