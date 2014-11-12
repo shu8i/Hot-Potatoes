@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 /**
  * @author Allant Gomez

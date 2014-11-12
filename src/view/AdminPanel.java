@@ -29,7 +29,7 @@ public class AdminPanel extends JPanel {
     private JButton highScoreButton, userManagementButton, worldManagementButton;
     private JLabel highScoreLabel, userManagementLabel, worldManagementLabel;
 
-    public AdminPanel(JFrame parent, LoginPanel loginPanel, LoginPanel predecessor, GameController controller) {
+    public AdminPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, GameController controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -48,6 +48,13 @@ public class AdminPanel extends JPanel {
         });
 
         this.worldManagementButton = new JButton();
+        this.worldManagementButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new BuildPanel(AdminPanel.this.parent, AdminPanel.this.loginPanel, AdminPanel.this, AdminPanel.this.controller);
+            }
+        });
+
         this.highScoreLabel = new JLabel("High Scores");
         this.userManagementLabel = new JLabel("Manage Users");
         this.worldManagementLabel = new JLabel("Manage Worlds");

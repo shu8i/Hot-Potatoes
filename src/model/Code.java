@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +18,7 @@ public class Code{
 	/**
 	 * @return the list
 	 */
-	public Iterator<CodeBlock>  getList() {
+	public Iterator<CodeBlock> getList() {
 		return this.list.iterator();		
 	}
 

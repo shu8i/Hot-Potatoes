@@ -8,10 +8,11 @@ package model;
  * @author Zachary Guadagno
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Block {
+public class Block implements Serializable {
 
     private List<BlockState> blockState;
     private Coordinate coordinate;
@@ -61,6 +62,14 @@ public class Block {
     public Block remove(BlockState state) {
         this.blockState.remove(state);
         return this;
+    }
+
+    /**
+     * Returns whether this block is empty or not
+     * @return whether this block is empty or not
+     */
+    public boolean isEmpty() {
+        return this.blockState.size() == 0;
     }
 
     @Override

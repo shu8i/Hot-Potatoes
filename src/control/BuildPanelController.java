@@ -1,7 +1,7 @@
 package control;
 
-import view.BuildPanelView;
-import view.GridView;
+import view.BuildPanel;
+import view.GridPanel;
 
 /**
  * @author Allant Gomez
@@ -12,16 +12,16 @@ import view.GridView;
  */
 public class BuildPanelController {
     
-    GridView grid;
+    GridPanel grid;
     
-    BuildPanelView buildPanel;
+    BuildPanel buildPanel;
     
     /**
      * Creates a new Build Panel Controller
      * @param buildPanel the build panel
      * @param grid the grid
      */
-    public BuildPanelController(BuildPanelView buildPanel, GridView grid){
+    public BuildPanelController(BuildPanel buildPanel, GridPanel grid){
         this.buildPanel=buildPanel;
         this.grid=grid;
     }

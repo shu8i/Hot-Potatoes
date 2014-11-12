@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 /**
  * @author Allant Gomez
@@ -8,7 +8,7 @@ package src.model;
  * @author Zachary Guadagno
  */
 public class CodeBlock {
-	
+
 	private CodeType codetype;
 	private int codeposition;
 	private String codetext;

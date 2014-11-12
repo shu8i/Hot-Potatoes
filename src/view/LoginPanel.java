@@ -54,11 +54,15 @@ public class LoginPanel extends JPanel
 
                 if(!username.equals(Constants.DEFAULT_USERNAME) && !controller.doesUserExist(username)) {
                     hintPanel.updateHint("User \"" + username + "\" does not exist!", Color.RED);
-                } else if (username.equals(Constants.DEFAULT_USERNAME) && password.equals(Constants.DEFAULT_PASSWORD)) {
+                } else if (username.equals(Constants.DEFAULT_USERNAME)) {
                     if (controller.doesAdminExist()) {
                         hintPanel.updateHint("Admin account expired!", Color.RED);
                     } else {
-                        new AdminPanel(LoginPanel.this.parent, LoginPanel.this, LoginPanel.this, controller);
+                        if (password.equals(Constants.DEFAULT_PASSWORD)){
+                            new AdminPanel(LoginPanel.this.parent, LoginPanel.this, LoginPanel.this, controller);
+                        } else {
+                            hintPanel.updateHint("Incorrect Password.", Color.RED);
+                        }
                     }
                 } else if (controller.doesUserExist(username) && !controller.doesPasswordMatch(username, password)) {
                     hintPanel.updateHint("Incorrect Password.", Color.RED);

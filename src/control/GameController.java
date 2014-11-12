@@ -156,12 +156,50 @@ public class GameController
     }
 
     /**
-     * Adds a new user to the system/
+     * Adds a new user to the system
+     * @param user the user
      * @return the gamecontroller
      */
     public GameController addUser(User user) {
         mBackend.addUser(user);
         return this;
+    }
+
+    /**
+     * Adds a new grid to the system
+     * @param grid the grid
+     * @return the gamecontroller
+     */
+    public GameController addGrid(Grid grid) {
+        mBackend.addGrid(grid);
+        return this;
+    }
+
+    /**
+     * Removes a grid from the system
+     * @param grid the grid to be removed
+     * @return the gamecontroller
+     */
+    public GameController removeGrid(Grid grid) {
+        mBackend.removeGrid(grid);
+        return this;
+    }
+
+    /**
+     * Updates a grid that has been edited
+     * @param grid the updated grid
+     * @return the gamecontroller
+     */
+    public GameController updateGrid(Grid grid) {
+        mBackend.updateGrid(grid);
+        return this;
+    }
+    /**
+     * Returns the grids in the system
+     * @return a map of grid name -> grid
+     */
+    public Map<String, Grid> getGrids() {
+        return mBackend.getGrids();
     }
 
     /**

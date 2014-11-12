@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -7,14 +9,11 @@ package model;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public enum BlockState
-{
-    UNBLOCKED("UNBLOCKED"),
-    BLOCKED("BLOCKED"),
-    START("START"),
+public enum BlockState implements Serializable {
+    WALL("WALL"),
     POTATO("POTATO"),
-    TARGET("TARGET"),
-    ROBOT("ROBOT");
+    HOME("HOME"),
+    KAREL("KAREL");
 
     private final String block_state;
 

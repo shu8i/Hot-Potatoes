@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -7,7 +9,7 @@ package model;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class Coordinate {
+public class Coordinate implements Serializable {
 
     private int x, y;
 

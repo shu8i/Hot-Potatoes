@@ -1,12 +1,6 @@
 package control;
 
 import model.Grid;
-import model.Block;
-import model.Coordinate;
-import model.BlockState;
-import model.Robot;
-import model.Direction;
-import view.GridView;
 
 /**
  * @author Allant Gomez

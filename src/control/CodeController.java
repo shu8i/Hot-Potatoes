@@ -1,8 +1,8 @@
-package src.control;
+package control;
 
-import src.model.Code;
-import src.model.CodeBlock;
-import src.view.CodeView;
+import model.Code;
+import model.CodeBlock;
+import view.CodeView;
 
 /**
  * @author Allant Gomez
