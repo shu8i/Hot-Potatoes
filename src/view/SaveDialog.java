@@ -61,6 +61,7 @@ public class SaveDialog {
                 SaveDialog.this.controller.saveDatabase();
                 SaveDialog.this.buildPanel.updateLoadMenu().updateDeleteMenu();
                 SaveDialog.this.hintPanel.updateHint("Save successful!", Color.GREEN);
+                SaveDialog.this.buildPanel.enterEditMode(SaveDialog.this.nameTextField.getText());
                 new java.util.Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {

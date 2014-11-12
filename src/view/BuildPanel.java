@@ -10,7 +10,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.util.Map;
 import java.util.TimerTask;
 
@@ -60,7 +59,6 @@ public class BuildPanel extends JPanel {
         this.newMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BuildPanel.this.parent.setTitle("Hot Potatoes");
                 BuildPanel.this.gridSizeTextField.setText("10");
             }
         });
@@ -242,6 +240,7 @@ public class BuildPanel extends JPanel {
             Integer gridSize = Integer.parseInt(BuildPanel.this.gridSizeTextField.getText());
             if ( gridSize >= 10 && gridSize <= 50) {
                 BuildPanel.this.EDIT_MODE = false;
+                BuildPanel.this.parent.setTitle("Hot Potatoes");
                 BuildPanel.this.remove(BuildPanel.this.gridPanel);
                 BuildPanel.this.hintPanel.removeHint();
 
@@ -312,6 +311,11 @@ public class BuildPanel extends JPanel {
         if (!this.homeRadio.isEnabled()) {
             this.obstacleRadio.setSelected(true);
         }
+    }
+
+    public void enterEditMode(String gridName) {
+        this.EDIT_MODE = true;
+        this.parent.setTitle("Editing: " + gridName);
     }
     
 }
