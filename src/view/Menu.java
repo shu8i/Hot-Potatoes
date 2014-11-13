@@ -1,11 +1,10 @@
 package view;
 
-import control.GameController;
+import control.Controller;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 /**
  * @author Allant Gomez
@@ -19,11 +18,11 @@ public class Menu<T extends JPanel> {
 
     private JMenuBar menuBar;
     private JMenu gameMenu;
-    private GameController controller;
+    private Controller controller;
     private LoginPanel loginPanel;
     private T currentPanel;
 
-    public JMenuBar buildMenu(String menuTitle, LoginPanel loginPanel, GameController controller, T currentPanel, JMenuItem... menus) {
+    public JMenuBar buildMenu(String menuTitle, LoginPanel loginPanel, Controller controller, T currentPanel, JMenuItem... menus) {
         this.menuBar = new JMenuBar();
         this.gameMenu = new JMenu(menuTitle);
         this.controller = controller;

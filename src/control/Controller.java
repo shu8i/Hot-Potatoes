@@ -6,7 +6,6 @@ import model.User;
 import view.LoginPanel;
 
 import javax.swing.*;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,16 +15,18 @@ import java.util.Map;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class GameController
+public class Controller
 {
 
     private User user;
+    public UserController userController;
+    public GridController gridController;
     private static Backend mBackend = Backend.readDatabase();
 
 	/**
 	 * Constructor method, initializes all fields to default values
 	 */
-	public GameController(){
+	public Controller(){
 		//TODO implement
 	}
 	
@@ -33,7 +34,7 @@ public class GameController
 	 * Constructor method, initializes world with given grid
 	 * @param grid - A nonempty grid that will be used to play the given world
 	 */
-	public GameController(Grid grid){
+	public Controller(Grid grid){
 		//TODO implement
 	}
 	
@@ -114,6 +115,7 @@ public class GameController
      */
     public void login(String username) {
         this.user = mBackend.getUsers().get(username);
+        this.userController = new UserController(user);
     }
 
     /**
@@ -150,7 +152,7 @@ public class GameController
      * @param username the username of the account that should be deleted
      * @return the gamecontroller
      */
-    public GameController deleteUser(String username) {
+    public Controller deleteUser(String username) {
         mBackend.removeUser(username);
         return this;
     }
@@ -160,7 +162,7 @@ public class GameController
      * @param user the user
      * @return the gamecontroller
      */
-    public GameController addUser(User user) {
+    public Controller addUser(User user) {
         mBackend.addUser(user);
         return this;
     }
@@ -170,7 +172,7 @@ public class GameController
      * @param grid the grid
      * @return the gamecontroller
      */
-    public GameController addGrid(Grid grid) {
+    public Controller addGrid(Grid grid) {
         mBackend.addGrid(grid);
         return this;
     }
@@ -180,7 +182,7 @@ public class GameController
      * @param grid the grid to be removed
      * @return the gamecontroller
      */
-    public GameController removeGrid(Grid grid) {
+    public Controller removeGrid(Grid grid) {
         mBackend.removeGrid(grid);
         return this;
     }
@@ -190,7 +192,7 @@ public class GameController
      * @param grid the updated grid
      * @return the gamecontroller
      */
-    public GameController updateGrid(Grid grid) {
+    public Controller updateGrid(Grid grid) {
         mBackend.updateGrid(grid);
         return this;
     }

@@ -1,7 +1,8 @@
 package view;
 
-import control.GameController;
+import control.Controller;
 import model.Grid;
+import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
-import java.util.TimerTask;
 
 /**
  * @author Allant Gomez
@@ -24,20 +24,20 @@ public class BuildPanel extends JPanel {
 
     protected static GridBagLayout layout = new GridBagLayout();
     protected GridBagConstraints c = new GridBagConstraints();
+    protected HintPanel hintPanel;
     private LoginPanel loginPanel;
     private AdminPanel predecessor;
     private JFrame parent;
-    private GameController controller;
+    private Controller controller;
     private JRadioButton robotRadio, homeRadio, potatoRadio, obstacleRadio;
     private JLabel gridSizeLabel;
     private JTextField gridSizeTextField;
     private GridPanel gridPanel;
-    private HintPanel hintPanel;
     private JMenuItem newMenu, backMenu, saveMenu;
     private JMenu loadMenu, deleteMenu;
     private boolean EDIT_MODE = false;
 
-    public BuildPanel(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, GameController controller) {
+    public BuildPanel(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, Controller controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.parent = parent;
@@ -84,13 +84,7 @@ public class BuildPanel extends JPanel {
                 } else {
                     BuildPanel.this.controller.updateGrid(BuildPanel.this.gridPanel.getGrid());
                     BuildPanel.this.controller.saveDatabase();
-                    BuildPanel.this.hintPanel.updateHint("Save successful!", Color.GREEN);
-                    new java.util.Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            BuildPanel.this.hintPanel.removeHint();
-                        }
-                    }, 2000);
+                    BuildPanel.this.hintPanel.updateHint("Saved Successfully.", Constants.DARK_GREEN, 3000);
                 }
             }
         });

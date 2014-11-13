@@ -1,4 +1,4 @@
-import control.GameController;
+import control.Controller;
 import view.LoginPanel;
 
 import javax.swing.*;
@@ -11,11 +11,11 @@ import java.awt.event.WindowEvent;
  */
 public class HotPotatoes extends JFrame {
 
-    private static GameController controller;
+    private static Controller controller;
 
     public HotPotatoes(String title) {
         super(title);
-        controller = new GameController();
+        controller = new Controller();
         setLayout(new GridBagLayout());
         add(new LoginPanel(this, controller));
     }

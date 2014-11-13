@@ -1,7 +1,8 @@
 package view;
 
-import control.GameController;
+import control.Controller;
 import model.Grid;
+import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -9,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.util.TimerTask;
 
 /**
  * Created by Shahab Shekari on 11/11/14.
@@ -20,7 +20,7 @@ public class SaveDialog {
     protected static GridBagLayout layout = new GridBagLayout();
     protected  GridBagConstraints c = new GridBagConstraints();
     private BuildPanel buildPanel;
-    private GameController controller;
+    private Controller controller;
     private Grid grid;
     private JFrame frame;
     private JPanel dialog;
@@ -30,7 +30,7 @@ public class SaveDialog {
     private HintPanel hintPanel;
 
     /** Creates the reusable dialog. */
-    public SaveDialog(BuildPanel caller, Grid grid, GameController controller) {
+    public SaveDialog(BuildPanel caller, Grid grid, Controller controller) {
         frame = new JFrame("Save");
         this.buildPanel = caller;
         this.controller = controller;
@@ -60,14 +60,9 @@ public class SaveDialog {
 
                 SaveDialog.this.controller.saveDatabase();
                 SaveDialog.this.buildPanel.updateLoadMenu().updateDeleteMenu();
-                SaveDialog.this.hintPanel.updateHint("Save successful!", Color.GREEN);
                 SaveDialog.this.buildPanel.enterEditMode(SaveDialog.this.nameTextField.getText());
-                new java.util.Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        SaveDialog.this.frame.dispatchEvent(new WindowEvent(SaveDialog.this.frame, WindowEvent.WINDOW_CLOSING));
-                    }
-                }, 2000);
+                SaveDialog.this.frame.dispatchEvent(new WindowEvent(SaveDialog.this.frame, WindowEvent.WINDOW_CLOSING));
+                SaveDialog.this.buildPanel.hintPanel.updateHint("Saved Successfully.", Constants.DARK_GREEN, 3000);
             }
         });
 
@@ -80,8 +75,8 @@ public class SaveDialog {
 
         c.anchor = GridBagConstraints.WEST;
         c.gridwidth = 10;
-        confirmLabel.setFont(new Font("Open Sans", Font.PLAIN, 20));
-        confirmLabel.setForeground(new Color(0, 152, 185));
+        confirmLabel.setFont(Constants.OPEN_SANS_20);
+        confirmLabel.setForeground(Constants.SMOOTH_GREEN);
         dialog.add(confirmLabel, c);
 
         c = new GridBagConstraints();
@@ -94,7 +89,7 @@ public class SaveDialog {
         c.gridy = 1;
         c.gridwidth = 5;
         c.anchor = GridBagConstraints.WEST;
-        nameLabel.setFont(new Font("Open Sans", Font.PLAIN, 14));
+        nameLabel.setFont(Constants.OPEN_SANS_14);
         nameLabel.setForeground(Color.GRAY);
         dialog.add(nameLabel, c);
 

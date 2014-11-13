@@ -1,6 +1,9 @@
 package control;
 
+import model.Grid;
 import model.User;
+
+import java.util.Map;
 
 /**
  * @author Allant Gomez
@@ -39,7 +42,7 @@ public class UserController {
      * @return  null if the login was unsuccessful
      *          GameController of the logged in user, if login was successful
      */
-    public static GameController login(String username, String password) {
+    public static Controller login(String username, String password) {
         //TODO implement
         return null;
     }
@@ -66,4 +69,13 @@ public class UserController {
         return true;
     }
 
+    /**
+     * Gets the user's score on a grid, if that grid has been played
+     * @param grid the grid for which the score should be pulled
+     * @return a score of 0-100%
+     */
+    public int getGridScore(Grid grid) {
+        Integer score = this.user.getGridsPlayed().get(grid);
+        return score == null ? 0 : 100 * score / grid.numPotatoes();
+    }
 }

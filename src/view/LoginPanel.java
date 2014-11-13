@@ -1,6 +1,6 @@
 package view;
 
-import control.GameController;
+import control.Controller;
 import util.Constants;
 
 import javax.swing.*;
@@ -30,7 +30,7 @@ public class LoginPanel extends JPanel
      * @param parent        the parent (JFrame)
      * @param controller    the controller
      */
-    public LoginPanel(JFrame parent, final GameController controller) {
+    public LoginPanel(JFrame parent, final Controller controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.parent = parent;
@@ -71,15 +71,15 @@ public class LoginPanel extends JPanel
                         new AdminPanel(LoginPanel.this.parent, LoginPanel.this, LoginPanel.this, controller);
                     } else {
                         controller.login(username);
-                        new StudentPanel(LoginPanel.this.parent, LoginPanel.this, controller);
+                        new StudentPanel(LoginPanel.this.parent, LoginPanel.this, LoginPanel.this, controller);
                     }
                 }
             }
         });
 
         c.anchor = GridBagConstraints.WEST;
-        titleLabel.setFont(new Font("Open Sans", Font.PLAIN, 20));
-        titleLabel.setForeground(new Color(0, 152, 185));
+        titleLabel.setFont(Constants.OPEN_SANS_20);
+        titleLabel.setForeground(Constants.SMOOTH_GREEN);
         add(titleLabel, c);
 
         c = new GridBagConstraints();
@@ -91,7 +91,7 @@ public class LoginPanel extends JPanel
         c = new GridBagConstraints();
         c.gridy = 1;
         c.anchor = GridBagConstraints.WEST;
-        usernameLabel.setFont(new Font("Open Sans", Font.PLAIN, 14));
+        usernameLabel.setFont(Constants.OPEN_SANS_14);
         usernameLabel.setForeground(Color.GRAY);
         add(usernameLabel, c);
 
@@ -112,7 +112,7 @@ public class LoginPanel extends JPanel
         c = new GridBagConstraints();
         c.gridy = 2;
         c.anchor = GridBagConstraints.WEST;
-        passwordLabel.setFont(new Font("Open Sans", Font.PLAIN, 14));
+        passwordLabel.setFont(Constants.OPEN_SANS_14);
         passwordLabel.setForeground(Color.GRAY);
         add(passwordLabel, c);
 

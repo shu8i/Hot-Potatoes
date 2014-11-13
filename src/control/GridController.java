@@ -2,6 +2,8 @@ package control;
 
 import model.Grid;
 
+import java.util.List;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -26,8 +28,7 @@ public class GridController
      * Updates the grid controller
      * @return the same grid controller
      */
-    public GridController update()
-    {
+    public GridController update() {
         //TODO implement an update in the grid controller
         return null;
     }

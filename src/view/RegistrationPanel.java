@@ -1,6 +1,6 @@
 package view;
 
-import control.GameController;
+import control.Controller;
 import model.User;
 
 import javax.swing.*;
@@ -34,7 +34,7 @@ public class RegistrationPanel extends JPanel {
     private JRadioButton isAdminRadio;
     private JTextField username;
     private JPasswordField password;
-    private GameController controller;
+    private Controller controller;
     private JMenuItem backMenu;
 
     /**
@@ -43,7 +43,7 @@ public class RegistrationPanel extends JPanel {
      * @param predecessor   the predecessor (LoginPanel)
      * @param controller    the controller
      */
-    public RegistrationPanel(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, GameController controller) {
+    public RegistrationPanel(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, Controller controller) {
         super(layout);
         this.loginPanel = loginPanel;
         this.predecessor = predecessor;
@@ -118,7 +118,7 @@ public class RegistrationPanel extends JPanel {
         listPanel.setLayout(new GridLayout(1, 0));
         this.model = new DefaultListModel();
 
-        for(final Map.Entry<String, User> entry : GameController.getUsers().entrySet()) {
+        for(final Map.Entry<String, User> entry : Controller.getUsers().entrySet()) {
             this.model.addElement(entry.getValue());
         }
 

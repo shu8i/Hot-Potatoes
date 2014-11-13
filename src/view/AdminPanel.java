@@ -1,6 +1,7 @@
 package view;
 
-import control.GameController;
+import com.sun.tools.internal.jxc.apt.Const;
+import control.Controller;
 import util.Constants;
 
 import javax.imageio.ImageIO;
@@ -25,11 +26,11 @@ public class AdminPanel extends JPanel {
     private LoginPanel loginPanel;
     private JPanel predecessor;
     private JFrame parent;
-    private GameController controller;
+    private Controller controller;
     private JButton highScoreButton, userManagementButton, worldManagementButton;
     private JLabel highScoreLabel, userManagementLabel, worldManagementLabel;
 
-    public AdminPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, GameController controller) {
+    public AdminPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -105,8 +106,8 @@ public class AdminPanel extends JPanel {
         c.gridy = 3;
         c.weightx = 3;
         c.anchor = GridBagConstraints.CENTER;
-        highScoreLabel.setFont(new Font("Open Sans", Font.PLAIN, 20));
-        highScoreLabel.setForeground(new Color(0, 152, 185));
+        highScoreLabel.setFont(Constants.OPEN_SANS_20);
+        highScoreLabel.setForeground(Constants.SMOOTH_GREEN);
         add(highScoreLabel, c);
 
         c = new GridBagConstraints();
@@ -114,8 +115,8 @@ public class AdminPanel extends JPanel {
         c.gridy = 3;
         c.weightx = 3;
         c.anchor = GridBagConstraints.CENTER;
-        userManagementLabel.setFont(new Font("Open Sans", Font.PLAIN, 20));
-        userManagementLabel.setForeground(new Color(0, 152, 185));
+        userManagementLabel.setFont(Constants.OPEN_SANS_20);
+        userManagementLabel.setForeground(Constants.SMOOTH_GREEN);
         add(userManagementLabel, c);
 
         c = new GridBagConstraints();
@@ -123,8 +124,8 @@ public class AdminPanel extends JPanel {
         c.gridy = 3;
         c.weightx = 3;
         c.anchor = GridBagConstraints.CENTER;
-        worldManagementLabel.setFont(new Font("Open Sans", Font.PLAIN, 20));
-        worldManagementLabel.setForeground(new Color(0, 152, 185));
+        worldManagementLabel.setFont(Constants.OPEN_SANS_20);
+        worldManagementLabel.setForeground(Constants.SMOOTH_GREEN);
         add(worldManagementLabel, c);
 
         updateMenu();

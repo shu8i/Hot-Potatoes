@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Allant Gomez
@@ -13,6 +15,7 @@ public class User implements Serializable {
 
     private String username, password;
     private boolean isAdmin;
+    private Map<Grid, Integer> gridsPlayed;
 
     /**
      * Creates a new user account.
@@ -24,6 +27,15 @@ public class User implements Serializable {
         this.username = username;
         this.password = encrypt(password);
         this.isAdmin = isAdmin;
+        this.gridsPlayed = new HashMap<Grid, Integer>();
+    }
+
+    /**
+     * Gets a map of grids (worlds) played by the user
+     * @return a map of grids (worlds) played by the user
+     */
+    public Map<Grid, Integer> getGridsPlayed() {
+        return this.gridsPlayed;
     }
 
     /**
