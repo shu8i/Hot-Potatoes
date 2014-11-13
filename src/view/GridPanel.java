@@ -236,8 +236,8 @@ public class GridPanel extends JPanel {
         }
 
         private void addWall() {
-            setBackground(Color.BLACK);
-            backgroundColor = Color.BLACK;
+            setBackground(Color.GRAY);
+            backgroundColor = Color.GRAY;
             content = BuildPanelSelection.WALL;
             GridPanel.this.grid.addWall(GridCell.this.coordinate);
         }
