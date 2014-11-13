@@ -132,6 +132,7 @@ public class Controller
         this.saveDatabase();
         currentPanel.setVisible(false);
         loginPanel.parent().setJMenuBar(null);
+        loginPanel.parent().setTitle("Hot Potatoes");
         loginPanel.resetTextFields();
         loginPanel.setVisible(true);
         loginPanel.parent().pack();

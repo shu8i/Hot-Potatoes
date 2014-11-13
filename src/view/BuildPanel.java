@@ -70,6 +70,7 @@ public class BuildPanel extends JPanel {
                 BuildPanel.this.setVisible(false);
                 BuildPanel.this.predecessor.updateMenu();
                 BuildPanel.this.predecessor.setVisible(true);
+                BuildPanel.this.parent.setTitle("Hot Potatoes");
                 BuildPanel.this.parent.pack();
                 BuildPanel.this.parent.setLocationRelativeTo(null);
             }
