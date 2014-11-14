@@ -1,6 +1,6 @@
 package control;
 
-import view.ActionPanelView;
+import view.ActionPanel;
 
 /**
  * @author Allant Gomez
@@ -11,14 +11,14 @@ import view.ActionPanelView;
  */
 public class ActionPanelController {
     
-    ActionPanelView actionPanel;
+    ActionPanel actionPanel;
 
     
     /**
      * Creates a new Action Panel Controller
      * @param actionPanel the Action Panel
      */
-    public ActionPanelController(ActionPanelView actionPanel){
+    public ActionPanelController(ActionPanel actionPanel){
         this.actionPanel=actionPanel;
     }
     

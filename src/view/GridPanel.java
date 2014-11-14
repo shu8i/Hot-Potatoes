@@ -3,6 +3,8 @@ package view;
 import model.Block;
 import model.Grid;
 import model.Coordinate;
+import util.Constants;
+
 import static model.BlockState.*;
 
 import javax.imageio.ImageIO;
@@ -90,9 +92,54 @@ public class GridPanel extends JPanel {
 
                 if (!block.isEmpty()) {
                     if (block.is(KAREL)) {
-                        gridCell.addKarel();
+                        gridCell.addKarel(true);
                     } else if (block.is(HOME)) {
-                        gridCell.addHome();
+                        gridCell.addHome(true);
+                    } else if (block.is(POTATO)) {
+                        gridCell.addPotato();
+                    } else if (block.is(WALL)) {
+                        gridCell.addWall();
+                    }
+                }
+
+                add(gridCell, c);
+            }
+        }
+    }
+
+    public GridPanel(final Grid grid) {
+        setLayout(layout);
+        this.grid = grid;
+
+        for (int row = 0; row < grid.getSize(); row++) {
+            for (int col = 0; col < grid.getSize(); col++) {
+                c.gridx = col;
+                c.gridy = row;
+
+                GridCell gridCell = new GridCell(grid.getSize(), row, col);
+                Border border;
+                if (row < 4) {
+                    if (col < 4) {
+                        border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
+                    } else {
+                        border = new MatteBorder(1, 1, 0, 1, Color.GRAY);
+                    }
+                } else {
+                    if (col < 4) {
+                        border = new MatteBorder(1, 1, 1, 0, Color.GRAY);
+                    } else {
+                        border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
+                    }
+                }
+                gridCell.setBorder(border);
+
+                Block block = grid.getBlock(gridCell.coordinate);
+
+                if (!block.isEmpty()) {
+                    if (block.is(KAREL)) {
+                        gridCell.addKarel(false);
+                    } else if (block.is(HOME)) {
+                        gridCell.addHome(false);
                     } else if (block.is(POTATO)) {
                         gridCell.addPotato();
                     } else if (block.is(WALL)) {
@@ -127,7 +174,7 @@ public class GridPanel extends JPanel {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     backgroundColor = getBackground();
-                    setBackground(new Color(0, 152, 185));
+                    setBackground(Constants.SMOOTH_GREEN);
                 }
 
                 @Override
@@ -173,10 +220,10 @@ public class GridPanel extends JPanel {
                     } else {
                         switch (buildPanel.getSelection()) {
                             case KAREL:
-                                addKarel();
+                                addKarel(true);
                                 break;
                             case HOME:
-                                addHome();
+                                addHome(true);
                                 break;
                             case POTATO:
                                 addPotato();
@@ -193,7 +240,13 @@ public class GridPanel extends JPanel {
             });
         }
 
-        private void addKarel() {
+        public GridCell(int gridSize, int row, int col) {
+            this.cellSize = 500 / gridSize;
+            this.coordinate = new Coordinate(col + 1, gridSize - row);
+            ((FlowLayout)GridCell.this.getLayout()).setVgap(0);
+        }
+
+        private void addKarel(boolean EDIT_MODE) {
             try {
                 Image image = ImageIO.read(getClass().getResource("/resources/images/walle.png"));
                 Image scaledImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
@@ -202,12 +255,12 @@ public class GridPanel extends JPanel {
                 GridCell.this.add(GridCell.this.karelWrapper);
                 GridCell.this.revalidate();
                 content = BuildPanelSelection.KAREL;
-                buildPanel.switchKarelActiveStatus();
                 GridPanel.this.grid.setKarel(GridCell.this.coordinate);
+                if (EDIT_MODE) buildPanel.switchKarelActiveStatus();
             } catch(IOException ioe) {}
         }
 
-        private void addHome() {
+        private void addHome(boolean EDIT_MODE) {
             try {
                 Image image = ImageIO.read(getClass().getResource("/resources/images/home.png"));
                 Image scaledImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
@@ -216,8 +269,8 @@ public class GridPanel extends JPanel {
                 GridCell.this.add(GridCell.this.homeWrapper);
                 GridCell.this.revalidate();
                 content = BuildPanelSelection.HOME;
-                buildPanel.switchHomeActiveStatus();
                 GridPanel.this.grid.setHome(GridCell.this.coordinate);
+                if (EDIT_MODE) buildPanel.switchHomeActiveStatus();
             } catch(IOException ioe) {}
         }
 

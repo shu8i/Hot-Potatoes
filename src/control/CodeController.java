@@ -2,7 +2,7 @@ package control;
 
 import model.Code;
 import model.CodeBlock;
-import view.CodeView;
+import view.CodePanel;
 
 /**
  * @author Allant Gomez
@@ -12,12 +12,12 @@ import view.CodeView;
  * @author Zachary Guadagno
  * 
  * @see Code
- * @see CodeView
+ * @see view.CodePanel
  */
 public class CodeController {
 	
 	private Code code;
-	private CodeView codeview;
+	private CodePanel codeview;
 	
 	/**
 	 * Main class that will control the code and view

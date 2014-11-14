@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
 
 /**
@@ -36,7 +38,7 @@ public class StudentPanel extends JPanel {
         this.predecessor = predecessor;
         this.parent = parent;
         this.controller = controller;
-        this.loginPanel.setVisible(false);
+        this.predecessor.setVisible(false);
 
         this.selectWorldLabel = new JLabel("Select A World");
         this.worldSelectionPanel = new JPanel();
@@ -58,6 +60,13 @@ public class StudentPanel extends JPanel {
             worldSelectButton.setFocusable(false);
             worldSelectButton.setFont(Constants.OPEN_SANS_20);
             worldSelectButton.setForeground(Color.WHITE);
+            worldSelectButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new PlayPanel(StudentPanel.this.parent, StudentPanel.this.loginPanel,
+                            StudentPanel.this, StudentPanel.this.controller, entry.getValue());
+                }
+            });
 
             c = new GridBagConstraints();
             c.gridx = i;
