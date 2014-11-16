@@ -21,6 +21,7 @@ public class Controller
     private User user;
     public UserController userController;
     public GridController gridController;
+    public CodeController codeController;
     private static Backend mBackend = Backend.readDatabase();
 
 	/**
@@ -116,6 +117,7 @@ public class Controller
     public void login(String username) {
         this.user = mBackend.getUsers().get(username);
         this.userController = new UserController(user);
+        this.codeController = new CodeController(user);
     }
 
     /**

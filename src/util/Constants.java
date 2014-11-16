@@ -2,7 +2,6 @@ package util;
 
 import java.awt.*;
 import java.io.File;
-import java.util.Map;
 
 /**
  * @author Allant Gomez

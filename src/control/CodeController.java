@@ -2,6 +2,7 @@ package control;
 
 import model.Code;
 import model.CodeBlock;
+import model.User;
 import view.CodePanel;
 
 /**
@@ -18,6 +19,12 @@ public class CodeController {
 	
 	private Code code;
 	private CodePanel codeview;
+    private User user;
+
+    public CodeController(User user) {
+        this.user = user;
+        this.code = new Code();
+    }
 	
 	/**
 	 * Main class that will control the code and view
@@ -48,11 +55,12 @@ public class CodeController {
 	
 	/**
 	 * add codeblock to the end of the code
-	 * @param code 
+	 * @param codeBlock
 	 * @return  1 if fails 0 if not
 	 */	
-	public int addCodeBlock(CodeBlock code){
-		return 0;
+	public CodeController addCodeBlock(CodeBlock codeBlock){
+		this.code.add(codeBlock);
+        return this;
 	}
 
 }

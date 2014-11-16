@@ -57,7 +57,7 @@ public class CodePanel extends JScrollPane {
             return;
         }
 
-        if (inConditional && !codeBlock.isConditionalAggrigator() && !inConditionalChecker) {
+        if (inConditional && !inConditionalChecker) {
             inConditional = false;
             conditionalLevel++;
         }
@@ -66,12 +66,21 @@ public class CodePanel extends JScrollPane {
             c.gridx = conditionalLevel + ++col;
             c.gridy = row;
             this.panel.add(codeBlock, c);
-            inConditionalChecker = codeBlock.isConditionalAggrigator();
+            inConditionalChecker = false;
         } else {
             col = 0;
-            c.gridx = conditionalLevel;
-            c.gridy = ++row;
-            this.panel.add(codeBlock, c);
+            if (codeBlock.isEndButton() || codeBlock.isElseButton()) {
+                c.gridx = --conditionalLevel;
+                c.gridy = ++row;
+                this.panel.add(codeBlock,c );
+            } else {
+                c.gridx = conditionalLevel;
+                c.gridy = ++row;
+                this.panel.add(codeBlock, c);
+            }
+            if (codeBlock.isElseButton()) {
+                conditionalLevel++;
+            }
         }
 
         c = new GridBagConstraints();
