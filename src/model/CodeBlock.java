@@ -11,7 +11,7 @@ public class CodeBlock {
 
 	private CodeType codeType;
 	private String codeText, condition;
-    CodeBlock defaultCondition, trueCondition, falseCondition, parent;
+    CodeBlock defaultCondition, trueCondition, falseCondition, condParent, parent;
     private int id;
 
     public CodeBlock() {

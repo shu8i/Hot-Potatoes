@@ -38,18 +38,18 @@ public class ActionPanel extends JPanel {
         setPreferredSize(new Dimension(500, 100));
         setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
 
-        this.whileButton = new CodeBlockPanel("WHILE", false);
-        this.turnLeftButton = new CodeBlockPanel("TURN LEFT", false);
-        this.moveButton = new CodeBlockPanel("MOVE", false);
-        this.ifButton = new CodeBlockPanel("IF", false);
-        this.putPotatoButton = new CodeBlockPanel("PUT POTATO", false);
-        this.pickPotatoButton = new CodeBlockPanel("PICK POTATO", false);
-        this.facingLeftButton = new CodeBlockPanel("FACING LEFT", false);
-        this.facingRightButton = new CodeBlockPanel("FACING RIGHT", false);
-        this.facingUpButton = new CodeBlockPanel("FACING UP", false);
-        this.facingDownButton = new CodeBlockPanel("FACING DOWN", false);
-        this.endButton = new CodeBlockPanel("END", false);
-        this.elseButton = new CodeBlockPanel("ELSE", false);
+        this.whileButton = new CodeBlockPanel("WHILE");
+        this.turnLeftButton = new CodeBlockPanel("TURN LEFT");
+        this.moveButton = new CodeBlockPanel("MOVE");
+        this.ifButton = new CodeBlockPanel("IF");
+        this.putPotatoButton = new CodeBlockPanel("PUT POTATO");
+        this.pickPotatoButton = new CodeBlockPanel("PICK POTATO");
+        this.facingLeftButton = new CodeBlockPanel("FACING LEFT");
+        this.facingRightButton = new CodeBlockPanel("FACING RIGHT");
+        this.facingUpButton = new CodeBlockPanel("FACING UP");
+        this.facingDownButton = new CodeBlockPanel("FACING DOWN");
+        this.endButton = new CodeBlockPanel("END");
+        this.elseButton = new CodeBlockPanel("ELSE");
 
         this.whileButton.addActionListener(new ActionListener() {
             @Override
@@ -202,10 +202,10 @@ public class ActionPanel extends JPanel {
                 add(facingRightButton);
                 add(facingUpButton);
                 add(facingDownButton);
-                add(new CodeBlockPanel("", false));
-                add(new CodeBlockPanel("", false));
-                add(new CodeBlockPanel("", false));
-                add(new CodeBlockPanel("", false));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
                 break;
             case IN_CONDITIONAL:
                 add(elseButton);
@@ -225,7 +225,7 @@ public class ActionPanel extends JPanel {
                 add(moveButton);
                 add(putPotatoButton);
                 add(pickPotatoButton);
-                add(new CodeBlockPanel("", false));
+                add(new CodeBlockPanel(""));
                 break;
             case IN_ELSE:
                 add(endButton);
@@ -235,7 +235,7 @@ public class ActionPanel extends JPanel {
                 add(moveButton);
                 add(putPotatoButton);
                 add(pickPotatoButton);
-                add(new CodeBlockPanel("", false));
+                add(new CodeBlockPanel(""));
                 break;
             case ACTION:
                 add(whileButton);
@@ -244,8 +244,8 @@ public class ActionPanel extends JPanel {
                 add(moveButton);
                 add(putPotatoButton);
                 add(pickPotatoButton);
-                add(new CodeBlockPanel("", false));
-                add(new CodeBlockPanel("", false));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
             default: break;
         }
         repaint();

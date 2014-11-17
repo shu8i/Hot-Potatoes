@@ -109,6 +109,7 @@ public class CodePanel extends JScrollPane {
         col = 0;
         row = 0;
 
+
         Iterator<CodeBlock> iterator = controller.codeController.viewIterator();
         CodeBlock codeBlock;
         while (iterator.hasNext()) {
@@ -116,30 +117,31 @@ public class CodePanel extends JScrollPane {
 
             switch (codeBlock.getCodetype().getType()) {
                 case IF:
-                    addCodeBlock(new CodeBlockPanel("IF", true));
+                    addCodeBlock(new CodeBlockPanel("IF", codeBlock.getId(), controller, this));
                     if (codeBlock.getCondition() != null) {
-                        addCodeBlock(new CodeBlockPanel(codeBlock.getCondition(), true));
+                        addCodeBlock(new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), controller, this));
                     }
                     break;
                 case WHILE:
-                    addCodeBlock(new CodeBlockPanel("WHILE", true));
+                    addCodeBlock(new CodeBlockPanel("WHILE", codeBlock.getId(), controller, this));
                     if (codeBlock.getCondition() != null) {
-                        addCodeBlock(new CodeBlockPanel(codeBlock.getCondition(), true));
+                        addCodeBlock(new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), controller, this));
                     }
                     break;
                 case ELSE:
-                    addCodeBlock(new CodeBlockPanel("ELSE", true));
+                    addCodeBlock(new CodeBlockPanel("ELSE", codeBlock.getId(), controller, this));
                     break;
                 case ACTION:
-                    addCodeBlock(new CodeBlockPanel(codeBlock.getCodetext(), true));
+                    addCodeBlock(new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this));
                     break;
                 case END:
-                    addCodeBlock(new CodeBlockPanel("END", true));
+                    addCodeBlock(new CodeBlockPanel("END", codeBlock.getId(), controller, this));
                     break;
                 default: break;
             }
 
         }
+
 
         this.panel.revalidate();
         this.panel.repaint();

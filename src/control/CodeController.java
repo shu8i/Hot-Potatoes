@@ -69,4 +69,9 @@ public class CodeController {
         return this.code.viewIterator();
     }
 
+    public CodeController removeBlock(int id) {
+        this.code.removeBlock(id);
+        return this;
+    }
+
 }
