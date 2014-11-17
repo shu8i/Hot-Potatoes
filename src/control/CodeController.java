@@ -5,6 +5,8 @@ import model.CodeBlock;
 import model.User;
 import view.CodePanel;
 
+import java.util.Iterator;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -62,5 +64,9 @@ public class CodeController {
 		this.code.add(codeBlock);
         return this;
 	}
+
+    public Iterator<CodeBlock> viewIterator() {
+        return this.code.viewIterator();
+    }
 
 }

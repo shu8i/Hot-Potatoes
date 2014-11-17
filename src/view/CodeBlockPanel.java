@@ -41,7 +41,7 @@ public class CodeBlockPanel extends JButton {
                 setOpaque(false);
             }
         } else {
-            setPreferredSize(new Dimension(100, 30));
+            setPreferredSize(new Dimension(110, 30));
             setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
                     Constants.CONDITIONALS : Constants.ACTIONS));
             setBackground(Color.GRAY);

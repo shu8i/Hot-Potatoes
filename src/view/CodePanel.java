@@ -1,8 +1,13 @@
 package view;
 
+import control.Controller;
+import model.CodeBlock;
+import model.CodeType;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.util.Iterator;
 
 /**
  * @author Allant Gomez
@@ -21,14 +26,16 @@ public class CodePanel extends JScrollPane {
     private boolean inConditional = false;
     private boolean inConditionalChecker = false;
     private JPanel panel;
+    private Controller controller;
 
-    public CodePanel(JPanel panel) {
+    public CodePanel(JPanel panel, Controller controller) {
         super(panel);
+        this.controller = controller;
         this.panel = panel;
         this.panel.setLayout(layout);
         this.filler = new JPanel();
         this.filler.setBackground(Color.GRAY);
-        setPreferredSize(new Dimension(400, 500));
+        setPreferredSize(new Dimension(500, 500));
         setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
         this.panel.setBackground(Color.GRAY);
     }
@@ -92,6 +99,50 @@ public class CodePanel extends JScrollPane {
         this.panel.add(filler, c);
 
         this.panel.revalidate();
+    }
+
+    public void refreshPanel() {
+        this.panel.removeAll();
+        conditionalLevel = 0;
+        inConditional = false;
+        inConditionalChecker = false;
+        col = 0;
+        row = 0;
+
+        Iterator<CodeBlock> iterator = controller.codeController.viewIterator();
+        CodeBlock codeBlock;
+        while (iterator.hasNext()) {
+            codeBlock = iterator.next();
+
+            switch (codeBlock.getCodetype().getType()) {
+                case IF:
+                    addCodeBlock(new CodeBlockPanel("IF", true));
+                    if (codeBlock.getCondition() != null) {
+                        addCodeBlock(new CodeBlockPanel(codeBlock.getCondition(), true));
+                    }
+                    break;
+                case WHILE:
+                    addCodeBlock(new CodeBlockPanel("WHILE", true));
+                    if (codeBlock.getCondition() != null) {
+                        addCodeBlock(new CodeBlockPanel(codeBlock.getCondition(), true));
+                    }
+                    break;
+                case ELSE:
+                    addCodeBlock(new CodeBlockPanel("ELSE", true));
+                    break;
+                case ACTION:
+                    addCodeBlock(new CodeBlockPanel(codeBlock.getCodetext(), true));
+                    break;
+                case END:
+                    addCodeBlock(new CodeBlockPanel("END", true));
+                    break;
+                default: break;
+            }
+
+        }
+
+        this.panel.revalidate();
+        this.panel.repaint();
     }
 	
 }

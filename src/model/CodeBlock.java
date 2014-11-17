@@ -12,9 +12,10 @@ public class CodeBlock {
 	private CodeType codeType;
 	private String codeText, condition;
     CodeBlock defaultCondition, trueCondition, falseCondition, parent;
+    private int id;
 
     public CodeBlock() {
-        this.defaultCondition = this;
+        this.defaultCondition = null;
     }
 
     public CodeBlock(String codeText, CodeType codeType) {
@@ -28,6 +29,10 @@ public class CodeBlock {
     public CodeBlock setCondition(String condition) {
         this.condition = condition;
         return this;
+    }
+
+    public String getCondition() {
+        return this.condition;
     }
 	
 	/**
@@ -45,5 +50,24 @@ public class CodeBlock {
 	public String getCodetext() {
 		return codeText;
 	}
+
+    public CodeBlock setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        CodeBlock block = (CodeBlock) o;
+        return this.id == block.getId();
+    }
 
 }

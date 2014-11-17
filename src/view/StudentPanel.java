@@ -10,6 +10,8 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
 
 /**
@@ -65,6 +67,24 @@ public class StudentPanel extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     new PlayPanel(StudentPanel.this.parent, StudentPanel.this.loginPanel,
                             StudentPanel.this, StudentPanel.this.controller, entry.getValue());
+                }
+            });
+
+            worldSelectButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    e.getComponent().setBackground(Constants.SMOOTH_GREEN);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    e.getComponent().setBackground(Constants.ACTIONS);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    e.getComponent().setBackground(Constants.SMOOTH_GREEN);
                 }
             });
 

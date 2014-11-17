@@ -9,6 +9,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.Stack;
 
 /**
@@ -26,8 +27,7 @@ public class ActionPanel extends JPanel {
                            endButton, elseButton;
     private CodePanel codePanel;
     private Controller controller;
-    private enum PanelMode{CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION}
-//    private PanelMode mode;
+    private enum PanelMode{CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION, IN_ELSE}
     private Stack<PanelMode> mode;
 
     public ActionPanel(final CodePanel codePanel, Controller controller) {
@@ -54,125 +54,137 @@ public class ActionPanel extends JPanel {
         this.whileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.codePanel.addCodeBlock(new CodeBlockPanel("WHILE", true));
+                ActionPanel.this.controller.codeController
+                        .addCodeBlock(new CodeBlock("WHILE", new CodeType(CodeType.Type.WHILE)));
 
                 mode.push(PanelMode.WHILE_DECLARATION);
                 repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
         this.turnLeftButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.codePanel.addCodeBlock(new CodeBlockPanel("TURN LEFT", true));
+                ActionPanel.this.controller.codeController
+                        .addCodeBlock(new CodeBlock("TURN LEFT", new CodeType(CodeType.Type.ACTION)));
+                codePanel.refreshPanel();
             }
         });
 
         this.moveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.codePanel.addCodeBlock(new CodeBlockPanel("MOVE", true));
                 ActionPanel.this.controller.codeController
                         .addCodeBlock(new CodeBlock("MOVE", new CodeType(CodeType.Type.ACTION)));
+                codePanel.refreshPanel();
             }
         });
 
         this.ifButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.codePanel.addCodeBlock(new CodeBlockPanel("IF", true));
                 ActionPanel.this.controller.codeController
                         .addCodeBlock(new CodeBlock("IF", new CodeType(CodeType.Type.IF)));
 
                 mode.push(PanelMode.CONDITIONAL_DECLARATION);
                 repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
         this.elseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.codePanel.addCodeBlock(new CodeBlockPanel("ELSE", true));
                 ActionPanel.this.controller.codeController
                         .addCodeBlock(new CodeBlock("ELSE", new CodeType(CodeType.Type.ELSE)));
+
+                mode.pop();
+                mode.push(PanelMode.IN_ELSE);
+                repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
         this.putPotatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.codePanel.addCodeBlock(new CodeBlockPanel("PUT POTATO", true));
+                ActionPanel.this.controller.codeController
+                        .addCodeBlock(new CodeBlock("PUT POTATO", new CodeType(CodeType.Type.ACTION)));
+                codePanel.refreshPanel();
             }
         });
 
         this.pickPotatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.codePanel.addCodeBlock(new CodeBlockPanel("PICK POTATO", true));
+                ActionPanel.this.controller.codeController
+                        .addCodeBlock(new CodeBlock("PICK POTATO", new CodeType(CodeType.Type.ACTION)));
+                codePanel.refreshPanel();
             }
         });
 
         this.facingLeftButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                codePanel.addCodeBlock(new CodeBlockPanel("FACING LEFT", true));
                 ActionPanel.this.controller.codeController
                         .addCodeBlock(new CodeBlock("FACING LEFT", new CodeType(CodeType.Type.ACTION)));
 
                 mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
                         PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
                 repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
         this.facingRightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                codePanel.addCodeBlock(new CodeBlockPanel("FACING RIGHT", true));
                 ActionPanel.this.controller.codeController
                         .addCodeBlock(new CodeBlock("FACING RIGHT", new CodeType(CodeType.Type.ACTION)));
 
                 mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
                         PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
                 repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
         this.facingUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                codePanel.addCodeBlock(new CodeBlockPanel("FACING UP", true));
                 ActionPanel.this.controller.codeController
                         .addCodeBlock(new CodeBlock("FACING UP", new CodeType(CodeType.Type.ACTION)));
 
                 mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
                         PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
                 repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
         this.facingDownButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                codePanel.addCodeBlock(new CodeBlockPanel("FACING DOWN", true));
                 ActionPanel.this.controller.codeController
                         .addCodeBlock(new CodeBlock("FACING DOWN", new CodeType(CodeType.Type.ACTION)));
 
                 mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
                         PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
                 repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
         this.endButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                codePanel.addCodeBlock(new CodeBlockPanel("END", true));
                 ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("END", new CodeType(CodeType.Type.ACTION)));
+                        .addCodeBlock(new CodeBlock("END", new CodeType(CodeType.Type.END)));
 
                 mode.pop();
                 repaintActionPanel();
+                codePanel.refreshPanel();
             }
         });
 
@@ -206,6 +218,16 @@ public class ActionPanel extends JPanel {
                 add(pickPotatoButton);
                 break;
             case IN_WHILE:
+                add(endButton);
+                add(ifButton);
+                add(whileButton);
+                add(turnLeftButton);
+                add(moveButton);
+                add(putPotatoButton);
+                add(pickPotatoButton);
+                add(new CodeBlockPanel("", false));
+                break;
+            case IN_ELSE:
                 add(endButton);
                 add(ifButton);
                 add(whileButton);

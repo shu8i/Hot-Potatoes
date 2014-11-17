@@ -85,7 +85,7 @@ public class PlayPanel extends JPanel {
 
     private void initPanels() {
         this.gridPanel = new GridPanel(this.grid);
-        this.codePanel = new CodePanel(new JPanel());
+        this.codePanel = new CodePanel(new JPanel(), this.controller);
         this.actionPanel = new ActionPanel(this.codePanel, this.controller);
         this.macroPanel = new MacroPanel();
     }
