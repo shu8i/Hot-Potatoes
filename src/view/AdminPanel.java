@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.tools.internal.jxc.apt.Const;
 import control.Controller;
 import util.Constants;
 
@@ -40,6 +39,11 @@ public class AdminPanel extends JPanel {
         this.predecessor.setVisible(false);
 
         this.highScoreButton = new JButton();
+        this.highScoreButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		new ScoreView(AdminPanel.this.parent, AdminPanel.this.loginPanel, AdminPanel.this, AdminPanel.this.controller);
+        	}
+        }); 
         this.userManagementButton = new JButton();
         this.userManagementButton.addActionListener(new ActionListener() {
             @Override
