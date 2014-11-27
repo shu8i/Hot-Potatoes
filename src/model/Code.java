@@ -76,14 +76,19 @@ public class Code {
             }
 
             @Override
-            public CodeBlock next()
+            public CodeBlock next()                 //TODO fix "if x then nothing else something"
             {
                 if (current.trueCondition != null && !visited.contains(current.trueCondition))
                 {
                     current = current.trueCondition;
                     elseReturned = false;
                 }
-                else if (current.falseCondition != null && !visited.contains(current.falseCondition))
+                else if (current.falseCondition != null && !visited.contains(current.falseCondition) && !elseReturned)
+                {
+                    elseReturned = true;
+                    return new CodeBlock("ELSE", new CodeType(CodeType.Type.ELSE));
+                }
+                else if (current.falseCondition != null && !visited.contains(current.falseCondition) && elseReturned)
                 {
                     current = current.falseCondition;
                     elseReturned = false;
@@ -111,7 +116,8 @@ public class Code {
                             elseReturned = false;
                         }
                         else if (((mode.peek().equals(Mode.ELSE) && current.defaultCondition == null) ||
-                                current.falseCondition != null) && !elseReturned)
+                                (current.falseCondition != null && !visited.contains(current.falseCondition)))
+                                && !elseReturned)
                         {
                             elseReturned = true;
                             return new CodeBlock("ELSE", new CodeType(CodeType.Type.ELSE));
@@ -125,7 +131,14 @@ public class Code {
                 }
                 else
                 {
-                    throw new NoSuchElementException();
+                    if (((mode.peek().equals(Mode.ELSE) && current.defaultCondition == null) ||
+                            current.falseCondition != null) && !elseReturned)
+                    {
+                        elseReturned = true;
+                        return new CodeBlock("ELSE", new CodeType(CodeType.Type.ELSE));
+                    } else {
+                        throw new NoSuchElementException();
+                    }
                 }
                 visited.add(current);
                 return current;
