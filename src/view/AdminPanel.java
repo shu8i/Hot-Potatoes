@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.tools.internal.jxc.apt.Const;
 import control.Controller;
 import util.Constants;
 
@@ -106,8 +105,8 @@ public class AdminPanel extends JPanel {
         c.gridy = 3;
         c.weightx = 3;
         c.anchor = GridBagConstraints.CENTER;
-        highScoreLabel.setFont(Constants.OPEN_SANS_20);
-        highScoreLabel.setForeground(Constants.SMOOTH_GREEN);
+        highScoreLabel.setFont(Constants.FONT_OPEN_SANS_20);
+        highScoreLabel.setForeground(Constants.COLOR_SMOOTH_GREEN);
         add(highScoreLabel, c);
 
         c = new GridBagConstraints();
@@ -115,8 +114,8 @@ public class AdminPanel extends JPanel {
         c.gridy = 3;
         c.weightx = 3;
         c.anchor = GridBagConstraints.CENTER;
-        userManagementLabel.setFont(Constants.OPEN_SANS_20);
-        userManagementLabel.setForeground(Constants.SMOOTH_GREEN);
+        userManagementLabel.setFont(Constants.FONT_OPEN_SANS_20);
+        userManagementLabel.setForeground(Constants.COLOR_SMOOTH_GREEN);
         add(userManagementLabel, c);
 
         c = new GridBagConstraints();
@@ -124,8 +123,8 @@ public class AdminPanel extends JPanel {
         c.gridy = 3;
         c.weightx = 3;
         c.anchor = GridBagConstraints.CENTER;
-        worldManagementLabel.setFont(Constants.OPEN_SANS_20);
-        worldManagementLabel.setForeground(Constants.SMOOTH_GREEN);
+        worldManagementLabel.setFont(Constants.FONT_OPEN_SANS_20);
+        worldManagementLabel.setForeground(Constants.COLOR_SMOOTH_GREEN);
         add(worldManagementLabel, c);
 
         updateMenu();

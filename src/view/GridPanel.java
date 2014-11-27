@@ -174,7 +174,7 @@ public class GridPanel extends JPanel {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     backgroundColor = getBackground();
-                    setBackground(Constants.SMOOTH_GREEN);
+                    setBackground(Constants.COLOR_SMOOTH_GREEN);
                 }
 
                 @Override

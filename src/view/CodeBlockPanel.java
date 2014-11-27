@@ -1,7 +1,6 @@
 package view;
 
 import control.Controller;
-import model.CodeBlock;
 import util.Constants;
 
 import javax.swing.*;
@@ -31,13 +30,13 @@ public class CodeBlockPanel extends JButton {
     public CodeBlockPanel(String buttonText) {
         setText(buttonText);
         setFocusable(false);
-        setFont(Constants.OPEN_SANS_14);
+        setFont(Constants.FONT_OPEN_SANS_14);
         setForeground(Color.WHITE);
 
         setPreferredSize(new Dimension(116, 41));
         setBorderPainted(false);
         if (!buttonText.equals("")) {
-            setBackground(Constants.SMOOTH_GREEN);
+            setBackground(Constants.COLOR_SMOOTH_GREEN);
             setOpaque(true);
         } else {
             setOpaque(false);
@@ -47,17 +46,17 @@ public class CodeBlockPanel extends JButton {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                setBackground(Constants.SMOOTH_GREEN);
+                setBackground(Constants.COLOR_SMOOTH_GREEN);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBackground(Constants.ACTIONS);
+                setBackground(Constants.COLOR_ACTIONS);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                setBackground(Constants.SMOOTH_GREEN);
+                setBackground(Constants.COLOR_SMOOTH_GREEN);
             }
         });
         setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -72,12 +71,12 @@ public class CodeBlockPanel extends JButton {
         this.elseButton = buttonText.equals("ELSE");
         setText(buttonText);
         setFocusable(false);
-        setFont(Constants.OPEN_SANS_14);
+        setFont(Constants.FONT_OPEN_SANS_14);
         setForeground(Color.WHITE);
 
         setPreferredSize(new Dimension(110, 30));
         setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
-                Constants.CONDITIONALS : Constants.ACTIONS));
+                Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
         setBackground(Color.GRAY);
 
         addMouseListener(new MouseAdapter() {
@@ -94,13 +93,13 @@ public class CodeBlockPanel extends JButton {
             @Override
             public void mouseEntered(MouseEvent e) {
                 setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
-                        Constants.CONDITIONALS_HOVER : Constants.ACTIONS_HOVER));
+                        Constants.COLOR_CONDITIONALS_HOVER : Constants.COLOR_ACTIONS_HOVER));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
-                        Constants.CONDITIONALS : Constants.ACTIONS));
+                        Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
             }
         });
     }

@@ -30,10 +30,10 @@ public class CodeType {
             case IF:
             case ELSE:
             case END:
-                this.color = Constants.CONDITIONALS;
+                this.color = Constants.COLOR_CONDITIONALS;
                 break;
             case ACTION:
-                this.color = Constants.ACTIONS;
+                this.color = Constants.COLOR_ACTIONS;
                 break;
             default: break;
         }

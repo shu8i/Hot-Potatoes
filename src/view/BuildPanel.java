@@ -85,7 +85,7 @@ public class BuildPanel extends JPanel {
                 } else {
                     BuildPanel.this.controller.updateGrid(BuildPanel.this.gridPanel.getGrid());
                     BuildPanel.this.controller.saveDatabase();
-                    BuildPanel.this.hintPanel.updateHint("Saved Successfully.", Constants.DARK_GREEN, 3000);
+                    BuildPanel.this.hintPanel.updateHint("Saved Successfully.", Constants.COLOR_DARK_GREEN, 3000);
                 }
             }
         });

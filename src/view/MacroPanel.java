@@ -18,7 +18,7 @@ public class MacroPanel extends JPanel {
     public MacroPanel() {
         super(new GridBagLayout());
         setPreferredSize(new Dimension(500, 100));
-        setBorder(new MatteBorder(1, 1, 1, 1, Constants.SMOOTH_GREEN));
+        setBorder(new MatteBorder(1, 1, 1, 1, Constants.COLOR_SMOOTH_GREEN));
     }
      
 }

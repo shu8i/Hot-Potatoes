@@ -6,7 +6,6 @@ import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,11 +55,11 @@ public class StudentPanel extends JPanel {
             worldSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
                     + this.controller.userController.getGridScore(entry.getValue())  + "%</center></html>");
             worldSelectButton.setPreferredSize(new Dimension(190, 190));
-            worldSelectButton.setBackground(Constants.SMOOTH_GREEN);
+            worldSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
             worldSelectButton.setOpaque(true);
             worldSelectButton.setBorderPainted(false);
             worldSelectButton.setFocusable(false);
-            worldSelectButton.setFont(Constants.OPEN_SANS_20);
+            worldSelectButton.setFont(Constants.FONT_OPEN_SANS_20);
             worldSelectButton.setForeground(Color.WHITE);
             worldSelectButton.addActionListener(new ActionListener() {
                 @Override
@@ -74,17 +73,17 @@ public class StudentPanel extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    e.getComponent().setBackground(Constants.SMOOTH_GREEN);
+                    e.getComponent().setBackground(Constants.COLOR_SMOOTH_GREEN);
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    e.getComponent().setBackground(Constants.ACTIONS);
+                    e.getComponent().setBackground(Constants.COLOR_ACTIONS);
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    e.getComponent().setBackground(Constants.SMOOTH_GREEN);
+                    e.getComponent().setBackground(Constants.COLOR_SMOOTH_GREEN);
                 }
             });
 

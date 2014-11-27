@@ -1,7 +1,5 @@
 package model;
 
-import sun.rmi.rmic.iiop.Type;
-
 import java.util.*;
 
 /**
@@ -52,9 +50,9 @@ public class Code {
 
             @Override
             public boolean hasNext() {
-                if (current.defaultCondition != null ||
-                        current.trueCondition != null ||
-                        current.falseCondition != null) {
+                if ((current.defaultCondition != null && !visited.contains(current.defaultCondition) )||
+                        (current.trueCondition != null && !visited.contains(current.trueCondition)) ||
+                        (current.falseCondition != null && !visited.contains(current.falseCondition))) {
                     return true;
                 }
 
@@ -78,35 +76,55 @@ public class Code {
             }
 
             @Override
-            public CodeBlock next() {
-                if (current.trueCondition != null && !visited.contains(current.trueCondition)) {
+            public CodeBlock next()
+            {
+                if (current.trueCondition != null && !visited.contains(current.trueCondition))
+                {
                     current = current.trueCondition;
-                } else if (current.falseCondition != null && !visited.contains(current.falseCondition)) {
+                    elseReturned = false;
+                }
+                else if (current.falseCondition != null && !visited.contains(current.falseCondition))
+                {
                     current = current.falseCondition;
-                } else if (current.defaultCondition != null && !visited.contains(current.defaultCondition)) {
+                    elseReturned = false;
+                }
+                else if (current.defaultCondition != null && !visited.contains(current.defaultCondition))
+                {
                     current = current.defaultCondition;
-                } else if (current.condParent != null) {
-
-                    if (mode.peek().equals(Mode.ELSE)) {
-                        elseReturned = true;
-                        return new CodeBlock("ELSE", new CodeType(CodeType.Type.ELSE));
-                    }
-
+                    elseReturned = false;
+                }
+                else if (current.condParent != null)
+                {
                     current = current.condParent;
-                    if (visited.contains(current.trueCondition) && visited.contains(current.falseCondition)) {
+                    if ((current.getCodetype().getType().equals(CodeType.Type.IF) &&
+                            visited.contains(current.trueCondition) && visited.contains(current.falseCondition)) ||
+                            (current.getCodetype().getType().equals(CodeType.Type.WHILE) &&
+                            visited.contains(current.trueCondition)))
+                    {
                         current = current.defaultCondition;
-                    } else {
-                        if (current.falseCondition != null && elseReturned) {
+                        elseReturned = false;
+                    }
+                    else {
+                        if (current.falseCondition != null && elseReturned)
+                        {
                             current = current.falseCondition;
                             elseReturned = false;
-                        } else if (current.falseCondition != null && !elseReturned) {
+                        }
+                        else if (((mode.peek().equals(Mode.ELSE) && current.defaultCondition == null) ||
+                                current.falseCondition != null) && !elseReturned)
+                        {
                             elseReturned = true;
                             return new CodeBlock("ELSE", new CodeType(CodeType.Type.ELSE));
-                        } else {
+                        }
+                        else
+                        {
                             current = current.defaultCondition;
+                            elseReturned = false;
                         }
                     }
-                } else {
+                }
+                else
+                {
                     throw new NoSuchElementException();
                 }
                 visited.add(current);
@@ -167,31 +185,16 @@ public class Code {
             case WHILE_DECLARATION:
                 if (!this.mode.isEmpty() &&
                         (this.mode.peek().equals(Mode.FIRST_IF) || this.mode.peek().equals(Mode.FIRST_WHILE))) {
-
-                    if (this.curr.trueCondition != null) {
-                        this.curr.trueCondition.parent = codeBlock;
-                        codeBlock.defaultCondition = this.curr.trueCondition;
-                    }
                     codeBlock.parent = this.curr;
 
                     this.curr.trueCondition = codeBlock;
                     this.curr = this.curr.trueCondition;
                 } else if (!this.mode.isEmpty() && this.mode.peek().equals(Mode.ELSE)) {
-
-                    if (this.conditionals.peek().falseCondition != null) {
-                        this.conditionals.peek().falseCondition.parent = codeBlock;
-                        codeBlock.defaultCondition = this.conditionals.peek().falseCondition;
-                    }
                     codeBlock.parent = this.conditionals.peek();
 
                     this.conditionals.peek().falseCondition = codeBlock;
                     this.curr = this.conditionals.peek().falseCondition;
                 } else {
-
-                    if (this.curr.defaultCondition != null) {
-                        this.curr.defaultCondition.parent = codeBlock;
-                        codeBlock.defaultCondition = this.curr.defaultCondition;
-                    }
                     codeBlock.parent = this.curr;
 
                     this.curr.defaultCondition = codeBlock;
@@ -200,11 +203,6 @@ public class Code {
                 this.mode.push(mode);
                 break;
             case END:
-
-                if (this.conditionals.peek().defaultCondition != null) {
-                    this.conditionals.peek().defaultCondition.parent = codeBlock;
-                    codeBlock.defaultCondition = this.conditionals.peek().defaultCondition;
-                }
                 codeBlock.parent = this.conditionals.peek();
 
                 this.conditionals.peek().defaultCondition = codeBlock;
@@ -221,33 +219,18 @@ public class Code {
                     this.mode.push(this.mode.peek().equals(Mode.IF_DECLARATION) ? Mode.FIRST_IF : Mode.FIRST_WHILE);
                 } else if (!this.mode.isEmpty() &&
                         (this.mode.peek().equals(Mode.FIRST_IF) || this.mode.peek().equals(Mode.FIRST_WHILE))) {
-
-                    if (this.curr.trueCondition != null) {
-                        this.curr.trueCondition.parent = codeBlock;
-                        codeBlock.defaultCondition = this.curr.trueCondition;
-                    }
                     codeBlock.parent = this.curr;
 
                     this.curr.trueCondition = codeBlock;
                     this.curr = this.curr.trueCondition;
                     this.mode.push(mode);
                 } else if (!this.mode.isEmpty() && this.mode.peek().equals(Mode.ELSE)) {
-
-                    if (this.conditionals.peek().falseCondition != null) {
-                        this.conditionals.peek().falseCondition.parent = codeBlock;
-                        codeBlock.defaultCondition = this.conditionals.peek().falseCondition;
-                    }
                     codeBlock.parent = this.conditionals.peek();
 
                     this.conditionals.peek().falseCondition = codeBlock;
                     this.curr = this.conditionals.peek().falseCondition;
                     this.mode.push(mode);
                 } else {
-
-                    if (this.curr.defaultCondition != null) {
-                        this.curr.defaultCondition.parent = codeBlock;
-                        codeBlock.defaultCondition = this.curr.defaultCondition;
-                    }
                     codeBlock.parent = this.curr;
 
                     this.curr.defaultCondition = codeBlock;
@@ -260,34 +243,122 @@ public class Code {
 
     }
 
-    public Code removeBlock(int id) {
+    public Code removeBlock(int id)
+    {
         CodeBlock block = this.references.get(id);
-        if (block.parent == null) {
-            if (block.defaultCondition != null) {
-                head.defaultCondition = block.defaultCondition;
-            } else {
-                head.defaultCondition = null;
+
+        switch (block.getCodetype().getType())
+        {
+            case IF:
+            case WHILE:
+            case ELSE:
+//                removeConditionalBlock(block);
+                break;
+            case END:
+//                removeConditionalByEndBlock(block);
+                break;
+            case ACTION:
+                removeActionBlock(block);
+                this.references.remove(id);
+                break;
+            default: break;
+        }
+        return this;
+    }
+
+    private void removeConditionalByEndBlock(CodeBlock block)
+    {
+//        if (block.defaultCondition == null)
+//        {
+//            block.parent.parent.defaultCondition = null;
+//            curr = block.parent.parent;
+//        }
+//        else
+//        {
+//            block.defaultCondition.parent = block.parent.parent;
+//            if (block.parent.parent.trueCondition == block.parent)
+//            {
+//                block.parent.parent.trueCondition = block.defaultCondition;
+//            }
+//            else if (block.parent.parent.falseCondition == block.parent)
+//            {
+//                block.parent.parent.falseCondition = block.defaultCondition;
+//            }
+//            else
+//            {
+//                block.parent.parent.defaultCondition = block.defaultCondition;
+//            }
+//        }
+    }
+
+    private void removeConditionalBlock(CodeBlock block)
+    {
+
+//        if (block.defaultCondition.defaultCondition == null)    //if last conditional in code
+//        {
+//            if (block.parent.defaultCondition == null)
+//            {
+//                block.parent.defaultCondition = null;
+//                curr = block.parent;
+//            }
+//        }
+//        else
+//        {
+//            block.defaultCondition.defaultCondition.parent = block.parent;
+//            if (block.parent.trueCondition == block)
+//            {
+//                block.parent.trueCondition = block.defaultCondition.defaultCondition;
+//            }
+//            else if (block.parent.falseCondition == block)
+//            {
+//                block.parent.falseCondition = block.defaultCondition.defaultCondition;
+//            }
+//            else
+//            {
+//                block.parent.defaultCondition = block.defaultCondition.defaultCondition;
+//            }
+//        }
+    }
+
+    private void removeActionBlock(CodeBlock block)
+    {
+        if (block.parent.trueCondition == block)            //if first if/while condition
+        {
+            if (block.defaultCondition == null)             //if the only statement in if/while
+            {
+                block.parent.trueCondition = null;
             }
-        } else if (block.parent != null) {
-            if (block.defaultCondition.getCodetype().getType().equals(CodeType.Type.END)) {
-                if (block.defaultCondition.defaultCondition != null) {
-                    block.defaultCondition.defaultCondition.parent = block.parent;
-                    block.parent.defaultCondition = block.defaultCondition.defaultCondition;
-                } else {
-                    block.parent.defaultCondition = null;
-                }
-            } else {
-                if (block.defaultCondition != null) {
-                    block.defaultCondition.parent = block.parent;
-                    block.parent.defaultCondition = block.defaultCondition;
-                } else {
-                    block.parent.defaultCondition = null;
-                }
+            else
+            {
+                block.defaultCondition.parent = block.parent;
+                block.parent.trueCondition = block.defaultCondition;
             }
         }
-        this.references.remove(id);
-        System.out.println();
-        return this;
+        else if (block.parent.falseCondition == block)      //if in first else condition
+        {
+            if (block.defaultCondition == null)             //if the only statement in else (remove entire if/else)
+            {
+                block.parent.falseCondition = null;
+            }
+            else
+            {
+                block.defaultCondition.parent = block.parent;
+                block.parent.falseCondition = block.defaultCondition;
+            }
+        }
+        else
+        {
+            if (block.defaultCondition == null)         //if last codeblock in code
+            {
+                block.parent.defaultCondition = null;
+                curr = block.parent;
+            }
+            else
+            {
+                block.defaultCondition.parent = block.parent;
+                block.parent.defaultCondition = block.defaultCondition;
+            }
+        }
     }
 	
 }

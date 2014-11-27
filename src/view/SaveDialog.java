@@ -62,7 +62,7 @@ public class SaveDialog {
                 SaveDialog.this.buildPanel.updateLoadMenu().updateDeleteMenu();
                 SaveDialog.this.buildPanel.enterEditMode(SaveDialog.this.nameTextField.getText());
                 SaveDialog.this.frame.dispatchEvent(new WindowEvent(SaveDialog.this.frame, WindowEvent.WINDOW_CLOSING));
-                SaveDialog.this.buildPanel.hintPanel.updateHint("Saved Successfully.", Constants.DARK_GREEN, 3000);
+                SaveDialog.this.buildPanel.hintPanel.updateHint("Saved Successfully.", Constants.COLOR_DARK_GREEN, 3000);
             }
         });
 
@@ -75,8 +75,8 @@ public class SaveDialog {
 
         c.anchor = GridBagConstraints.WEST;
         c.gridwidth = 10;
-        confirmLabel.setFont(Constants.OPEN_SANS_20);
-        confirmLabel.setForeground(Constants.SMOOTH_GREEN);
+        confirmLabel.setFont(Constants.FONT_OPEN_SANS_20);
+        confirmLabel.setForeground(Constants.COLOR_SMOOTH_GREEN);
         dialog.add(confirmLabel, c);
 
         c = new GridBagConstraints();
@@ -89,7 +89,7 @@ public class SaveDialog {
         c.gridy = 1;
         c.gridwidth = 5;
         c.anchor = GridBagConstraints.WEST;
-        nameLabel.setFont(Constants.OPEN_SANS_14);
+        nameLabel.setFont(Constants.FONT_OPEN_SANS_14);
         nameLabel.setForeground(Color.GRAY);
         dialog.add(nameLabel, c);
 

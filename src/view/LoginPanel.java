@@ -78,8 +78,8 @@ public class LoginPanel extends JPanel
         });
 
         c.anchor = GridBagConstraints.WEST;
-        titleLabel.setFont(Constants.OPEN_SANS_20);
-        titleLabel.setForeground(Constants.SMOOTH_GREEN);
+        titleLabel.setFont(Constants.FONT_OPEN_SANS_20);
+        titleLabel.setForeground(Constants.COLOR_SMOOTH_GREEN);
         add(titleLabel, c);
 
         c = new GridBagConstraints();
@@ -91,7 +91,7 @@ public class LoginPanel extends JPanel
         c = new GridBagConstraints();
         c.gridy = 1;
         c.anchor = GridBagConstraints.WEST;
-        usernameLabel.setFont(Constants.OPEN_SANS_14);
+        usernameLabel.setFont(Constants.FONT_OPEN_SANS_14);
         usernameLabel.setForeground(Color.GRAY);
         add(usernameLabel, c);
 
@@ -112,7 +112,7 @@ public class LoginPanel extends JPanel
         c = new GridBagConstraints();
         c.gridy = 2;
         c.anchor = GridBagConstraints.WEST;
-        passwordLabel.setFont(Constants.OPEN_SANS_14);
+        passwordLabel.setFont(Constants.FONT_OPEN_SANS_14);
         passwordLabel.setForeground(Color.GRAY);
         add(passwordLabel, c);
 
