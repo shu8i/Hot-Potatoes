@@ -51,6 +51,12 @@ public class CodeBlock {
 		return codeText;
 	}
 
+    public CodeBlock setCodeText(String codeText)
+    {
+        this.codeText = codeText;
+        return this;
+    }
+
     public CodeBlock setId(int id) {
         this.id = id;
         return this;

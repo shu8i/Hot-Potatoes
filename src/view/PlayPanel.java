@@ -25,10 +25,10 @@ public class PlayPanel extends JPanel {
     private Controller controller;
     private Grid grid;
     private MenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu;
-    private GridPanel gridPanel;
-    private CodePanel codePanel;
-    private MacroPanel macroPanel;
-    private ActionPanel actionPanel;
+    protected GridPanel gridPanel;
+    protected CodePanel codePanel;
+    protected MacroPanel macroPanel;
+    protected ActionPanel actionPanel;
 
     public PlayPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, Grid grid) {
         super(layout);
@@ -85,7 +85,7 @@ public class PlayPanel extends JPanel {
 
     private void initPanels() {
         this.gridPanel = new GridPanel(this.grid);
-        this.codePanel = new CodePanel(new JPanel(), this.controller);
+        this.codePanel = new CodePanel(new JPanel(), this.controller, this);
         this.actionPanel = new ActionPanel(this.codePanel, this.controller);
         this.macroPanel = new MacroPanel();
     }

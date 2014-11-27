@@ -1,6 +1,7 @@
 package view;
 
 import control.Controller;
+import model.CodeBlock;
 import util.Constants;
 
 import javax.swing.*;
@@ -24,7 +25,8 @@ public class CodeBlockPanel extends JButton {
     private boolean elseButton = false;
     private Controller controller;
     private int id;
-    private CodePanel codePanel;
+    private PlayPanel playPanel;
+    private boolean editMode = false;
 
 
     public CodeBlockPanel(String buttonText) {
@@ -62,9 +64,9 @@ public class CodeBlockPanel extends JButton {
         setBorder(new EmptyBorder(2, 2, 2, 2));
     }
 
-	public CodeBlockPanel(String buttonText, int id, Controller controller, final CodePanel codePanel) {
+	public CodeBlockPanel(String buttonText, int id, Controller controller, final PlayPanel playPanel) {
         this.controller = controller;
-        this.codePanel = codePanel;
+        this.playPanel = playPanel;
         this.id = id;
         this.conditional = buttonText.equals("IF") || buttonText.equals("WHILE");
         this.endButton = buttonText.equals("END");
@@ -84,22 +86,38 @@ public class CodeBlockPanel extends JButton {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     CodeBlockPanel.this.controller.codeController.removeBlock(CodeBlockPanel.this.id);
-                    codePanel.refreshPanel();
+                    playPanel.codePanel.refreshPanel();
+                    playPanel.actionPanel.editMode = false;
+                    playPanel.actionPanel.repaintActionPanel();
                 } else {
-
+                    if (!conditional && !endButton && !elseButton)
+                    {
+                        setBorder(new MatteBorder(2, 2, 2, 2, Color.WHITE));
+                        playPanel.actionPanel.updateActionPanel(CodeBlockPanel.this);
+                        editMode = true;
+                        playPanel.codePanel.updateBlockForEdit(CodeBlockPanel.this);
+                    }
+                    else
+                    {
+                        playPanel.actionPanel.editMode = false;
+                        playPanel.actionPanel.repaintActionPanel();
+                        playPanel.codePanel.updateBlockForEdit(null);
+                    }
                 }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
-                        Constants.COLOR_CONDITIONALS_HOVER : Constants.COLOR_ACTIONS_HOVER));
+                if (!editMode)
+                    setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
+                            Constants.COLOR_CONDITIONALS_HOVER : Constants.COLOR_ACTIONS_HOVER));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
-                        Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
+                if (!editMode)
+                    setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
+                            Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
             }
         });
     }
@@ -118,6 +136,13 @@ public class CodeBlockPanel extends JButton {
 
     public int getId() {
         return this.id;
+    }
+
+    public void exitEditMode()
+    {
+        setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
+                Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
+        this.editMode = false;
     }
 
 }

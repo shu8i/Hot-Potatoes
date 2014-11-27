@@ -24,10 +24,13 @@ public class CodePanel extends JScrollPane {
     private JPanel filler;
     private JPanel panel;
     private Controller controller;
+    private PlayPanel playPanel;
+    private CodeBlockPanel blockBeingEdited;
 
-    public CodePanel(JPanel panel, Controller controller) {
+    public CodePanel(JPanel panel, Controller controller, PlayPanel playPanel) {
         super(panel);
         this.controller = controller;
+        this.playPanel = playPanel;
         this.panel = panel;
         this.panel.setLayout(layout);
         this.filler = new JPanel();
@@ -51,28 +54,28 @@ public class CodePanel extends JScrollPane {
         {
             case IF:
             case WHILE:
-                this.panel.add(new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this), c);
+                this.panel.add(new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel), c);
                 col++;
                 if (codeBlock.getCondition() != null)
                 {
                     c.gridx = col;
-                    this.panel.add(new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), controller, this), c);
+                    this.panel.add(new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), controller, this.playPanel), c);
                     row++;
                 }
                 break;
             case ELSE:
                 c.gridx = --col;
-                this.panel.add(new CodeBlockPanel("ELSE", codeBlock.getId(), controller, this), c);
+                this.panel.add(new CodeBlockPanel("ELSE", codeBlock.getId(), controller, this.playPanel), c);
                 col++;
                 row++;
                 break;
             case END:
                 c.gridx = --col;
-                this.panel.add(new CodeBlockPanel("END", codeBlock.getId(), controller, this), c);
+                this.panel.add(new CodeBlockPanel("END", codeBlock.getId(), controller, this.playPanel), c);
                 row++;
                 break;
             case ACTION:
-                this.panel.add(new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this), c);
+                this.panel.add(new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel), c);
                 row++;
                 break;
             default: break;
@@ -105,6 +108,20 @@ public class CodePanel extends JScrollPane {
 
         this.panel.revalidate();
         this.panel.repaint();
+    }
+
+    public void updateBlockForEdit(CodeBlockPanel codeBlockPanel)
+    {
+        if (this.blockBeingEdited != null)
+        {
+            this.blockBeingEdited.exitEditMode();
+        }
+        this.blockBeingEdited = codeBlockPanel;
+    }
+
+    public int getEditableCodeId()
+    {
+        return this.blockBeingEdited.getId();
     }
 	
 }

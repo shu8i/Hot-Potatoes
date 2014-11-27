@@ -74,4 +74,10 @@ public class CodeController {
         return this;
     }
 
+    public CodeController editCode(int id, String newContent)
+    {
+        this.code.edit(id, newContent);
+        return this;
+    }
+
 }

@@ -360,5 +360,19 @@ public class Code {
             }
         }
     }
+
+    public Code edit(int id, String newContent)
+    {
+        CodeBlock block = this.references.get(id);
+        if (block.getCondition() != null)
+        {
+            block.setCondition(newContent);
+        }
+        else
+        {
+            block.setCodeText(newContent);
+        }
+        return this;
+    }
 	
 }

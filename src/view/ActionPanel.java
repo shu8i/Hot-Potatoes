@@ -27,8 +27,9 @@ public class ActionPanel extends JPanel {
                            endButton, elseButton;
     private CodePanel codePanel;
     private Controller controller;
-    private enum PanelMode{CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION, IN_ELSE}
-    private Stack<PanelMode> mode;
+    protected enum PanelMode{CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION, IN_ELSE}
+    protected Stack<PanelMode> mode;
+    protected boolean editMode = false;
 
     public ActionPanel(final CodePanel codePanel, Controller controller) {
         super(new FlowLayout());
@@ -66,18 +67,36 @@ public class ActionPanel extends JPanel {
         this.turnLeftButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("TURN LEFT", new CodeType(CodeType.Type.ACTION)));
-                codePanel.refreshPanel();
+                if (!editMode) {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("TURN LEFT", new CodeType(CodeType.Type.ACTION)));
+                    codePanel.refreshPanel();
+                } else {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "TURN LEFT");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
         this.moveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("MOVE", new CodeType(CodeType.Type.ACTION)));
-                codePanel.refreshPanel();
+                if (!editMode) {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("MOVE", new CodeType(CodeType.Type.ACTION)));
+                    codePanel.refreshPanel();
+                } else {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "MOVE");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
@@ -109,70 +128,127 @@ public class ActionPanel extends JPanel {
         this.putPotatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("PUT POTATO", new CodeType(CodeType.Type.ACTION)));
-                codePanel.refreshPanel();
+                if (!editMode) {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("PUT POTATO", new CodeType(CodeType.Type.ACTION)));
+                    codePanel.refreshPanel();
+                } else {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "PUT POTATO");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
         this.pickPotatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("PICK POTATO", new CodeType(CodeType.Type.ACTION)));
-                codePanel.refreshPanel();
+                if (!editMode) {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("PICK POTATO", new CodeType(CodeType.Type.ACTION)));
+                    codePanel.refreshPanel();
+                } else {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "PICK POTATO");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
         this.facingLeftButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("FACING LEFT", new CodeType(CodeType.Type.ACTION)));
+                if (!editMode) {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("FACING LEFT", new CodeType(CodeType.Type.ACTION)));
 
-                mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
-                        PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
-                repaintActionPanel();
-                codePanel.refreshPanel();
+                    mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
+                            PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                } else {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "FACING LEFT");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
         this.facingRightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("FACING RIGHT", new CodeType(CodeType.Type.ACTION)));
+                if (!editMode)
+                {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("FACING RIGHT", new CodeType(CodeType.Type.ACTION)));
 
-                mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
-                        PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
-                repaintActionPanel();
-                codePanel.refreshPanel();
+                    mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
+                            PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                }
+                else
+                {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "FACING RIGHT");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
         this.facingUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("FACING UP", new CodeType(CodeType.Type.ACTION)));
+                if (!editMode) {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("FACING UP", new CodeType(CodeType.Type.ACTION)));
 
-                mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
-                        PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
-                repaintActionPanel();
-                codePanel.refreshPanel();
+                    mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
+                            PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                } else {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "FACING UP");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
         this.facingDownButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActionPanel.this.controller.codeController
-                        .addCodeBlock(new CodeBlock("FACING DOWN", new CodeType(CodeType.Type.ACTION)));
+                if (!editMode) {
+                    ActionPanel.this.controller.codeController
+                            .addCodeBlock(new CodeBlock("FACING DOWN", new CodeType(CodeType.Type.ACTION)));
 
-                mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
-                        PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
-                repaintActionPanel();
-                codePanel.refreshPanel();
+                    mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
+                            PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                } else {
+                    ActionPanel.this.controller.codeController
+                            .editCode(codePanel.getEditableCodeId(), "FACING DOWN");
+                    codePanel.updateBlockForEdit(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    editMode = !editMode;
+                }
             }
         });
 
@@ -193,7 +269,7 @@ public class ActionPanel extends JPanel {
         repaintActionPanel();
     }
 
-    private void repaintActionPanel() {
+    public void repaintActionPanel() {
         removeAll();
         switch(mode.peek()) {
             case WHILE_DECLARATION:
@@ -250,6 +326,54 @@ public class ActionPanel extends JPanel {
         }
         repaint();
         revalidate();
+    }
+
+    private void repaintActionPanel(PanelMode mode) {
+        removeAll();
+        switch(mode) {
+            case CONDITIONAL_DECLARATION:
+                add(facingLeftButton);
+                add(facingRightButton);
+                add(facingUpButton);
+                add(facingDownButton);
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+                break;
+            case ACTION:
+                add(turnLeftButton);
+                add(moveButton);
+                add(putPotatoButton);
+                add(pickPotatoButton);
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+                add(new CodeBlockPanel(""));
+            default: break;
+        }
+        repaint();
+        revalidate();
+    }
+
+    public void updateActionPanel(CodeBlockPanel codeBlock)
+    {
+        if (codeBlock.isConditional() || codeBlock.isElseButton() ||
+                codeBlock.isEndButton())
+        {
+            editMode = false;
+            return;
+        }
+        if (codeBlock.getText().contains("FACING"))
+        {
+            repaintActionPanel(PanelMode.CONDITIONAL_DECLARATION);
+            editMode = true;
+        }
+        else
+        {
+            repaintActionPanel(PanelMode.ACTION);
+            editMode = true;
+        }
     }
     
 }
