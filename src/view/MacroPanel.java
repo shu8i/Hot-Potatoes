@@ -1,10 +1,14 @@
 package view;
 
+import control.Controller;
+import model.CodeBlock;
 import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Allant Gomez
@@ -15,10 +19,47 @@ import java.awt.*;
  */
 public class MacroPanel extends JPanel {
 
-    public MacroPanel() {
-        super(new GridBagLayout());
+    private Controller controller;
+    private PlayPanel playPanel;
+
+    public MacroPanel(PlayPanel playPanel, Controller controller) {
+        super(new FlowLayout());
+        this.controller = controller;
+        this.playPanel = playPanel;
+
         setPreferredSize(new Dimension(500, 100));
         setBorder(new MatteBorder(1, 1, 1, 1, Constants.COLOR_SMOOTH_GREEN));
+        refreshPanel();
+    }
+
+    public void refreshPanel()
+    {
+        removeAll();
+
+        CodeBlockPanel codeBlockPanel;
+        int i = 0;
+        for (final String name : controller.userController.getMacros())
+        {
+            codeBlockPanel = new CodeBlockPanel(name);
+            codeBlockPanel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (!MacroPanel.this.playPanel.actionPanel.inConditional()) {
+                        MacroPanel.this.controller.codeController.mergeCode(MacroPanel.this.controller.userController.getMacro(name));
+                        MacroPanel.this.playPanel.actionPanel.mergeStack(MacroPanel.this.controller.userController.getMacroPanelMode(name));
+                        MacroPanel.this.playPanel.actionPanel.repaintActionPanel();
+                        MacroPanel.this.playPanel.codePanel.refreshPanel();
+                    }
+                }
+            });
+            add(codeBlockPanel);
+            i++;
+        }
+
+        while (i++ < 8) add(new CodeBlockPanel(""));
+
+        repaint();
+        revalidate();
     }
      
 }

@@ -27,7 +27,7 @@ public class ActionPanel extends JPanel {
                            endButton, elseButton;
     private CodePanel codePanel;
     private Controller controller;
-    protected enum PanelMode{CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION, IN_ELSE}
+    public enum PanelMode{CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION, IN_ELSE}
     protected Stack<PanelMode> mode;
     protected boolean editMode = false;
 
@@ -375,5 +375,21 @@ public class ActionPanel extends JPanel {
             editMode = true;
         }
     }
-    
+
+    public Stack<PanelMode> getActionStack()
+    {
+        return this.mode;
+    }
+
+    public ActionPanel mergeStack(Stack<PanelMode> mode)
+    {
+        this.mode.addAll(mode);
+        return this;
+    }
+
+    public boolean inConditional()
+    {
+        return this.mode.peek().equals(PanelMode.CONDITIONAL_DECLARATION) ||
+                this.mode.peek().equals(PanelMode.WHILE_DECLARATION);
+    }
 }

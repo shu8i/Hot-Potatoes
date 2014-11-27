@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -8,9 +9,8 @@ import java.util.*;
  * @author Shahab Shekari
  * @author Steven Rengifo
  * @author Zachary Guadagno
- * 
  */
-public class Code {
+public class Code implements Serializable {
 	
 	private CodeBlock head;
     private CodeBlock curr;
@@ -387,5 +387,80 @@ public class Code {
         }
         return this;
     }
-	
+
+    public boolean isEmpty()
+    {
+        return head.defaultCondition == null;
+    }
+
+    public Code merge(Code code)
+    {
+        Code newCode = copy(code);
+        for (final CodeBlock block : newCode.references.values())
+        {
+            block.setId(++ids);
+            this.references.put(ids, block);
+        }
+        add(newCode.head.defaultCondition);
+        this.mode.addAll(newCode.mode);
+        this.curr = newCode.curr;
+        return this;
+    }
+
+    private Code copy(Code oldCode)
+    {
+        Code code = new Code();
+        CodeBlock codeBlock;
+        //create new blocks
+        for (Map.Entry<Integer, CodeBlock> entry : oldCode.references.entrySet())
+        {
+            codeBlock = new CodeBlock(entry.getValue().getCodetext(), entry.getValue().getCodetype());
+            if (entry.getValue().getCondition() != null)
+            {
+                codeBlock.setCondition(entry.getValue().getCondition());
+            }
+            code.references.put(entry.getKey(), codeBlock);
+        }
+
+        //restore links.
+        for (Map.Entry<Integer, CodeBlock> entry : code.references.entrySet())
+        {
+            codeBlock = entry.getValue();
+            if (oldCode.references.get(entry.getKey()).defaultCondition != null)
+                codeBlock.defaultCondition = code.references.get(oldCode.references.get(entry.getKey()).defaultCondition.getId());
+
+            if (oldCode.references.get(entry.getKey()).trueCondition != null)
+                codeBlock.trueCondition = code.references.get(oldCode.references.get(entry.getKey()).trueCondition.getId());
+
+            if (oldCode.references.get(entry.getKey()).falseCondition != null)
+                codeBlock.falseCondition = code.references.get(oldCode.references.get(entry.getKey()).falseCondition.getId());
+
+            if (oldCode.references.get(entry.getKey()).parent != null)
+                codeBlock.parent = code.references.get(oldCode.references.get(entry.getKey()).parent.getId());
+
+            if (oldCode.references.get(entry.getKey()).condParent != null)
+                codeBlock.condParent = code.references.get(oldCode.references.get(entry.getKey()).condParent.getId());
+        }
+
+        Stack<CodeBlock> reversedConditionals = new Stack<CodeBlock>();
+        Stack<Mode> reversedModes = new Stack<Mode>();
+        while (!oldCode.conditionals.isEmpty())
+            reversedConditionals.push(code.references.get(oldCode.conditionals.pop().getId()));
+
+        while (!oldCode.mode.isEmpty())
+            reversedModes.push(oldCode.mode.pop());
+
+        if (!reversedModes.isEmpty())
+            reversedModes.pop();
+
+        while (!reversedConditionals.isEmpty())
+            code.conditionals.push(reversedConditionals.pop());
+
+        while (!reversedModes.isEmpty())
+            code.mode.push(reversedModes.pop());
+
+        code.head.defaultCondition = code.references.get(oldCode.head.defaultCondition.getId());
+        code.curr = code.references.get(oldCode.curr.getId());
+        return code;
+    }
 }

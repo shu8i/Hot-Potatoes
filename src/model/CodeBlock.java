@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -7,7 +9,7 @@ package model;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class CodeBlock {
+public class CodeBlock implements Serializable {
 
 	private CodeType codeType;
 	private String codeText, condition;

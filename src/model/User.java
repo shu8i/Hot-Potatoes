@@ -1,8 +1,9 @@
 package model;
 
+import view.ActionPanel;
+
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Allant Gomez
@@ -16,6 +17,8 @@ public class User implements Serializable {
     private String username, password;
     private boolean isAdmin;
     private Map<Grid, Integer> gridsPlayed;
+    private Map<String, Code> macros;
+    private Map<String, Stack<ActionPanel.PanelMode>> macrosActionPanel;
 
     /**
      * Creates a new user account.
@@ -28,6 +31,8 @@ public class User implements Serializable {
         this.password = encrypt(password);
         this.isAdmin = isAdmin;
         this.gridsPlayed = new HashMap<Grid, Integer>();
+        this.macros = new HashMap<String, Code>();
+        this.macrosActionPanel = new HashMap<String, Stack<ActionPanel.PanelMode>>();
     }
 
     /**
@@ -66,6 +71,28 @@ public class User implements Serializable {
     public User changeAdminStatus(boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
+    }
+
+    public User addMacro(String name, Code code, Stack<ActionPanel.PanelMode> panelMode)
+    {
+        this.macros.put(name, code);
+        this.macrosActionPanel.put(name, panelMode);
+        return this;
+    }
+
+    public Code getMacro(String name)
+    {
+        return this.macros.get(name);
+    }
+
+    public Stack<ActionPanel.PanelMode> getMacroPanelMode(String name)
+    {
+        return this.macrosActionPanel.get(name);
+    }
+
+    public Set<String> getMacros()
+    {
+        return this.macros.keySet();
     }
 
     /**

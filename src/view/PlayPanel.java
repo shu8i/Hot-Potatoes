@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Allant Gomez
@@ -24,7 +26,7 @@ public class PlayPanel extends JPanel {
     private JFrame parent;
     private Controller controller;
     private Grid grid;
-    private MenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu;
+    private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu;
     protected GridPanel gridPanel;
     protected CodePanel codePanel;
     protected MacroPanel macroPanel;
@@ -41,6 +43,14 @@ public class PlayPanel extends JPanel {
         this.predecessor.setVisible(false);
 
         initPanels();
+
+        this.saveMacroMenu = new JMenuItem("Save As Macro");
+        this.saveMacroMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SaveDialog(PlayPanel.this, PlayPanel.this.controller);
+            }
+        });
 
         add(this.gridPanel, c);
 
@@ -87,11 +97,11 @@ public class PlayPanel extends JPanel {
         this.gridPanel = new GridPanel(this.grid);
         this.codePanel = new CodePanel(new JPanel(), this.controller, this);
         this.actionPanel = new ActionPanel(this.codePanel, this.controller);
-        this.macroPanel = new MacroPanel();
+        this.macroPanel = new MacroPanel(this, this.controller);
     }
 
     public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this));
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this, saveMacroMenu));
     }
 
 }

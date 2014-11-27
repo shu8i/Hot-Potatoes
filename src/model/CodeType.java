@@ -3,6 +3,7 @@ package model;
 import util.Constants;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * @author Allant Gomez
@@ -11,7 +12,7 @@ import java.awt.*;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class CodeType {
+public class CodeType implements Serializable {
 	
     public enum Type {IF, WHILE, ELSE, END, ACTION}
     private Type type;

@@ -1,9 +1,13 @@
 package control;
 
+import model.Code;
 import model.Grid;
 import model.User;
+import view.ActionPanel;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * @author Allant Gomez
@@ -77,5 +81,29 @@ public class UserController {
     public int getGridScore(Grid grid) {
         Integer score = this.user.getGridsPlayed().get(grid);
         return score == null ? 0 : 100 * score / grid.numPotatoes();
+    }
+
+    public UserController addMacro(String name, Code code, Stack<ActionPanel.PanelMode> panelMode)
+            throws IllegalArgumentException
+    {
+        if (name == null || name.isEmpty()) throw new IllegalArgumentException("Name cannot be empty!");
+        if (code.isEmpty() || panelMode == null) throw new IllegalArgumentException("There's nothing to save!");
+        this.user.addMacro(name, code, panelMode);
+        return this;
+    }
+
+    public Code getMacro(String name)
+    {
+        return this.user.getMacro(name);
+    }
+
+    public Stack<ActionPanel.PanelMode> getMacroPanelMode(String name)
+    {
+        return this.user.getMacroPanelMode(name);
+    }
+
+    public Set<String> getMacros()
+    {
+        return this.user.getMacros();
     }
 }

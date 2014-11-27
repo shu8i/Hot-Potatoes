@@ -80,4 +80,15 @@ public class CodeController {
         return this;
     }
 
+    public Code getCode()
+    {
+        return this.code;
+    }
+
+    public CodeController mergeCode(Code code)
+    {
+        this.code.merge(code);
+        return this;
+    }
+
 }
