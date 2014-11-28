@@ -59,6 +59,7 @@ public class Grid implements Serializable {
     public String getName() {
         return this.name;
     }
+
     /**
      * Gets the starting position of the robot
      * @return the starting position of the robot
@@ -119,10 +120,9 @@ public class Grid implements Serializable {
 
     /**
      * Removes karel from a given block
-     * @param coordinate the coordinates of the block
      * @return the grid
      */
-    public Grid removeKarel(Coordinate coordinate) {
+    public Grid removeKarel() {
         if (this.karel != null) {
             this.karel.remove(KAREL);
         }
@@ -130,7 +130,7 @@ public class Grid implements Serializable {
         return this;
     }
 
-    public Grid removeHome(Coordinate coordinate) {
+    public Grid removeHome() {
         if (this.home != null) {
             this.home.remove(HOME);
         }
@@ -180,7 +180,7 @@ public class Grid implements Serializable {
     private void initializeEmptyGrid() {
         for (int i = 0; i < this.gridSize; i++) {
             for (int j = 0; j < this.gridSize; j++) {
-                grid[i][j] = new Block(j+1, i+1);
+                grid[i][j] = new Block(j+1, this.gridSize - i);
             }
         }
     }

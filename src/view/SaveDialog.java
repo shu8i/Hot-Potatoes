@@ -75,8 +75,8 @@ public class SaveDialog {
 
                 SaveDialog.this.controller.saveDatabase();
                 SaveDialog.this.playPanel.macroPanel.refreshPanel();
-                SaveDialog.this.hintPanel.updateHint("Saved Successfully.", Constants.COLOR_DARK_GREEN, 1000);
                 SaveDialog.this.frame.dispatchEvent(new WindowEvent(SaveDialog.this.frame, WindowEvent.WINDOW_CLOSING));
+                SaveDialog.this.playPanel.hintPanel.updateHint("Saved Successfully.", Constants.COLOR_DARK_GREEN, 3000);
             }
         });
     }

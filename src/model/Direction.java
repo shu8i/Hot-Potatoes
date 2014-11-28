@@ -9,10 +9,10 @@ package model;
  */
 public enum Direction {
 
-    NORTH("NORTH"),
-    SOUTH("SOUTH"),
-    WEST("WEST"),
-    EAST("EAST");
+    UP("UP"),
+    DOWN("DOWN"),
+    LEFT("LEFT"),
+    RIGHT("RIGHT");
 
     private final String direction;
 

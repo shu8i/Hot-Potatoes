@@ -1,8 +1,7 @@
 package control;
 
-import model.Coordinate;
-import model.Direction;
-import model.Robot;
+import model.*;
+import static model.BlockState.*;
 
 /**
  * @author Allant Gomez
@@ -14,13 +13,15 @@ import model.Robot;
 public class RobotController {
 
     private Robot robot;
+    private Grid grid;
 
     /**
      * Creates a new Robot Controller
-     * @param robot the robot
+     * @param grid the grid
      */
-    public RobotController(Robot robot) {
-        this.robot = robot;
+    public RobotController(Grid grid) {
+        this.grid = grid;
+        this.robot = new Robot(grid.getKarel().coordinates());
     }
 
     /**
@@ -28,7 +29,11 @@ public class RobotController {
      * @return the robot controller
      */
     public RobotController pickup() {
-        //TODO implement
+        if (grid.getBlock(robot.getCoordinate()).is(POTATO))
+        {
+            robot.pickup();
+            grid.removePotato(robot.getCoordinate());
+        }
         return this;
     }
 
@@ -37,7 +42,11 @@ public class RobotController {
      * @return the robot controller
      */
     public RobotController drop() {
-        //TODO implement
+        if (robot.hasPotatoes())
+        {
+            robot.drop();
+            grid.addPotato(robot.getCoordinate());
+        }
         return this;
     }
 
@@ -46,7 +55,37 @@ public class RobotController {
      * @return the robot controller
      */
     public RobotController move() {
-        //TODO implement
+        if (isMoveValid(robot.getNextCoordinate()))
+        {
+            grid.removeKarel();
+            robot.move();
+            grid.setKarel(robot.getCoordinate());
+        }
+        return this;
+    }
+
+    /**
+     * Turns the robot's direction to left
+     * @return the robot controller
+     */
+    public RobotController turnLeft()
+    {
+        switch (robot.getDirection())
+        {
+            case UP:
+                robot.setDirection(Direction.LEFT);
+                break;
+            case RIGHT:
+                robot.setDirection(Direction.UP);
+                break;
+            case DOWN:
+                robot.setDirection(Direction.RIGHT);
+                break;
+            case LEFT:
+                robot.setDirection(Direction.DOWN);
+                break;
+            default: break;
+        }
         return this;
     }
 
@@ -56,18 +95,24 @@ public class RobotController {
      * @return whether the move would be valid
      */
     public boolean isMoveValid(Coordinate coordinate) {
-        //TODO implement
-        return true;
+        return coordinate.getX() > 0 && coordinate.getX() <= this.grid.getSize()
+                && coordinate.getY() > 0 && coordinate.getY() <= this.grid.getSize()
+                && !grid.getBlock(coordinate).is(WALL);
     }
 
-    /**
-     * Changes the direction of the robot
-     * @param direction the new direction
-     * @return the robot controller
-     */
-    public RobotController changeDirection(Direction direction) {
-        //TODO implement
-        return this;
+    public Robot getRobot()
+    {
+        return this.robot;
+    }
+
+    public boolean facing(Direction direction)
+    {
+        return this.robot.getDirection().equals(direction);
+    }
+
+    public boolean dirIsFree()
+    {
+        return isMoveValid(this.robot.getNextCoordinate());
     }
 
 }

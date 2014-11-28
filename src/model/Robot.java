@@ -20,6 +20,7 @@ public class Robot {
     public Robot(Coordinate coordinate) {
         this.coordinate = coordinate;
         this.backpackSize = 0;
+        this.direction = Direction.RIGHT;
     }
 
     /**
@@ -27,7 +28,7 @@ public class Robot {
      * @return the robot
      */
     public Robot move() {
-        //TODO implement
+        this.coordinate = getNextCoordinate();
         return this;
     }
 
@@ -36,7 +37,6 @@ public class Robot {
      * @return the robot
      */
     public Robot pickup() {
-        //TODO implement
         this.backpackSize++;
         return this;
     }
@@ -46,7 +46,6 @@ public class Robot {
      * @return the robot
      */
     public Robot drop() {
-        //TODO implement
         this.backpackSize--;
         return this;
     }
@@ -93,6 +92,26 @@ public class Robot {
     private Robot setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
         return this;
+    }
+
+    public Coordinate getNextCoordinate()
+    {
+        switch (direction)
+        {
+            case UP:
+                return new Coordinate(this.coordinate.getX(), this.coordinate.getY()+1);
+            case RIGHT:
+                return new Coordinate(this.coordinate.getX()+1, this.coordinate.getY());
+            case DOWN:
+                return new Coordinate(this.coordinate.getX(), this.coordinate.getY()-1);
+            default:
+                return new Coordinate(this.coordinate.getX()-1, this.coordinate.getY());
+        }
+    }
+
+    public boolean hasPotatoes()
+    {
+        return this.backpackSize > 0;
     }
 
 }

@@ -27,10 +27,11 @@ public class PlayPanel extends JPanel {
     private Controller controller;
     private Grid grid;
     private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu;
-    protected GridPanel gridPanel;
-    protected CodePanel codePanel;
-    protected MacroPanel macroPanel;
-    protected ActionPanel actionPanel;
+    public HintPanel hintPanel;
+    public GridPanel gridPanel;
+    public CodePanel codePanel;
+    public MacroPanel macroPanel;
+    public ActionPanel actionPanel;
 
     public PlayPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, Grid grid) {
         super(layout);
@@ -41,6 +42,9 @@ public class PlayPanel extends JPanel {
         this.controller = controller;
         this.grid = grid;
         this.predecessor.setVisible(false);
+        this.hintPanel = new HintPanel(new Dimension(500, 30));
+        this.controller.initRobot(this.grid);
+        this.controller.initPlay(this);
 
         initPanels();
 
@@ -49,6 +53,26 @@ public class PlayPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new SaveDialog(PlayPanel.this, PlayPanel.this.controller);
+            }
+        });
+
+        this.runMenu = new JMenuItem("Run");
+        this.runMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayPanel.this.controller.codeController.run();
+
+                PlayPanel.this.controller.playPanel.gridPanel.refresh();
+            }
+        });
+
+        this.clearMenu = new JMenuItem("Clear");
+        this.clearMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayPanel.this.controller.codeController.clear();
+                PlayPanel.this.actionPanel.reset();
+                PlayPanel.this.codePanel.refreshPanel();
             }
         });
 
@@ -85,7 +109,9 @@ public class PlayPanel extends JPanel {
         panel = new JPanel();
         add(this.macroPanel, c);
 
-
+        c.gridx = 0;
+        c.gridy = 3;
+        add(this.hintPanel, c);
 
         updateMenu();
         this.parent.add(this, c);
@@ -94,14 +120,15 @@ public class PlayPanel extends JPanel {
     }
 
     private void initPanels() {
-        this.gridPanel = new GridPanel(this.grid);
+        this.gridPanel = new GridPanel(this.grid, this.controller.robotController.getRobot());
         this.codePanel = new CodePanel(new JPanel(), this.controller, this);
         this.actionPanel = new ActionPanel(this.codePanel, this.controller);
         this.macroPanel = new MacroPanel(this, this.controller);
     }
 
     public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this, saveMacroMenu));
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
+                clearMenu, runMenu, saveMacroMenu));
     }
 
 }

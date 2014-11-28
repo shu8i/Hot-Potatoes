@@ -145,4 +145,17 @@ public class CodeBlockPanel extends JButton {
         this.editMode = false;
     }
 
+    public void updateBorderColor(Color color)
+    {
+        if (color == null)
+        {
+            setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
+                    Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
+        }
+        else
+        {
+            setBorder(new MatteBorder(2, 2, 2, 2, color));
+        }
+    }
+
 }

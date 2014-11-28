@@ -13,7 +13,7 @@ public class CodeBlock implements Serializable {
 
 	private CodeType codeType;
 	private String codeText, condition;
-    CodeBlock defaultCondition, trueCondition, falseCondition, condParent, parent;
+    protected CodeBlock defaultCondition, trueCondition, falseCondition, condParent, parent;
     private int id;
 
     public CodeBlock() {
@@ -76,6 +76,26 @@ public class CodeBlock implements Serializable {
 
         CodeBlock block = (CodeBlock) o;
         return this.id == block.getId();
+    }
+
+    public boolean isConditional()
+    {
+        return this.codeType.getType().equals(CodeType.Type.IF);
+    }
+
+    public boolean isLoop()
+    {
+        return this.codeType.getType().equals(CodeType.Type.WHILE);
+    }
+
+    public CodeBlock getTrueCondition()
+    {
+        return this.trueCondition;
+    }
+
+    public CodeBlock getFalseCondition()
+    {
+        return this.falseCondition;
     }
 
 }

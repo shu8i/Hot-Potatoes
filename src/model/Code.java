@@ -37,6 +37,37 @@ public class Code implements Serializable {
         this.references = new HashMap<Integer, CodeBlock>();
     }
 
+    public CodeBlock getHead()
+    {
+        return this.head.defaultCondition;
+    }
+
+
+    public Iterator<CodeBlock> iterator(final CodeBlock codeBlock)
+    {
+        return new Iterator<CodeBlock>() {
+
+            private CodeBlock current = codeBlock;
+
+            @Override
+            public boolean hasNext() {
+                return current.defaultCondition != null;
+            }
+
+            @Override
+            public CodeBlock next()                 //TODO fix "if x then nothing else something"
+            {
+                current = current.defaultCondition;
+                return current;
+            }
+
+            @Override
+            public void remove() {
+                //TODO implement... maybe
+            }
+        };
+    }
+
 	/**
      * Creates an iterator for the code
 	 * @return an iterator for the tree list.
@@ -68,7 +99,7 @@ public class Code implements Serializable {
                     return true;
                 }
 
-                if (mode.peek().equals(Mode.ELSE) && !elseReturned) {
+                if (!mode.isEmpty() && mode.peek().equals(Mode.ELSE) && !elseReturned) {
                     return true;
                 }
 
@@ -184,8 +215,6 @@ public class Code implements Serializable {
                 break;
             default: break;
         }
-
-        System.out.println();
     }
 
     private void addActionCodeBlock(CodeBlock codeBlock, Mode mode) {

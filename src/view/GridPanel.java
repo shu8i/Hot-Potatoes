@@ -1,6 +1,7 @@
 package view;
 
 import model.Block;
+import model.Robot;
 import model.Grid;
 import model.Coordinate;
 import util.Constants;
@@ -28,6 +29,7 @@ public class GridPanel extends JPanel {
     protected static GridBagLayout layout = new GridBagLayout();
     protected GridBagConstraints c = new GridBagConstraints();
     private Grid grid;
+    private Robot robot;
     private BuildPanel buildPanel;
 
     public GridPanel(final int GRID_SIZE, final BuildPanel buildPanel) {
@@ -96,7 +98,7 @@ public class GridPanel extends JPanel {
                     } else if (block.is(HOME)) {
                         gridCell.addHome(true);
                     } else if (block.is(POTATO)) {
-                        gridCell.addPotato();
+                        gridCell.addPotato(true);
                     } else if (block.is(WALL)) {
                         gridCell.addWall();
                     }
@@ -107,10 +109,16 @@ public class GridPanel extends JPanel {
         }
     }
 
-    public GridPanel(final Grid grid) {
+    public GridPanel(final Grid grid, final Robot robot) {
         setLayout(layout);
         this.grid = grid;
+        this.robot = robot;
+        refresh();
+    }
 
+    public void refresh()
+    {
+        removeAll();
         for (int row = 0; row < grid.getSize(); row++) {
             for (int col = 0; col < grid.getSize(); col++) {
                 c.gridx = col;
@@ -138,11 +146,14 @@ public class GridPanel extends JPanel {
                 if (!block.isEmpty()) {
                     if (block.is(KAREL)) {
                         gridCell.addKarel(false);
-                    } else if (block.is(HOME)) {
+                    }
+                    if (block.is(HOME)) {
                         gridCell.addHome(false);
-                    } else if (block.is(POTATO)) {
-                        gridCell.addPotato();
-                    } else if (block.is(WALL)) {
+                    }
+                    if (block.is(POTATO)) {
+                        gridCell.addPotato(false);
+                    }
+                    if (block.is(WALL)) {
                         gridCell.addWall();
                     }
                 }
@@ -150,6 +161,8 @@ public class GridPanel extends JPanel {
                 add(gridCell, c);
             }
         }
+        repaint();
+        revalidate();
     }
 
     public Grid getGrid() {
@@ -192,7 +205,7 @@ public class GridPanel extends JPanel {
                                 GridCell.this.revalidate();
                                 content = null;
                                 buildPanel.switchKarelActiveStatus();
-                                GridPanel.this.grid.removeKarel(GridCell.this.coordinate);
+                                GridPanel.this.grid.removeKarel();
                                 break;
                             case HOME:
                                 GridCell.this.remove(GridCell.this.homeWrapper);
@@ -200,7 +213,7 @@ public class GridPanel extends JPanel {
                                 GridCell.this.revalidate();
                                 content = null;
                                 buildPanel.switchHomeActiveStatus();
-                                GridPanel.this.grid.removeHome(GridCell.this.coordinate);
+                                GridPanel.this.grid.removeHome();
                                 break;
                             case POTATO:
                                 GridCell.this.remove(GridCell.this.potatoWrapper);
@@ -226,7 +239,7 @@ public class GridPanel extends JPanel {
                                 addHome(true);
                                 break;
                             case POTATO:
-                                addPotato();
+                                addPotato(true);
                                 break;
                             case WALL:
                                 addWall();
@@ -247,15 +260,34 @@ public class GridPanel extends JPanel {
         }
 
         private void addKarel(boolean EDIT_MODE) {
+            String robotImg;
+            if (robot != null) {
+                switch (robot.getDirection()) {
+                    case UP:
+                        robotImg = "/resources/images/walle_u.png";
+                        break;
+                    case DOWN:
+                        robotImg = "/resources/images/walle_d.png";
+                        break;
+                    case LEFT:
+                        robotImg = "/resources/images/walle_l.png";
+                        break;
+                    default:
+                        robotImg = "/resources/images/walle_r.png";
+                        break;
+                }
+            } else {
+                robotImg = "/resources/images/walle_r.png";
+            }
             try {
-                Image image = ImageIO.read(getClass().getResource("/resources/images/walle.png"));
+                Image image = ImageIO.read(getClass().getResource(robotImg));
                 Image scaledImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
                 GridCell.this.karelIcon = new ImageIcon(scaledImage);
                 GridCell.this.karelWrapper = new JLabel(GridCell.this.karelIcon);
                 GridCell.this.add(GridCell.this.karelWrapper);
                 GridCell.this.revalidate();
                 content = BuildPanelSelection.KAREL;
-                GridPanel.this.grid.setKarel(GridCell.this.coordinate);
+                if (EDIT_MODE) GridPanel.this.grid.setKarel(GridCell.this.coordinate);
                 if (EDIT_MODE) buildPanel.switchKarelActiveStatus();
             } catch(IOException ioe) {}
         }
@@ -269,12 +301,12 @@ public class GridPanel extends JPanel {
                 GridCell.this.add(GridCell.this.homeWrapper);
                 GridCell.this.revalidate();
                 content = BuildPanelSelection.HOME;
-                GridPanel.this.grid.setHome(GridCell.this.coordinate);
+                if (EDIT_MODE) GridPanel.this.grid.setHome(GridCell.this.coordinate);
                 if (EDIT_MODE) buildPanel.switchHomeActiveStatus();
             } catch(IOException ioe) {}
         }
 
-        private void addPotato() {
+        private void addPotato(boolean EDIT_MODE) {
             try {
                 Image image = ImageIO.read(getClass().getResource("/resources/images/potato.png"));
                 Image scaledImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
@@ -284,7 +316,7 @@ public class GridPanel extends JPanel {
                 GridCell.this.add(GridCell.this.potatoWrapper);
                 GridCell.this.revalidate();
                 content = BuildPanelSelection.POTATO;
-                GridPanel.this.grid.addPotato(GridCell.this.coordinate);
+                if (EDIT_MODE) GridPanel.this.grid.addPotato(GridCell.this.coordinate);
             } catch(IOException ioe) {}
         }
 
