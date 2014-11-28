@@ -22,7 +22,7 @@ public class PlayPanel extends JPanel {
     protected static GridBagLayout layout = new GridBagLayout();
     protected  GridBagConstraints c = new GridBagConstraints();
     private LoginPanel loginPanel;
-    private JPanel predecessor;
+    private StudentPanel predecessor;
     private JFrame parent;
     private Controller controller;
     private Grid grid;
@@ -33,7 +33,7 @@ public class PlayPanel extends JPanel {
     public MacroPanel macroPanel;
     public ActionPanel actionPanel;
 
-    public PlayPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, Grid grid) {
+    public PlayPanel(JFrame parent, LoginPanel loginPanel, StudentPanel predecessor, Controller controller, Grid grid) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -61,8 +61,12 @@ public class PlayPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PlayPanel.this.controller.codeController.run();
-
-                PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                    }
+                });
             }
         });
 
@@ -73,6 +77,18 @@ public class PlayPanel extends JPanel {
                 PlayPanel.this.controller.codeController.clear();
                 PlayPanel.this.actionPanel.reset();
                 PlayPanel.this.codePanel.refreshPanel();
+            }
+        });
+
+        this.backMenu = new JMenuItem("Back");
+        this.backMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayPanel.this.setVisible(false);
+                PlayPanel.this.predecessor.updateMenu();
+                PlayPanel.this.predecessor.setVisible(true);
+                PlayPanel.this.parent.pack();
+                PlayPanel.this.parent.setLocationRelativeTo(null);
             }
         });
 
@@ -128,7 +144,7 @@ public class PlayPanel extends JPanel {
 
     public void updateMenu() {
         this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
-                clearMenu, runMenu, saveMacroMenu));
+                undoMenu, clearMenu, runMenu, saveMacroMenu, backMenu));
     }
 
 }
