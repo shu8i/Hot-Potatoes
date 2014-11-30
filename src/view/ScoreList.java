@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import model.Grid;
+import model.User;
 import util.Constants;
 import control.Controller;
 
@@ -28,21 +30,19 @@ import control.Controller;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class ScoreView extends JPanel 
+public class ScoreList extends JPanel 
 {
-
-    //TODO When a teacher selects a level, this screen comes up and shows the current scores of their students
 	protected static GridBagLayout layout = new GridBagLayout();
     protected  GridBagConstraints c = new GridBagConstraints();
     private LoginPanel loginPanel;
     private JPanel predecessor;
     private JFrame parent;
     private Controller controller;
-    private JLabel selectWorldLabel;
-    private JPanel worldSelectionPanel;
-    private JScrollPane worldSelectionScrollPane;
-
-    public ScoreView(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
+    private JLabel scoreList;
+    private JPanel studentPanel;
+    private JScrollPane scoreListScrollPane;
+    
+    public ScoreList(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -51,18 +51,23 @@ public class ScoreView extends JPanel
         this.controller = controller;
         this.predecessor.setVisible(false);
 
-        this.selectWorldLabel = new JLabel("Select A World");
-        this.worldSelectionPanel = new JPanel();
-        this.worldSelectionScrollPane = new JScrollPane(this.worldSelectionPanel);
-        this.worldSelectionPanel.setAutoscrolls(true);
-        this.worldSelectionScrollPane.setPreferredSize(new Dimension(620, 410));
-        this.worldSelectionScrollPane.setBorder(null);
-        this.worldSelectionPanel.setLayout(layout);
+        this.scoreList = new JLabel("Select A Student");
+        this.studentPanel = new JPanel();
+        this.scoreListScrollPane = new JScrollPane(this.studentPanel);
+        this.studentPanel.setAutoscrolls(true);
+        this.scoreListScrollPane.setPreferredSize(new Dimension(620, 410));
+        this.scoreListScrollPane.setBorder(null);
+        this.studentPanel.setLayout(layout);
 
-        int i = 0, j = 0, numWorlds = this.controller.getGrids().size();
+        int i = 0, j = 0, numStudents = this.controller.getGrids().size();
         JButton worldSelectButton;
-        for (final Map.Entry<String, Grid> entry : this.controller.getGrids().entrySet()) {
-            worldSelectButton = new JButton("<html><center>" + entry.getKey());
+        for (final Entry<String, User> entry : this.controller.getUsers().entrySet()) {
+        	if (entry.getValue().isAdmin() == true)
+        	{
+        		continue;
+        	}
+            worldSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
+                    + "Score:" + "</center></html>"); //add score after last plus
             worldSelectButton.setPreferredSize(new Dimension(190, 190));
             worldSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
             worldSelectButton.setOpaque(true);
@@ -70,15 +75,6 @@ public class ScoreView extends JPanel
             worldSelectButton.setFocusable(false);
             worldSelectButton.setFont(Constants.FONT_OPEN_SANS_20);
             worldSelectButton.setForeground(Color.WHITE);
-            worldSelectButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-          
-       
-                	new ScoreList(ScoreView.this.parent, ScoreView.this.loginPanel,
-                            ScoreView.this, ScoreView.this.controller);
-                }
-            });
 
             worldSelectButton.addMouseListener(new MouseAdapter() {
                 @Override
@@ -104,12 +100,12 @@ public class ScoreView extends JPanel
             c.gridy = j;
             c.gridheight = 2;
             c.anchor = GridBagConstraints.NORTHWEST;
-            this.worldSelectionPanel.add(worldSelectButton, c);
+            this.studentPanel.add(worldSelectButton, c);
 
             i += 2;
 
             if (i % 8 == 0) {
-                if (numWorlds == 6 && j == 3) continue;
+                if (numStudents == 6 && j == 3) continue;
                 i = 0;
                 j += 2;
                 c.gridx = i;
@@ -118,17 +114,17 @@ public class ScoreView extends JPanel
                 c.gridheight = 1;
                 c.gridy = j++;
                 c.fill = GridBagConstraints.BOTH;
-                this.worldSelectionPanel.add(new JPanel(), c);
+                this.studentPanel.add(new JPanel(), c);
                 continue;
             }
 
             c.gridx = i++;
             c.gridwidth = 1;
-            c.weightx = (numWorlds == 2) ? (i == 5 ? 1 : 0) : 1;
+            c.weightx = (numStudents == 2) ? (i == 5 ? 1 : 0) : 1;
             c.gridy = j;
             c.gridheight = 2;
             c.fill = GridBagConstraints.BOTH;
-            this.worldSelectionPanel.add(new JPanel(), c);
+            this.studentPanel.add(new JPanel(), c);
         }
 
         if (j == 0) {
@@ -141,10 +137,10 @@ public class ScoreView extends JPanel
             c.gridheight = 1;
             c.gridy = j;
             c.fill = GridBagConstraints.BOTH;
-            this.worldSelectionPanel.add(new JPanel(), c);
+            this.studentPanel.add(new JPanel(), c);
         }
 
-        add(this.worldSelectionScrollPane, c);
+        add(this.scoreListScrollPane, c);
 
         updateMenu();
         this.parent.add(this, c);
