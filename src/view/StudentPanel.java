@@ -53,7 +53,7 @@ public class StudentPanel extends JPanel {
         JButton worldSelectButton;
         for (final Map.Entry<String, Grid> entry : this.controller.getGrids().entrySet()) {
             worldSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
-                    + this.controller.userController.getGridScore(entry.getValue())  + "%</center></html>");
+                    + "Score: " + this.controller.userController.getGridScore(entry.getValue())  + "</center></html>");
             worldSelectButton.setPreferredSize(new Dimension(190, 190));
             worldSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
             worldSelectButton.setOpaque(true);

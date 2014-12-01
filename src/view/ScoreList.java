@@ -22,6 +22,7 @@ import model.Grid;
 import model.User;
 import util.Constants;
 import control.Controller;
+import control.UserController;
 
 /**
  * @author Allant Gomez
@@ -41,6 +42,7 @@ public class ScoreList extends JPanel
     private JLabel scoreList;
     private JPanel studentPanel;
     private JScrollPane scoreListScrollPane;
+
     
     public ScoreList(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
         super(layout);
@@ -60,23 +62,24 @@ public class ScoreList extends JPanel
         this.studentPanel.setLayout(layout);
 
         int i = 0, j = 0, numStudents = this.controller.getGrids().size();
-        JButton worldSelectButton;
-        for (final Entry<String, User> entry : this.controller.getUsers().entrySet()) {
-        	if (entry.getValue().isAdmin() == true)
-        	{
-        		continue;
-        	}
-            worldSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
-                    + "Score:" + "</center></html>"); //add score after last plus
-            worldSelectButton.setPreferredSize(new Dimension(190, 190));
-            worldSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
-            worldSelectButton.setOpaque(true);
-            worldSelectButton.setBorderPainted(false);
-            worldSelectButton.setFocusable(false);
-            worldSelectButton.setFont(Constants.FONT_OPEN_SANS_20);
-            worldSelectButton.setForeground(Color.WHITE);
+        JButton studentSelectButton;
+        for (final Map.Entry<String, User> entry : this.controller.getUsers().entrySet())
+        {
+        	
+            studentSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
+                    + "Score: " + "XXX" + "</center></html>");
+            
+            //when the levels are functional, replace XXX with a score
+            
+            studentSelectButton.setPreferredSize(new Dimension(150, 100));
+            studentSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
+            studentSelectButton.setOpaque(true);
+            studentSelectButton.setBorderPainted(false);
+            studentSelectButton.setFocusable(false);
+            studentSelectButton.setFont(Constants.FONT_OPEN_SANS_20);
+            studentSelectButton.setForeground(Color.WHITE);
 
-            worldSelectButton.addMouseListener(new MouseAdapter() {
+            studentSelectButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
@@ -100,7 +103,7 @@ public class ScoreList extends JPanel
             c.gridy = j;
             c.gridheight = 2;
             c.anchor = GridBagConstraints.NORTHWEST;
-            this.studentPanel.add(worldSelectButton, c);
+            this.studentPanel.add(studentSelectButton, c);
 
             i += 2;
 

@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import model.Grid;
 import util.Constants;
 import control.Controller;
+import control.UserController;
 
 /**
  * @author Allant Gomez
@@ -41,6 +42,7 @@ public class ScoreView extends JPanel
     private JLabel selectWorldLabel;
     private JPanel worldSelectionPanel;
     private JScrollPane worldSelectionScrollPane;
+    private UserController userController;
 
     public ScoreView(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
         super(layout);
@@ -50,6 +52,7 @@ public class ScoreView extends JPanel
         this.parent = parent;
         this.controller = controller;
         this.predecessor.setVisible(false);
+        this.userController = controller.userController;
 
         this.selectWorldLabel = new JLabel("Select A World");
         this.worldSelectionPanel = new JPanel();
