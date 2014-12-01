@@ -65,10 +65,15 @@ public class ScoreList extends JPanel
         JButton studentSelectButton;
         for (final Map.Entry<String, User> entry : this.controller.getUsers().entrySet())
         {
-        	
-            studentSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
+        	if(entry.getValue().isAdmin() == true)
+        	{
+        		continue;
+        	}
+        	else
+        	{
+        		studentSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
                     + "Score: " + "XXX" + "</center></html>");
-            
+        	}
             //when the levels are functional, replace XXX with a score
             
             studentSelectButton.setPreferredSize(new Dimension(150, 100));
