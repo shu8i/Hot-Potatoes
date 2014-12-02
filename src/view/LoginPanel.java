@@ -5,9 +5,12 @@ import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * @author Allant Gomez
@@ -43,7 +46,7 @@ public class LoginPanel extends JPanel
 
         final HintPanel hintPanel = new HintPanel(new Dimension(250, 20));
 
-        JButton loginButton = new JButton("Login");
+        final JButton loginButton = new JButton("Login");
 
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -76,6 +79,26 @@ public class LoginPanel extends JPanel
                 }
             }
         });
+        
+        KeyListener l =
+                new KeyListener(){
+                    public void keyPressed(KeyEvent e){
+                    	if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    		loginButton.doClick();
+                    	}  
+                    }
+					@Override
+					public void keyTyped(KeyEvent e) {
+						// do nothing
+					}
+					@Override
+					public void keyReleased(KeyEvent e) {
+						//do nothing
+					}
+                };            
+        
+        this.usernameTextfield.addKeyListener(l);
+        this.passwordTextfield.addKeyListener(l);
 
         c.anchor = GridBagConstraints.WEST;
         titleLabel.setFont(Constants.FONT_OPEN_SANS_20);
