@@ -45,6 +45,10 @@ public class PlayPanel extends JPanel {
         this.hintPanel = new HintPanel(new Dimension(500, 30));
         this.controller.initRobot(this.grid);
         this.controller.initPlay(this);
+        
+        Integer score = controller.userController.getGridScore(grid);
+        String scoreString = score.toString(); 
+        hintPanel.updateHint("Score:" + scoreString, Color.blue);
 
         initPanels();
 
