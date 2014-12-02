@@ -72,6 +72,11 @@ public class User implements Serializable {
         this.isAdmin = isAdmin;
         return this;
     }
+    
+    public int getGridScore(Grid grid) {
+        Integer score = this.getGridsPlayed().get(grid);
+        return score == null ? 0 : 100 * score / grid.numPotatoes();
+    }
 
     public User addMacro(String name, Code code, Stack<ActionPanel.PanelMode> panelMode)
     {

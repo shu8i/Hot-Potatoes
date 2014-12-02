@@ -49,6 +49,7 @@ public class ScoreView extends JPanel
     private UserController userController;
     private JMenuItem backMenu;
     private AdminPanel predecessor;
+    private static Grid grid; 
 
     public ScoreView(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, Controller controller) {
         super(layout);
@@ -84,6 +85,7 @@ public class ScoreView extends JPanel
         JButton worldSelectButton;
         for (final Map.Entry<String, Grid> entry : this.controller.getGrids().entrySet()) {
             worldSelectButton = new JButton("<html><center>" + entry.getKey());
+            grid = entry.getValue(); 
             worldSelectButton.setPreferredSize(new Dimension(190, 190));
             worldSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
             worldSelectButton.setOpaque(true);
@@ -97,7 +99,7 @@ public class ScoreView extends JPanel
           
        
                 	new ScoreList(ScoreView.this.parent, ScoreView.this.loginPanel,
-                            ScoreView.this, ScoreView.this.controller, ScoreView.this.predecessor);
+                            ScoreView.this, ScoreView.this.controller, ScoreView.this.predecessor, ScoreView.grid); 
                 }
             });
 

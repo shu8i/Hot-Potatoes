@@ -49,9 +49,10 @@ public class ScoreList extends JPanel
     private JScrollPane scoreListScrollPane;
     private JMenuItem backMenu;
     private AdminPanel adminPanel;
+    private Grid grid;
 
     
-    public ScoreList(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, AdminPanel adminPanel) {
+    public ScoreList(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, AdminPanel adminPanel, Grid grid) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -68,6 +69,7 @@ public class ScoreList extends JPanel
         this.scoreListScrollPane.setBorder(null);
         this.studentPanel.setLayout(layout);
         this.adminPanel = adminPanel;
+        this.grid = grid;
         
         this.backMenu = new JMenuItem("Back");
         this.backMenu.addActionListener(new ActionListener() {
@@ -92,9 +94,9 @@ public class ScoreList extends JPanel
         	else
         	{
         		studentSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
-                    + "Score: " + "XXX" + "</center></html>");
+                    + "Score: " + controller.getUsers().get(entry.getKey()).getGridScore(this.grid) + "</center></html>");
         	}
-            //when the levels are functional, replace XXX with a score
+            
             
             studentSelectButton.setPreferredSize(new Dimension(150, 100));
             studentSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
