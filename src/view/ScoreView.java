@@ -10,9 +10,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 
+import javax.swing.*;
+
+import java.awt.*;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -36,15 +41,16 @@ public class ScoreView extends JPanel
 	protected static GridBagLayout layout = new GridBagLayout();
     protected  GridBagConstraints c = new GridBagConstraints();
     private LoginPanel loginPanel;
-    private JPanel predecessor;
     private JFrame parent;
     private Controller controller;
     private JLabel selectWorldLabel;
     private JPanel worldSelectionPanel;
     private JScrollPane worldSelectionScrollPane;
     private UserController userController;
+    private JMenuItem backMenu;
+    private AdminPanel predecessor;
 
-    public ScoreView(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
+    public ScoreView(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, Controller controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -61,6 +67,18 @@ public class ScoreView extends JPanel
         this.worldSelectionScrollPane.setPreferredSize(new Dimension(620, 410));
         this.worldSelectionScrollPane.setBorder(null);
         this.worldSelectionPanel.setLayout(layout);
+        
+        this.backMenu = new JMenuItem("Back");
+        this.backMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScoreView.this.setVisible(false);
+                ScoreView.this.predecessor.updateMenu();
+                ScoreView.this.predecessor.setVisible(true);
+                ScoreView.this.loginPanel.parent().pack();
+                ScoreView.this.loginPanel.parent().setLocationRelativeTo(null);
+            }
+        });
 
         int i = 0, j = 0, numWorlds = this.controller.getGrids().size();
         JButton worldSelectButton;
@@ -79,7 +97,7 @@ public class ScoreView extends JPanel
           
        
                 	new ScoreList(ScoreView.this.parent, ScoreView.this.loginPanel,
-                            ScoreView.this, ScoreView.this.controller);
+                            ScoreView.this, ScoreView.this.controller, ScoreView.this.predecessor);
                 }
             });
 
@@ -156,6 +174,6 @@ public class ScoreView extends JPanel
     }
 
     public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this));
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this, this.backMenu));
     }
 }

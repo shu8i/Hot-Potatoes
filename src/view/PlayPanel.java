@@ -144,7 +144,7 @@ public class PlayPanel extends JPanel {
 
     public void updateMenu() {
         this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
-                undoMenu, clearMenu, runMenu, saveMacroMenu, backMenu));
+                clearMenu, runMenu, saveMacroMenu, backMenu));
     }
 
 }

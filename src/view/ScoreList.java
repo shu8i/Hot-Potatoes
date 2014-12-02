@@ -11,9 +11,14 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.*;
+
+import java.awt.*;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -42,9 +47,11 @@ public class ScoreList extends JPanel
     private JLabel scoreList;
     private JPanel studentPanel;
     private JScrollPane scoreListScrollPane;
+    private JMenuItem backMenu;
+    private AdminPanel adminPanel;
 
     
-    public ScoreList(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
+    public ScoreList(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, AdminPanel adminPanel) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -60,6 +67,19 @@ public class ScoreList extends JPanel
         this.scoreListScrollPane.setPreferredSize(new Dimension(620, 410));
         this.scoreListScrollPane.setBorder(null);
         this.studentPanel.setLayout(layout);
+        this.adminPanel = adminPanel;
+        
+        this.backMenu = new JMenuItem("Back");
+        this.backMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScoreList.this.setVisible(false);
+                ScoreList.this.adminPanel.updateMenu();
+                ScoreList.this.adminPanel.setVisible(true);
+                ScoreList.this.loginPanel.parent().pack();
+                ScoreList.this.loginPanel.parent().setLocationRelativeTo(null);
+            }
+        });
 
         int i = 0, j = 0, numStudents = this.controller.getGrids().size();
         JButton studentSelectButton;
@@ -157,6 +177,6 @@ public class ScoreList extends JPanel
     }
 
     public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this));
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this, backMenu));
     }
 }
