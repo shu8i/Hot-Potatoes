@@ -94,11 +94,11 @@ public class ScoreList extends JPanel
         	else
         	{
         		studentSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
-                    + "Score: " + controller.getUsers().get(entry.getKey()).getGridScore(this.grid) + "</center></html>");
+                    + "HIGH SCORE: " + controller.getUsers().get(entry.getKey()).getGridScore(this.grid) + "</center></html>");
         	}
             
             
-            studentSelectButton.setPreferredSize(new Dimension(150, 100));
+            studentSelectButton.setPreferredSize(new Dimension(180, 120));
             studentSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
             studentSelectButton.setOpaque(true);
             studentSelectButton.setBorderPainted(false);
