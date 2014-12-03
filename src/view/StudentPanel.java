@@ -41,6 +41,21 @@ public class StudentPanel extends JPanel {
         this.controller = controller;
         this.predecessor.setVisible(false);
 
+        refresh();
+
+        updateMenu();
+        this.parent.add(this, c);
+        this.parent.pack();
+        this.parent.setLocationRelativeTo(null);
+    }
+
+    public void updateMenu() {
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this));
+    }
+
+    public void refresh() {
+        removeAll();
+
         this.selectWorldLabel = new JLabel("Select A World");
         this.worldSelectionPanel = new JPanel();
         this.worldSelectionScrollPane = new JScrollPane(this.worldSelectionPanel);
@@ -65,7 +80,8 @@ public class StudentPanel extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new PlayPanel(StudentPanel.this.parent, StudentPanel.this.loginPanel,
-                            StudentPanel.this, StudentPanel.this.controller, entry.getValue());
+                            StudentPanel.this, StudentPanel.this.controller,
+                            StudentPanel.this.controller.gridController.copy(entry.getValue()));
                 }
             });
 
@@ -134,15 +150,8 @@ public class StudentPanel extends JPanel {
         }
 
         add(this.worldSelectionScrollPane, c);
-
-        updateMenu();
-        this.parent.add(this, c);
-        this.parent.pack();
-        this.parent.setLocationRelativeTo(null);
-    }
-
-    public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this));
+        repaint();
+        revalidate();
     }
 
 }

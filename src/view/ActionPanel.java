@@ -206,28 +206,6 @@ public class ActionPanel extends JPanel {
             }
         });
 
-        this.facingLeftButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!editMode) {
-                    ActionPanel.this.controller.codeController
-                            .addCodeBlock(new CodeBlock("FACING LEFT", new CodeType(CodeType.Type.ACTION)));
-
-                    mode.push(mode.pop().equals(PanelMode.CONDITIONAL_DECLARATION) ?
-                            PanelMode.IN_CONDITIONAL : PanelMode.IN_WHILE);
-                    repaintActionPanel();
-                    codePanel.refreshPanel();
-                } else {
-                    ActionPanel.this.controller.codeController
-                            .editCode(codePanel.getEditableCodeId(), "FACING LEFT");
-                    codePanel.updateBlockForEdit(null);
-                    repaintActionPanel();
-                    codePanel.refreshPanel();
-                    editMode = !editMode;
-                }
-            }
-        });
-
         this.facingRightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -443,5 +421,16 @@ public class ActionPanel extends JPanel {
         this.mode.clear();
         this.mode.push(PanelMode.ACTION);
         repaintActionPanel();
+    }
+
+    public ActionPanel undo()
+    {
+        this.mode.pop();
+        if (this.mode.isEmpty())
+        {
+            this.mode.push(PanelMode.ACTION);
+        }
+        repaintActionPanel();
+        return this;
     }
 }

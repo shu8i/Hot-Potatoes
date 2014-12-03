@@ -13,23 +13,8 @@ import java.util.List;
  */
 public class GridController
 {
-    private Grid grid;
-    
-    /**
-     * Creates a new grid controller
-     * @param grid the new grid that will be used to play
-     */
-    public GridController(Grid grid)
+    public Grid copy(Grid grid)
     {
-        this.grid = grid;
-    }
-    
-    /**
-     * Updates the grid controller
-     * @return the same grid controller
-     */
-    public GridController update() {
-        //TODO implement an update in the grid controller
-        return null;
+        return new Grid(grid);
     }
 }

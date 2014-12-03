@@ -16,7 +16,7 @@ public class User implements Serializable {
 
     private String username, password;
     private boolean isAdmin;
-    private Map<Grid, Integer> gridsPlayed;
+    private Map<String, Integer> gridsPlayed;
     private Map<String, Code> macros;
     private Map<String, Stack<ActionPanel.PanelMode>> macrosActionPanel;
 
@@ -30,7 +30,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = encrypt(password);
         this.isAdmin = isAdmin;
-        this.gridsPlayed = new HashMap<Grid, Integer>();
+        this.gridsPlayed = new HashMap<String, Integer>();
         this.macros = new HashMap<String, Code>();
         this.macrosActionPanel = new HashMap<String, Stack<ActionPanel.PanelMode>>();
     }
@@ -39,7 +39,7 @@ public class User implements Serializable {
      * Gets a map of grids (worlds) played by the user
      * @return a map of grids (worlds) played by the user
      */
-    public Map<Grid, Integer> getGridsPlayed() {
+    public Map<String, Integer> getGridsPlayed() {
         return this.gridsPlayed;
     }
 
@@ -117,6 +117,19 @@ public class User implements Serializable {
      */
     public boolean isAdmin() {
         return this.isAdmin;
+    }
+
+    public User addGrid(Grid grid, int potatoesCollected)
+    {
+        if (this.gridsPlayed.get(grid.getName()) != null && this.gridsPlayed.get(grid.getName()) < potatoesCollected)
+        {
+            this.gridsPlayed.remove(grid.getName());
+            this.gridsPlayed.put(grid.getName(), potatoesCollected);
+        } else if (this.gridsPlayed.get(grid.getName()) == null)
+        {
+            this.gridsPlayed.put(grid.getName(), potatoesCollected);
+        }
+        return this;
     }
 
     /**

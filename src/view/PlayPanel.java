@@ -2,6 +2,7 @@ package view;
 
 import control.Controller;
 import model.Grid;
+import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -9,6 +10,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.TimerTask;
 
 /**
  * @author Allant Gomez
@@ -65,6 +67,20 @@ public class PlayPanel extends JPanel {
                     @Override
                     public void run() {
                         PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                        if (PlayPanel.this.controller.robotController.levelFinished())
+                        {
+                            PlayPanel.this.controller.userController.addGridPlayed(
+                                    PlayPanel.this.grid, PlayPanel.this.controller.robotController.backpackSize());
+                            PlayPanel.this.hintPanel.updateHint("Level Completed. " +
+                                    PlayPanel.this.controller.userController.getGridScore(PlayPanel.this.grid)+
+                                    "% potatoes collected.", Constants.COLOR_DARK_GREEN);
+                            new java.util.Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    PlayPanel.this.goBack();
+                                }
+                            }, 5000);
+                        }
                     }
                 });
             }
@@ -84,11 +100,7 @@ public class PlayPanel extends JPanel {
         this.backMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayPanel.this.setVisible(false);
-                PlayPanel.this.predecessor.updateMenu();
-                PlayPanel.this.predecessor.setVisible(true);
-                PlayPanel.this.parent.pack();
-                PlayPanel.this.parent.setLocationRelativeTo(null);
+                PlayPanel.this.goBack();
             }
         });
 
@@ -140,11 +152,26 @@ public class PlayPanel extends JPanel {
         this.codePanel = new CodePanel(new JPanel(), this.controller, this);
         this.actionPanel = new ActionPanel(this.codePanel, this.controller);
         this.macroPanel = new MacroPanel(this, this.controller);
+        this.controller.codeController.clear();
+        this.codePanel.refreshPanel();
+        this.actionPanel.reset();
     }
 
     public void updateMenu() {
         this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
-                undoMenu, clearMenu, runMenu, saveMacroMenu, backMenu));
+               clearMenu, runMenu, saveMacroMenu, backMenu));
+    }
+
+    private void goBack()
+    {
+        this.setVisible(false);
+        this.predecessor.updateMenu();
+        this.predecessor.refresh();
+        this.predecessor.setVisible(true);
+        this.parent.pack();
+        this.parent.setLocationRelativeTo(null);
+        this.parent.remove(this);
+
     }
 
 }

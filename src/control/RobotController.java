@@ -32,7 +32,7 @@ public class RobotController {
         if (grid.getBlock(robot.getCoordinate()).is(POTATO))
         {
             robot.pickup();
-            grid.removePotato(robot.getCoordinate());
+            grid.removePotatoFromGrid(robot.getCoordinate());
         }
         return this;
     }
@@ -45,7 +45,7 @@ public class RobotController {
         if (robot.hasPotatoes())
         {
             robot.drop();
-            grid.addPotato(robot.getCoordinate());
+            grid.addPotatoToGrid(robot.getCoordinate());
         }
         return this;
     }
@@ -113,6 +113,16 @@ public class RobotController {
     public boolean dirIsFree()
     {
         return isMoveValid(this.robot.getNextCoordinate());
+    }
+
+    public boolean levelFinished()
+    {
+        return robot.getCoordinate().equals(grid.getHome().coordinates());
+    }
+
+    public int backpackSize()
+    {
+        return this.robot.getBackpackSize();
     }
 
 }

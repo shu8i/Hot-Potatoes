@@ -67,7 +67,8 @@ public class CodeController {
                 }
                 else
                 {
-                    runPartial(codeBlock.getFalseCondition());
+                    if (codeBlock.getFalseCondition() != null)
+                        runPartial(codeBlock.getFalseCondition());
                 }
             }
             else if (codeBlock.isLoop())
@@ -87,6 +88,7 @@ public class CodeController {
     private boolean conditionalIsTrue(CodeBlock codeBlock)
     {
         String condition = codeBlock.getCondition();
+        System.out.println("EVALUATING CONDITIONAL " + codeBlock.getCondition());
         switch (condition)
         {
             case "FACING LEFT":
@@ -105,6 +107,7 @@ public class CodeController {
     private void runAction(CodeBlock codeBlock)
     {
         String codeText = codeBlock.getCodetext();
+        System.out.println("EXECUTING " + codeBlock.getCodetext());
         switch (codeText)
         {
             case "MOVE":
@@ -184,6 +187,12 @@ public class CodeController {
     public CodeController clear()
     {
         this.code = new Code();
+        return this;
+    }
+
+    public CodeController undo()
+    {
+        this.code.undo();
         return this;
     }
 

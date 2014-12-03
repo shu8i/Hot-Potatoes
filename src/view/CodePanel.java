@@ -131,7 +131,7 @@ public class CodePanel extends JScrollPane {
             addCodeBlock(codeBlock);
         }
 
-
+        this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
         this.panel.revalidate();
         this.panel.repaint();
     }

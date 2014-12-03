@@ -287,7 +287,8 @@ public class GridPanel extends JPanel {
                 GridCell.this.add(GridCell.this.karelWrapper);
                 GridCell.this.revalidate();
                 content = BuildPanelSelection.KAREL;
-                if (EDIT_MODE) GridPanel.this.grid.setKarel(GridCell.this.coordinate);
+                if (EDIT_MODE)
+                    GridPanel.this.grid.setKarel(GridCell.this.coordinate);
                 if (EDIT_MODE) buildPanel.switchKarelActiveStatus();
             } catch(IOException ioe) {}
         }

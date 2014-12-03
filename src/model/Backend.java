@@ -30,7 +30,6 @@ public class Backend implements Serializable {
             ObjectInputStream objectInputStream = new ObjectInputStream( new FileInputStream(Constants.DATABASE) );
             return (Backend)objectInputStream.readObject();
         } catch( Exception e ) {
-            e.printStackTrace();
             System.out.println( "Error: couldn't load database <" + Constants.DATABASE + ">" );
             return new Backend();
         }
@@ -41,7 +40,6 @@ public class Backend implements Serializable {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream( new FileOutputStream(Constants.DATABASE) );
             objectOutputStream.writeObject(this);
         } catch( IOException e ) {
-            e.printStackTrace();
             System.out.println( "Error: couldn't save database <" + Constants.DATABASE + ">" );
         }
     }

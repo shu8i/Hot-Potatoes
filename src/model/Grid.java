@@ -22,6 +22,7 @@ public class Grid implements Serializable {
     private Block karel, home;
     private List<Block> potatoes;
     private String name;
+    private int numPotatoes = 0;
 
     /**
      * Creates a new grid
@@ -32,6 +33,40 @@ public class Grid implements Serializable {
         this.grid = new Block[gridSize][gridSize];
         this.potatoes = new ArrayList<Block>();
         initializeEmptyGrid();
+    }
+
+    public Grid(Grid grid)
+    {
+        this.gridSize = grid.gridSize;
+        this.grid = new Block[this.gridSize][this.gridSize];
+        this.potatoes = new ArrayList<Block>();
+        copyGrid(grid);
+        setName(grid.getName());
+        numPotatoes = potatoes.size();
+    }
+
+    private void copyGrid(Grid grid)
+    {
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize; j++) {
+                this.grid[i][j] = new Block(j+1, this.gridSize - i);
+                Block block = this.getBlock(this.grid[i][j].coordinates());
+                if (grid.getBlock(block.coordinates()).is(WALL)) {
+                    block.add(WALL);
+                    addWall(block.coordinates());
+                } else if (grid.getBlock(block.coordinates()).is(POTATO)) {
+                    block.add(POTATO);
+                    this.potatoes.add(block);
+                }
+                else if (grid.getBlock(block.coordinates()).is(KAREL)) {
+                    block.add(KAREL);
+                    setKarel(block.coordinates());
+                } else if (grid.getBlock(block.coordinates()).is(HOME)) {
+                    block.add(HOME);
+                    setHome(block.coordinates());
+                }
+            }
+        }
     }
 
     /**
@@ -155,6 +190,12 @@ public class Grid implements Serializable {
     public Grid addPotato(Coordinate coordinate) {
         getBlock(coordinate).add(POTATO);
         this.potatoes.add(getBlock(coordinate));
+        this.numPotatoes++;
+        return this;
+    }
+
+    public Grid addPotatoToGrid(Coordinate coordinate) {
+        getBlock(coordinate).add(POTATO);
         return this;
     }
 
@@ -166,6 +207,12 @@ public class Grid implements Serializable {
     public Grid removePotato(Coordinate coordinate) {
         getBlock(coordinate).remove(POTATO);
         this.potatoes.remove(getBlock(coordinate));
+        this.numPotatoes--;
+        return this;
+    }
+
+    public Grid removePotatoFromGrid(Coordinate coordinate) {
+        getBlock(coordinate).remove(POTATO);
         return this;
     }
 
@@ -174,7 +221,7 @@ public class Grid implements Serializable {
      * @return the number of potatoes on the grid
      */
     public int numPotatoes() {
-        return this.potatoes.size();
+        return this.numPotatoes;
     }
 
     private void initializeEmptyGrid() {

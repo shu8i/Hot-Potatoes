@@ -41,7 +41,7 @@ public class AdminPanel extends JPanel {
         this.highScoreButton = new JButton();
         this.highScoreButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		new ScoreView(AdminPanel.this.parent, AdminPanel.this.loginPanel, AdminPanel.this, AdminPanel.this.controller);
+        		new ScorePanel(AdminPanel.this.parent, AdminPanel.this.loginPanel, AdminPanel.this, AdminPanel.this.controller);
         	}
         }); 
         this.userManagementButton = new JButton();

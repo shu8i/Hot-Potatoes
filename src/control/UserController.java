@@ -79,7 +79,7 @@ public class UserController {
      * @return a score of 0-100%
      */
     public int getGridScore(Grid grid) {
-        Integer score = this.user.getGridsPlayed().get(grid);
+        Integer score = this.user.getGridsPlayed().get(grid.getName());
         return score == null ? 0 : 100 * score / grid.numPotatoes();
     }
 
@@ -105,5 +105,11 @@ public class UserController {
     public Set<String> getMacros()
     {
         return this.user.getMacros();
+    }
+
+    public UserController addGridPlayed(Grid grid, int potatoesCollected)
+    {
+        this.user.addGrid(grid, potatoesCollected);
+        return this;
     }
 }

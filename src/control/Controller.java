@@ -7,6 +7,7 @@ import view.LoginPanel;
 import view.PlayPanel;
 
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -67,6 +68,7 @@ public class Controller
         this.user = mBackend.getUsers().get(username);
         this.userController = new UserController(user);
         this.codeController = new CodeController(user, this);
+        this.gridController = new GridController();
     }
 
     /**
@@ -167,5 +169,24 @@ public class Controller
             }
         }
         return false;
+    }
+
+    public static Map<String, Integer> getGridScores(String gridName)
+    {
+        Map<String, User> users = mBackend.getUsers();
+        Map<String, Grid> grids = mBackend.getGrids();
+        Map<String, Integer> scores = new HashMap<String, Integer>();
+        for (final Map.Entry<String, User> userEntry : users.entrySet())
+        {
+            Map<String, Integer> gridsPlayed = userEntry.getValue().getGridsPlayed();
+            for (final Map.Entry<String, Integer> gridEntry : gridsPlayed.entrySet())
+            {
+                if (gridEntry.getKey().equals(gridName))
+                {
+                    scores.put(userEntry.getKey(), 100 * gridEntry.getValue() / grids.get(gridName).numPotatoes() );
+                }
+            }
+        }
+        return scores;
     }
 }
