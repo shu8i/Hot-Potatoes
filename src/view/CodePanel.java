@@ -116,6 +116,11 @@ public class CodePanel extends JScrollPane {
 
         this.panel.revalidate();
     }
+    
+    public void removeCodeBlock(){
+        refreshPanel();
+        this.panel.revalidate();
+    }
 
     public void refreshPanel() {
         this.panel.removeAll();
@@ -167,6 +172,10 @@ public class CodePanel extends JScrollPane {
 
         this.previouslyBeingProcessed = currentlyBeingProcessed;
         return this;
+    }
+    
+    public List<CodeBlockPanel> getPreviouslyProcessed(){
+        return this.previouslyBeingProcessed;
     }
 	
 }

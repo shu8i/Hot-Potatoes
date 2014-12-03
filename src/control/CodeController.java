@@ -135,15 +135,6 @@ public class CodeController {
 		return 0;
 	}
 	
-	/**
-	 * remove entire code block from Code
-	 * @param code 
-	 * @return 1 if fails 0 if not
-	 */	
-	public int removeCodeBlock(CodeBlock code){
-		return 0;
-	}
-	
 	
 	/**
 	 * add codeblock to the end of the code
@@ -158,6 +149,12 @@ public class CodeController {
     public Iterator<CodeBlock> viewIterator() {
         return this.code.viewIterator();
     }
+    
+    /**
+	 * remove entire code block from Code
+	 * @param code 
+	 * @return 1 if fails 0 if not
+    */	
 
     public CodeController removeBlock(int id) {
         this.code.removeBlock(id);

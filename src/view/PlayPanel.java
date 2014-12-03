@@ -9,6 +9,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * @author Allant Gomez
@@ -58,6 +59,16 @@ public class PlayPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new SaveDialog(PlayPanel.this, PlayPanel.this.controller);
+            }
+        });
+        
+        this.undoMenu = new JMenuItem("Undo Move");
+        this.undoMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int blockID = PlayPanel.this.controller.codeController.getCode().getlastID();
+                PlayPanel.this.controller.codeController.removeBlock(blockID);
+                PlayPanel.this.codePanel.removeCodeBlock();
             }
         });
 
@@ -149,7 +160,7 @@ public class PlayPanel extends JPanel {
 
     public void updateMenu() {
         this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
-                clearMenu, runMenu, saveMacroMenu, backMenu));
+                clearMenu, runMenu, undoMenu, saveMacroMenu, backMenu));
     }
 
 }
