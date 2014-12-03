@@ -95,6 +95,7 @@ public class PlayPanel extends JPanel {
                     @Override
                     public void run() {
                         PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                        PlayPanel.this.codePanel.refreshPanel();
                     }
                 });
             }

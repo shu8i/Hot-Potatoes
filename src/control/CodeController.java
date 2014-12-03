@@ -29,7 +29,7 @@ public class CodeController {
 	private User user;
 	private Controller controller;
 	private boolean stepper;
-	private CodeBlock ptr;
+	private CodeBlock ptr, current;
 
 	public CodeController(User user, Controller controller) {
 		this.controller = controller;
@@ -55,12 +55,18 @@ public class CodeController {
 			ptr = code.getHead();
 			runCodeBlock(ptr);
 			iterator = code.iterator(ptr);
+			
+			this.setCurrentBlock(ptr);
+			
 			ptr = iterator.next();
 			stepper = true;
 		}
 		else
 		{
 			runCodeBlock(ptr);
+			
+			this.setCurrentBlock(ptr);
+			
 			ptr = iterator.next();
 		}
 	}
@@ -175,6 +181,7 @@ public class CodeController {
 	public CodeController addCodeBlock(CodeBlock codeBlock){
 		this.code.add(codeBlock);
 		stepper = false;
+		ptr = code.getHead();
 		return this;
 	}
 
@@ -185,12 +192,15 @@ public class CodeController {
 	public CodeController removeBlock(int id) {
 		this.code.removeBlock(id);
 		stepper = false;
+		ptr = code.getHead();
 		return this;
 	}
 
 	public CodeController editCode(int id, String newContent)
 	{
 		this.code.edit(id, newContent);
+		stepper = false;
+		ptr = code.getHead();
 		return this;
 	}
 
@@ -209,7 +219,18 @@ public class CodeController {
 	{
 		this.code = new Code();
 		stepper = false;
+		ptr = code.getHead();
         return this;
+	}
+	
+	public CodeBlock getCurrentBlock()
+	{
+		return current;
+	}
+	
+	public void setCurrentBlock(CodeBlock curr)
+	{
+		current = curr;
 	}
 
 }

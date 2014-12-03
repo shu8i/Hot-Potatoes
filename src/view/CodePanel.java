@@ -33,6 +33,7 @@ public class CodePanel extends JScrollPane {
     private CodeBlockPanel blockBeingEdited;
     private Map<Integer, List<CodeBlockPanel>> references;
     private List<CodeBlockPanel> previouslyBeingProcessed;
+    private boolean current;
 
     public CodePanel(JPanel panel, Controller controller, PlayPanel playPanel) {
         super(panel);
@@ -47,6 +48,7 @@ public class CodePanel extends JScrollPane {
         this.panel.setBackground(Color.GRAY);
         this.references = new HashMap<Integer, List<CodeBlockPanel>>();
         this.previouslyBeingProcessed = new ArrayList<CodeBlockPanel>();
+        this.current = false;
     }
 
     public void addCodeBlock(CodeBlock codeBlock)
@@ -68,12 +70,23 @@ public class CodePanel extends JScrollPane {
                 codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
+                
+                if(current)
+                {	
+                	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
+                }
+                
                 this.panel.add(codeBlockPanel, c);
                 col++;
                 if (codeBlock.getCondition() != null)
                 {
                     c.gridx = col;
                     codeBlockPanel = new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), controller, this.playPanel);
+                    
+                    if(current)
+                    {	
+                    	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
+                    }
                     
                     this.panel.add(codeBlockPanel, c);
                     value.add(codeBlockPanel);
@@ -83,7 +96,12 @@ public class CodePanel extends JScrollPane {
             case ELSE:
                 c.gridx = --col;
                 codeBlockPanel = new CodeBlockPanel("ELSE", codeBlock.getId(), controller, this.playPanel);
-
+                
+                if(current)
+                {	
+                	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
+                }
+                
                 this.panel.add(codeBlockPanel, c);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
@@ -94,6 +112,11 @@ public class CodePanel extends JScrollPane {
                 c.gridx = --col;
                 codeBlockPanel = new CodeBlockPanel("END", codeBlock.getId(), controller, this.playPanel);
                 
+                if(current)
+                {	
+                	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
+                }
+                
                 this.panel.add(codeBlockPanel, c);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
@@ -101,6 +124,11 @@ public class CodePanel extends JScrollPane {
                 break;
             case ACTION:
                 codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel);
+                
+                if(current)
+                {	
+                	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
+                }
                 
                 this.panel.add(codeBlockPanel, c);
                 value.add(codeBlockPanel);
@@ -136,9 +164,16 @@ public class CodePanel extends JScrollPane {
 
         Iterator<CodeBlock> iterator = controller.codeController.viewIterator();
         CodeBlock codeBlock;
-        while (iterator.hasNext()) {
-        	
+        while (iterator.hasNext()) 
+        {
         	codeBlock = iterator.next();
+        	current = false;
+        	
+        	if(codeBlock.equals(controller.codeController.getCurrentBlock()))
+        	{	
+        		current = true;
+        	}
+        	
             addCodeBlock(codeBlock);
         }
 

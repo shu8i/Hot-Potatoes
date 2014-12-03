@@ -109,7 +109,6 @@ public class Code implements Serializable {
             @Override
             public CodeBlock next()                 //TODO fix "if x then nothing else something"
             {
-                current.setCurrent(false);
             	if (current.trueCondition != null && !visited.contains(current.trueCondition))
                 {
                     current = current.trueCondition;
@@ -173,7 +172,6 @@ public class Code implements Serializable {
                     }
                 }
                 visited.add(current);
-                current.setCurrent(true);
                 return current;
             }
 
