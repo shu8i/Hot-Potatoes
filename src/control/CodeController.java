@@ -157,7 +157,6 @@ public class CodeController {
 	public int editCodeBlock(CodeBlock code){
 		return 0;
 	}
-<<<<<<< HEAD
 
 	/**
 	 * remove entire code block from Code
@@ -168,11 +167,6 @@ public class CodeController {
 		return 0;
 	}
 
-
-=======
-	
-	
->>>>>>> f50a1675fd4cb3dc96586270c996f1d749c1f587
 	/**
 	 * add codeblock to the end of the code
 	 * @param codeBlock
@@ -180,7 +174,6 @@ public class CodeController {
 	 */	
 	public CodeController addCodeBlock(CodeBlock codeBlock){
 		this.code.add(codeBlock);
-<<<<<<< HEAD
 		stepper = false;
 		return this;
 	}
@@ -216,49 +209,7 @@ public class CodeController {
 	{
 		this.code = new Code();
 		stepper = false;
-		return this;
-	}
-=======
         return this;
 	}
-
-    public Iterator<CodeBlock> viewIterator() {
-        return this.code.viewIterator();
-    }
-    
-    /**
-	 * remove entire code block from Code
-	 * @param code 
-	 * @return 1 if fails 0 if not
-    */	
-
-    public CodeController removeBlock(int id) {
-        this.code.removeBlock(id);
-        return this;
-    }
-
-    public CodeController editCode(int id, String newContent)
-    {
-        this.code.edit(id, newContent);
-        return this;
-    }
-
-    public Code getCode()
-    {
-        return this.code;
-    }
-
-    public CodeController mergeCode(Code code)
-    {
-        this.code.merge(code);
-        return this;
-    }
-
-    public CodeController clear()
-    {
-        this.code = new Code();
-        return this;
-    }
->>>>>>> f50a1675fd4cb3dc96586270c996f1d749c1f587
 
 }
