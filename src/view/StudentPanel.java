@@ -2,10 +2,12 @@ package view;
 
 import control.Controller;
 import model.Grid;
+import model.User;
 import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,8 +33,9 @@ public class StudentPanel extends JPanel {
     private JLabel selectWorldLabel;
     private JPanel worldSelectionPanel;
     private JScrollPane worldSelectionScrollPane;
+    private User user;
 
-    public StudentPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
+    public StudentPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, User user) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -48,6 +51,9 @@ public class StudentPanel extends JPanel {
         this.worldSelectionScrollPane.setPreferredSize(new Dimension(620, 410));
         this.worldSelectionScrollPane.setBorder(null);
         this.worldSelectionPanel.setLayout(layout);
+        
+        this.user = user;
+        
 
         int i = 0, j = 0, numWorlds = this.controller.getGrids().size();
         JButton worldSelectButton;
@@ -65,7 +71,7 @@ public class StudentPanel extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new PlayPanel(StudentPanel.this.parent, StudentPanel.this.loginPanel,
-                            StudentPanel.this, StudentPanel.this.controller, entry.getValue());
+                            StudentPanel.this, StudentPanel.this.controller, entry.getValue(), StudentPanel.this.user);
                 }
             });
 

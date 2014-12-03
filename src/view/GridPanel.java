@@ -164,6 +164,64 @@ public class GridPanel extends JPanel {
         repaint();
         revalidate();
     }
+    
+    //same as refresh but returns a boolean to tell whether there was a high score change
+    
+    public boolean refreshPlayPanelGrid(PlayPanel playPanel, Integer score, Integer highScore)
+    {
+        removeAll();
+        boolean scoreChange = false;
+        for (int row = 0; row < grid.getSize(); row++) {
+            for (int col = 0; col < grid.getSize(); col++) {
+                c.gridx = col;
+                c.gridy = row;
+
+                GridCell gridCell = new GridCell(grid.getSize(), row, col);
+                Border border;
+                if (row < 4) {
+                    if (col < 4) {
+                        border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
+                    } else {
+                        border = new MatteBorder(1, 1, 0, 1, Color.GRAY);
+                    }
+                } else {
+                    if (col < 4) {
+                        border = new MatteBorder(1, 1, 1, 0, Color.GRAY);
+                    } else {
+                        border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
+                    }
+                }
+                gridCell.setBorder(border);
+
+                Block block = grid.getBlock(gridCell.coordinate);
+
+                if (!block.isEmpty()) {
+                    if (block.is(KAREL)) {
+                        gridCell.addKarel(false);
+                    }
+                    if (block.is(HOME)) {
+                        gridCell.addHome(false);
+                    }
+                    if (block.is(POTATO)) {
+                        gridCell.addPotato(false);
+                    }
+                    if (block.is(WALL)) {
+                        gridCell.addWall();
+                    }
+                }
+
+                add(gridCell, c);
+            }
+        }
+        if (score >= highScore)
+        {
+        	highScore = score;
+        	scoreChange = true;
+        }
+        repaint();
+        revalidate();
+        return scoreChange;
+    }
 
     public Grid getGrid() {
         return this.grid;
