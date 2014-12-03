@@ -1,12 +1,14 @@
 package control;
 
 import model.Backend;
+import model.Code;
 import model.Grid;
 import model.User;
 import view.LoginPanel;
 import view.PlayPanel;
 
 import javax.swing.*;
+
 import java.util.Map;
 
 /**
@@ -25,10 +27,17 @@ public class Controller
     public RobotController robotController;
     public CodeController codeController;
     public PlayPanel playPanel;
+    
+    /**
+     * Current grid being played 
+     */
+    private Grid current_grid;
+    
     private static Backend mBackend = Backend.readDatabase();
 
 	public Controller initRobot(Grid grid)
     {
+		this.setCurrent_grid(grid);
         this.robotController = new RobotController(grid);
         return this;
     }
@@ -168,4 +177,23 @@ public class Controller
         }
         return false;
     }
+
+	public Grid getCurrent_grid() {
+		return current_grid;
+	}
+
+	public void setCurrent_grid(Grid current_grid) {
+		this.current_grid = current_grid;
+	}
+
+	/**
+	 * When a grid is selected checks if the user had code before
+	 * and if it did then loads it, otherwise is set to blanck code.
+	 */
+	public void setCode() {
+		this.codeController.setCode(this.user.getCodePlayedinGrid(this.getCurrent_grid()));
+		if (this.codeController.getCode() == null){
+			this.codeController.setCode(new Code());
+		}
+	}
 }

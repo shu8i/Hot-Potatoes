@@ -1,11 +1,13 @@
 package view;
 
 import control.Controller;
+import model.Code;
 import model.Grid;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +48,8 @@ public class PlayPanel extends JPanel {
         this.hintPanel = new HintPanel(new Dimension(500, 30));
         this.controller.initRobot(this.grid);
         this.controller.initPlay(this);
+        this.controller.setCode();	// if user had previous code then set it. 
+
         
         final Integer highScore = controller.userController.getGridScore(grid);
         final Integer score = 0;
@@ -53,6 +57,10 @@ public class PlayPanel extends JPanel {
         hintPanel.updateHint("SCORE:" + scoreString + "     " + "HIGH SCORE:" + highScore, Color.blue);
 
         initPanels();
+        
+        // refresh the panel in case the user had code before. 
+        this.codePanel.refreshPanel();
+        
 
         this.saveMacroMenu = new JMenuItem("Save As Macro");
         this.saveMacroMenu.addActionListener(new ActionListener() {

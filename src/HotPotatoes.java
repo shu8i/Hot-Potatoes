@@ -11,8 +11,15 @@ import java.awt.event.WindowEvent;
  */
 public class HotPotatoes extends JFrame {
 
-    private static Controller controller;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6802397271805780939L;
+	static Controller controller;
 
+    /** HotPotatoes class.
+     * @param title
+     */
     public HotPotatoes(String title) {
         super(title);
         controller = new Controller();
@@ -20,6 +27,9 @@ public class HotPotatoes extends JFrame {
         add(new LoginPanel(this, controller));
     }
 
+    /**Main method
+     * @param args
+     */
     public static void main(String[] args) {
         JFrame game = new HotPotatoes("Hot Potatoes");
         game.pack();

@@ -2,11 +2,13 @@ package control;
 
 import model.Code;
 import model.CodeBlock;
+import model.Grid;
 import model.User;
 import static model.Direction.*;
 import view.CodePanel;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -33,11 +35,12 @@ public class CodeController {
 
 	public CodeController(User user, Controller controller) {
 		this.controller = controller;
-		this.user = user;
-		this.code = new Code();
+		this.user = user;		
 		this.stepper = false;
+		this.code = new Code();
 	}
 
+	
 	/**
 	 * Main class that will control the code and view
 	 */	
@@ -45,6 +48,8 @@ public class CodeController {
 		runPartial(code.getHead());
 		stepper= false;
 	}
+	
+	
 
 	public void step()
 	{
@@ -180,6 +185,7 @@ public class CodeController {
 	 */	
 	public CodeController addCodeBlock(CodeBlock codeBlock){
 		this.code.add(codeBlock);
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
 		stepper = false;
 		ptr = code.getHead();
 		return this;
@@ -203,6 +209,14 @@ public class CodeController {
 		ptr = code.getHead();
 		return this;
 	}
+	
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(Code code) {
+		this.code = code;
+	}
+
 
 	public Code getCode()
 	{

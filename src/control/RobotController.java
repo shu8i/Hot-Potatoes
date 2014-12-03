@@ -15,6 +15,7 @@ public class RobotController {
     private Robot robot;
     private Grid grid;
 
+   
     /**
      * Creates a new Robot Controller
      * @param grid the grid

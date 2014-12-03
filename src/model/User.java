@@ -17,6 +17,7 @@ public class User implements Serializable {
     private String username, password;
     private boolean isAdmin;
     private Map<Grid, Integer> gridsPlayed;
+    private Map<Grid, Code> codePlayed_inGrid;
     private Map<String, Code> macros;
     private Map<String, Stack<ActionPanel.PanelMode>> macrosActionPanel;
 
@@ -31,10 +32,28 @@ public class User implements Serializable {
         this.password = encrypt(password);
         this.isAdmin = isAdmin;
         this.gridsPlayed = new HashMap<Grid, Integer>();
+        this.codePlayed_inGrid = new HashMap<Grid, Code>();
         this.macros = new HashMap<String, Code>();
         this.macrosActionPanel = new HashMap<String, Stack<ActionPanel.PanelMode>>();
     }
-
+    
+    /**
+     * Get the code that goes with this grid
+     * @return code played by the user on this grid
+     */
+    public Code getCodePlayedinGrid(Grid grid) {    	
+		return this.codePlayed_inGrid.get(grid);   	
+    }
+    
+    /**
+     * Add code to the grid pass as a parameter
+     * @param key grid to look for
+     * @param value value to be updated
+     */
+    public void addCodePlayedinGrid(Grid key, Code value) {    	
+		this.codePlayed_inGrid.put(key, value);   	
+    }
+        
     /**
      * Gets a map of grids (worlds) played by the user
      * @return a map of grids (worlds) played by the user
