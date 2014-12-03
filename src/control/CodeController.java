@@ -4,11 +4,11 @@ import model.Code;
 import model.CodeBlock;
 import model.User;
 import static model.Direction.*;
+
+import util.Constants;
 import view.CodePanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.TimerTask;
 
@@ -22,7 +22,7 @@ import java.util.TimerTask;
  * @see Code
  * @see view.CodePanel
  */
-public class CodeController {
+public class CodeController extends SwingWorker<Void, Void> {
 	
 	private Code code;
 	private CodePanel codeview;
@@ -34,48 +34,81 @@ public class CodeController {
         this.user = user;
         this.code = new Code();
     }
+
+    @Override
+    public Void doInBackground()
+    {
+        runPartial(code.getHead(), true);
+        return null;
+    }
+
+    @Override
+    public void done()
+    {
+        if (controller.robotController.getRobot().getCoordinate().equals(controller.playPanel.grid.getHome().coordinates())) {
+            controller.userController.addGridPlayed(
+                    controller.playPanel.grid, controller.robotController.backpackSize());
+            controller.playPanel.hintPanel.updateHint("Level Completed. " +
+                    controller.userController.getGridScore(controller.playPanel.grid) +
+                    "% potatoes collected.", Constants.COLOR_DARK_GREEN);
+            new java.util.Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    controller.playPanel.goBack();
+                }
+            }, 5000);
+        }
+        controller.playPanel.gridPanel.softRefresh();
+    }
 	
 	/**
 	 * Main class that will control the code and view
 	 */	
-	public void run () {
-		runPartial(code.getHead());
+	public void runCode() {
+		runPartial(code.getHead(), false);
     }
 
-    private void runPartial(CodeBlock head)
+    private void runPartial(CodeBlock head, boolean stepByStep)
     {
-        runCodeBlock(head);
+        runCodeBlock(head, stepByStep);
         Iterator<CodeBlock> iterator = code.iterator(head);
         while (iterator.hasNext())
         {
-            runCodeBlock(iterator.next());
+            runCodeBlock(iterator.next(), stepByStep);
         }
     }
 
-    private void runCodeBlock(CodeBlock codeBlock)
+    private void runCodeBlock(CodeBlock codeBlock, boolean stepByStep)
     {
 
-//        controller.playPanel.codePanel.markBeingProcessed(CODE_BLOCK.getId());
         //TODO Implement worker threads if we want step by step code running.
+        if (stepByStep) {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+            controller.playPanel.gridPanel.softRefresh();
+            controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId());
+        }
         if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
         {
             if (codeBlock.isConditional())
             {
                 if (conditionalIsTrue(codeBlock))
                 {
-                    runPartial(codeBlock.getTrueCondition());
+                    runPartial(codeBlock.getTrueCondition(), stepByStep);
                 }
                 else
                 {
                     if (codeBlock.getFalseCondition() != null)
-                        runPartial(codeBlock.getFalseCondition());
+                        runPartial(codeBlock.getFalseCondition(), stepByStep);
                 }
             }
             else if (codeBlock.isLoop())
             {
                 while (conditionalIsTrue(codeBlock))
                 {
-                    runPartial(codeBlock.getTrueCondition());
+                    runPartial(codeBlock.getTrueCondition(), stepByStep);
                 }
             }
             else
