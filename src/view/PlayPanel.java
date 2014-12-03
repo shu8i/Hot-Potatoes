@@ -12,19 +12,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-=======
+
 import java.util.HashMap;
 import java.util.Map;
-=======
+
 import java.util.List;
->>>>>>> FETCH_HEAD
-=======
+
 import java.util.List;
->>>>>>> FETCH_HEAD
-=======
+
 import java.util.List;
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
 
 /**
  * @author Allant Gomez

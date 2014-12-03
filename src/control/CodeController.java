@@ -30,12 +30,7 @@ public class CodeController {
 	private Controller controller;
 	private boolean stepper;
 	private CodeBlock ptr, current;
-=======
-	private CodeBlock ptr;
-=======
-	private CodeBlock ptr, current;
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
+
 
 	public CodeController(User user, Controller controller) {
 		this.controller = controller;
@@ -64,13 +59,9 @@ public class CodeController {
 			
 			this.setCurrentBlock(ptr);
 			
-=======
-=======
 			
 			this.setCurrentBlock(ptr);
 			
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
 			ptr = iterator.next();
 			stepper = true;
 		}
@@ -80,13 +71,10 @@ public class CodeController {
 			
 			this.setCurrentBlock(ptr);
 			
-=======
-=======
+
 			
 			this.setCurrentBlock(ptr);
 			
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
 			ptr = iterator.next();
 		}
 	}
@@ -202,11 +190,7 @@ public class CodeController {
 		this.code.add(codeBlock);
 		stepper = false;
 		ptr = code.getHead();
-=======
-=======
 		ptr = code.getHead();
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
 		return this;
 	}
 
@@ -218,11 +202,7 @@ public class CodeController {
 		this.code.removeBlock(id);
 		stepper = false;
 		ptr = code.getHead();
-=======
-=======
 		ptr = code.getHead();
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
 		return this;
 	}
 
@@ -231,12 +211,9 @@ public class CodeController {
 		this.code.edit(id, newContent);
 		stepper = false;
 		ptr = code.getHead();
-=======
-=======
 		stepper = false;
 		ptr = code.getHead();
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
+
 		return this;
 	}
 
@@ -251,15 +228,11 @@ public class CodeController {
 		return this;
 	}
 
-	public CodeController clear()
-	{
-		this.code = new Code();
-		stepper = false;
-=======
-        return this;
-	}
-=======
->>>>>>> Stashed changes
+
+ 	public CodeController clear()
+ 	{
+ 		this.code = new Code();
+ 		stepper = false;
 		ptr = code.getHead();
         return this;
 	}
@@ -273,8 +246,4 @@ public class CodeController {
 	{
 		current = curr;
 	}
-=======
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
-
 }
