@@ -3,6 +3,7 @@ package view;
 import control.Controller;
 import model.Code;
 import model.Grid;
+import model.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,6 +12,15 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import java.util.List;
+
+import java.util.List;
+
 import java.util.List;
 
 /**
@@ -36,7 +46,9 @@ public class PlayPanel extends JPanel {
     public MacroPanel macroPanel;
     public ActionPanel actionPanel;
 
-    public PlayPanel(JFrame parent, LoginPanel loginPanel, StudentPanel predecessor, Controller controller, Grid grid) {
+    private User user;
+
+    public PlayPanel(JFrame parent, LoginPanel loginPanel, StudentPanel predecessor, Controller controller, Grid grid, User user) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -49,10 +61,12 @@ public class PlayPanel extends JPanel {
         this.controller.initRobot(this.grid);
         this.controller.initPlay(this);
         this.controller.setCode();	// if user had previous code then set it. 
-
+        this.user = user;
+        final Integer highScore;
+        final Integer score;
         
-        final Integer highScore = controller.userController.getGridScore(grid);
-        final Integer score = 0;
+        highScore = controller.userController.getGridScore(grid);
+        score = 0;
         String scoreString = score.toString(); 
         hintPanel.updateHint("SCORE:" + scoreString + "     " + "HIGH SCORE:" + highScore, Color.blue);
 
@@ -88,7 +102,55 @@ public class PlayPanel extends JPanel {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
+                       boolean scoreChange = PlayPanel.this.controller.playPanel.gridPanel.refreshPlayPanelGrid(PlayPanel.this, score, highScore);
+                       if (scoreChange == true)
+                       {
+                    	   PlayPanel.this.user.getGridsPlayed().put(PlayPanel.this.grid, score);
+                    	   hintPanel.updateHint("SCORE:" + score.toString() + "     " + "HIGH SCORE:" + PlayPanel.this.controller.userController.getGridScore(PlayPanel.this.grid), Color.blue);
+                       }
+                    }
+                });
+            }
+        });
+        
+        this.stepMenu = new JMenuItem("Take Step");
+        this.stepMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayPanel.this.controller.codeController.step();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
                         PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                    }
+                });
+            }
+        });
+        
+        this.stepMenu = new JMenuItem("Take Step");
+        this.stepMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayPanel.this.controller.codeController.step();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                    }
+                });
+            }
+        });
+        
+        this.stepMenu = new JMenuItem("Take Step");
+        this.stepMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayPanel.this.controller.codeController.step();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                        PlayPanel.this.codePanel.refreshPanel();
                     }
                 });
             }

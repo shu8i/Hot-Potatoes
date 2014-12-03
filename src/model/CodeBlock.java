@@ -15,6 +15,7 @@ public class CodeBlock implements Serializable {
 	private String codeText, condition;
     protected CodeBlock defaultCondition, trueCondition, falseCondition, condParent, parent;
     private int id;
+    private boolean isCurrent;
 
     public CodeBlock() {
         this.defaultCondition = null;
@@ -26,6 +27,7 @@ public class CodeBlock implements Serializable {
         this.defaultCondition = null;
         this.trueCondition = null;
         this.falseCondition = null;
+        isCurrent = false;
     }
 
     public CodeBlock setCondition(String condition) {
@@ -96,6 +98,16 @@ public class CodeBlock implements Serializable {
     public CodeBlock getFalseCondition()
     {
         return this.falseCondition;
+    }
+    
+    public void setCurrent(boolean state)
+    {
+    	this.isCurrent = state;
+    }
+    
+    public boolean isCurrentBlock()
+    {
+    	return isCurrent;
     }
 
 }

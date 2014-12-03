@@ -56,6 +56,13 @@ public class Controller
     public boolean doesUserExist( String username ) {
         return mBackend.getUsers().get(username) != null;
     }
+    
+    //returns grids played for the user assigned to this controller
+    
+    public Map<Grid, Integer> getGridsPlayed(User user)
+    {
+    	return user.getGridsPlayed();
+    }
 
     /**
      * Checks whether a password provided by the user is correct

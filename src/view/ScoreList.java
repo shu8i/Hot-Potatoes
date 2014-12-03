@@ -71,6 +71,8 @@ public class ScoreList extends JPanel
         this.adminPanel = adminPanel;
         this.grid = grid;
         
+        Integer highScore = 0;
+        
         this.backMenu = new JMenuItem("Back");
         this.backMenu.addActionListener(new ActionListener() {
             @Override
@@ -93,8 +95,12 @@ public class ScoreList extends JPanel
         	}
         	else
         	{
+        		if (highScore != controller.getUsers().get(entry.getKey()).getGridScore(this.grid))
+        		{
+        			highScore = controller.getUsers().get(entry.getKey()).getGridScore(this.grid);
+        		}
         		studentSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
-                    + "HIGH SCORE: " + controller.getUsers().get(entry.getKey()).getGridScore(this.grid) + "</center></html>");
+                    + "HIGH SCORE: " + highScore.toString() + "</center></html>");
         	}
             
             

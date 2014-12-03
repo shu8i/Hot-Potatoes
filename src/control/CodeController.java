@@ -33,6 +33,7 @@ public class CodeController {
 	private boolean stepper;
 	private CodeBlock ptr, current;
 
+
 	public CodeController(User user, Controller controller) {
 		this.controller = controller;
 		this.user = user;		
@@ -63,12 +64,19 @@ public class CodeController {
 			
 			this.setCurrentBlock(ptr);
 			
+			
+			this.setCurrentBlock(ptr);
+			
 			ptr = iterator.next();
 			stepper = true;
 		}
 		else
 		{
 			runCodeBlock(ptr);
+			
+			this.setCurrentBlock(ptr);
+			
+
 			
 			this.setCurrentBlock(ptr);
 			
@@ -188,6 +196,7 @@ public class CodeController {
 		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
 		stepper = false;
 		ptr = code.getHead();
+		ptr = code.getHead();
 		return this;
 	}
 
@@ -199,6 +208,7 @@ public class CodeController {
 		this.code.removeBlock(id);
 		stepper = false;
 		ptr = code.getHead();
+		ptr = code.getHead();
 		return this;
 	}
 
@@ -207,6 +217,9 @@ public class CodeController {
 		this.code.edit(id, newContent);
 		stepper = false;
 		ptr = code.getHead();
+		stepper = false;
+		ptr = code.getHead();
+
 		return this;
 	}
 	
@@ -229,10 +242,11 @@ public class CodeController {
 		return this;
 	}
 
-	public CodeController clear()
-	{
-		this.code = new Code();
-		stepper = false;
+
+ 	public CodeController clear()
+ 	{
+ 		this.code = new Code();
+ 		stepper = false;
 		ptr = code.getHead();
         return this;
 	}
@@ -246,5 +260,4 @@ public class CodeController {
 	{
 		current = curr;
 	}
-
 }
