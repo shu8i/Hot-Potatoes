@@ -296,10 +296,12 @@ public class Code implements Serializable {
             case IF:
             case WHILE:
             case ELSE:
-//                removeConditionalBlock(block);
+                removeConditionalBlock(block);
+                this.references.remove(id);
                 break;
             case END:
-//                removeConditionalByEndBlock(block);
+                removeConditionalByEndBlock(block);
+                this.references.remove(id);
                 break;
             case ACTION:
                 removeActionBlock(block);
@@ -312,56 +314,56 @@ public class Code implements Serializable {
 
     private void removeConditionalByEndBlock(CodeBlock block)
     {
-//        if (block.defaultCondition == null)
-//        {
-//            block.parent.parent.defaultCondition = null;
-//            curr = block.parent.parent;
-//        }
-//        else
-//        {
-//            block.defaultCondition.parent = block.parent.parent;
-//            if (block.parent.parent.trueCondition == block.parent)
-//            {
-//                block.parent.parent.trueCondition = block.defaultCondition;
-//            }
-//            else if (block.parent.parent.falseCondition == block.parent)
-//            {
-//                block.parent.parent.falseCondition = block.defaultCondition;
-//            }
-//            else
-//            {
-//                block.parent.parent.defaultCondition = block.defaultCondition;
-//            }
-//        }
+        if (block.defaultCondition == null)
+        {
+            block.parent.parent.defaultCondition = null;
+            curr = block.parent.parent;
+        }
+        else
+        {
+            block.defaultCondition.parent = block.parent.parent;
+            if (block.parent.parent.trueCondition == block.parent)
+            {
+                block.parent.parent.trueCondition = block.defaultCondition;
+            }
+            else if (block.parent.parent.falseCondition == block.parent)
+            {
+                block.parent.parent.falseCondition = block.defaultCondition;
+            }
+            else
+            {
+                block.parent.parent.defaultCondition = block.defaultCondition;
+            }
+        }
     }
 
     private void removeConditionalBlock(CodeBlock block)
     {
 
-//        if (block.defaultCondition.defaultCondition == null)    //if last conditional in code
-//        {
-//            if (block.parent.defaultCondition == null)
-//            {
-//                block.parent.defaultCondition = null;
-//                curr = block.parent;
-//            }
-//        }
-//        else
-//        {
-//            block.defaultCondition.defaultCondition.parent = block.parent;
-//            if (block.parent.trueCondition == block)
-//            {
-//                block.parent.trueCondition = block.defaultCondition.defaultCondition;
-//            }
-//            else if (block.parent.falseCondition == block)
-//            {
-//                block.parent.falseCondition = block.defaultCondition.defaultCondition;
-//            }
-//            else
-//            {
-//                block.parent.defaultCondition = block.defaultCondition.defaultCondition;
-//            }
-//        }
+        if (block.defaultCondition.defaultCondition == null)    //if last conditional in code
+        {
+            if (block.parent.defaultCondition == null)
+            {
+                block.parent.defaultCondition = null;
+                curr = block.parent;
+            }
+        }
+        else
+        {
+            block.defaultCondition.defaultCondition.parent = block.parent;
+            if (block.parent.trueCondition == block)
+            {
+                block.parent.trueCondition = block.defaultCondition.defaultCondition;
+            }
+            else if (block.parent.falseCondition == block)
+            {
+                block.parent.falseCondition = block.defaultCondition.defaultCondition;
+            }
+            else
+            {
+                block.parent.defaultCondition = block.defaultCondition.defaultCondition;
+            }
+        }
     }
 
     private void removeActionBlock(CodeBlock block)
@@ -422,6 +424,10 @@ public class Code implements Serializable {
     public boolean isEmpty()
     {
         return head.defaultCondition == null;
+    }
+    
+    public int getlastID(){
+        return this.ids;
     }
 
     public Code merge(Code code)
