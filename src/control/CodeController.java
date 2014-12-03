@@ -23,109 +23,132 @@ import java.util.TimerTask;
  * @see view.CodePanel
  */
 public class CodeController {
-	
+
 	private Code code;
 	private CodePanel codeview;
-    private User user;
-    private Controller controller;
+	private User user;
+	private Controller controller;
+	private boolean stepper;
+	private CodeBlock ptr;
 
-    public CodeController(User user, Controller controller) {
-        this.controller = controller;
-        this.user = user;
-        this.code = new Code();
-    }
-	
+	public CodeController(User user, Controller controller) {
+		this.controller = controller;
+		this.user = user;
+		this.code = new Code();
+		this.stepper = false;
+	}
+
 	/**
 	 * Main class that will control the code and view
 	 */	
 	public void run () {
 		runPartial(code.getHead());
-    }
+		stepper= false;
+	}
 
-    private void runPartial(CodeBlock head)
-    {
-        runCodeBlock(head);
-        Iterator<CodeBlock> iterator = code.iterator(head);
-        while (iterator.hasNext())
-        {
-            runCodeBlock(iterator.next());
-        }
-    }
+	public void step()
+	{
+		Iterator<CodeBlock> iterator = code.iterator(ptr);
+		
+		if(stepper == false)
+		{
+			ptr = code.getHead();
+			runCodeBlock(ptr);
+			iterator = code.iterator(ptr);
+			ptr = iterator.next();
+			stepper = true;
+		}
+		else
+		{
+			runCodeBlock(ptr);
+			ptr = iterator.next();
+		}
+	}
 
-    private void runCodeBlock(CodeBlock codeBlock)
-    {
+	private void runPartial(CodeBlock head)
+	{
+		runCodeBlock(head);
+		Iterator<CodeBlock> iterator = code.iterator(head);
+		while (iterator.hasNext())
+		{
+			runCodeBlock(iterator.next());
+		}
+	}
 
-//        controller.playPanel.codePanel.markBeingProcessed(CODE_BLOCK.getId());
-        //TODO Implement worker threads if we want step by step code running.
-        if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
-        {
-            if (codeBlock.isConditional())
-            {
-                if (conditionalIsTrue(codeBlock))
-                {
-                    runPartial(codeBlock.getTrueCondition());
-                }
-                else
-                {
-                    runPartial(codeBlock.getFalseCondition());
-                }
-            }
-            else if (codeBlock.isLoop())
-            {
-                while (conditionalIsTrue(codeBlock))
-                {
-                    runPartial(codeBlock.getTrueCondition());
-                }
-            }
-            else
-            {
-                runAction(codeBlock);
-            }
-        }
-    }
+	private void runCodeBlock(CodeBlock codeBlock)
+	{
 
-    private boolean conditionalIsTrue(CodeBlock codeBlock)
-    {
-        String condition = codeBlock.getCondition();
-        switch (condition)
-        {
-            case "FACING LEFT":
-                return controller.robotController.facing(LEFT);
-            case "FACING RIGHT":
-                return controller.robotController.facing(RIGHT);
-            case "FACING DOWN":
-                return controller.robotController.facing(DOWN);
-            case "FACING UP":
-                return controller.robotController.facing(UP);
-            default:
-                return controller.robotController.dirIsFree();
-        }
-    }
+		//        controller.playPanel.codePanel.markBeingProcessed(CODE_BLOCK.getId());
+		//TODO Implement worker threads if we want step by step code running.
+		if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
+		{
+			if (codeBlock.isConditional())
+			{
+				if (conditionalIsTrue(codeBlock))
+				{
+					runPartial(codeBlock.getTrueCondition());
+				}
+				else
+				{
+					runPartial(codeBlock.getFalseCondition());
+				}
+			}
+			else if (codeBlock.isLoop())
+			{
+				while (conditionalIsTrue(codeBlock))
+				{
+					runPartial(codeBlock.getTrueCondition());
+				}
+			}
+			else
+			{
+				runAction(codeBlock);
+			}
+		}
+	}
 
-    private void runAction(CodeBlock codeBlock)
-    {
-        String codeText = codeBlock.getCodetext();
-        switch (codeText)
-        {
-            case "MOVE":
-                controller.robotController.move();
-                break;
-            case "TURN LEFT":
-                controller.robotController.turnLeft();
-                break;
-            case "PUT POTATO":
-                controller.robotController.drop();
-                break;
-            case "PICK POTATO":
-                controller.robotController.pickup();
-                break;
-            case "END":
-            default:
-                break;
-        }
-    }
-	
-	
+	private boolean conditionalIsTrue(CodeBlock codeBlock)
+	{
+		String condition = codeBlock.getCondition();
+		switch (condition)
+		{
+		case "FACING LEFT":
+			return controller.robotController.facing(LEFT);
+		case "FACING RIGHT":
+			return controller.robotController.facing(RIGHT);
+		case "FACING DOWN":
+			return controller.robotController.facing(DOWN);
+		case "FACING UP":
+			return controller.robotController.facing(UP);
+		default:
+			return controller.robotController.dirIsFree();
+		}
+	}
+
+	private void runAction(CodeBlock codeBlock)
+	{
+		String codeText = codeBlock.getCodetext();
+		switch (codeText)
+		{
+		case "MOVE":
+			controller.robotController.move();
+			break;
+		case "TURN LEFT":
+			controller.robotController.turnLeft();
+			break;
+		case "PUT POTATO":
+			controller.robotController.drop();
+			break;
+		case "PICK POTATO":
+			controller.robotController.pickup();
+			break;
+		case "END":
+		default:
+			break;
+		}
+	}
+
+
 	/**
 	 * Edit part of the codeblock
 	 * @param code 
@@ -134,7 +157,7 @@ public class CodeController {
 	public int editCodeBlock(CodeBlock code){
 		return 0;
 	}
-	
+
 	/**
 	 * remove entire code block from Code
 	 * @param code 
@@ -143,8 +166,8 @@ public class CodeController {
 	public int removeCodeBlock(CodeBlock code){
 		return 0;
 	}
-	
-	
+
+
 	/**
 	 * add codeblock to the end of the code
 	 * @param codeBlock
@@ -152,39 +175,42 @@ public class CodeController {
 	 */	
 	public CodeController addCodeBlock(CodeBlock codeBlock){
 		this.code.add(codeBlock);
-        return this;
+		stepper = false;
+		return this;
 	}
 
-    public Iterator<CodeBlock> viewIterator() {
-        return this.code.viewIterator();
-    }
+	public Iterator<CodeBlock> viewIterator() {
+		return this.code.viewIterator();
+	}
 
-    public CodeController removeBlock(int id) {
-        this.code.removeBlock(id);
-        return this;
-    }
+	public CodeController removeBlock(int id) {
+		this.code.removeBlock(id);
+		stepper = false;
+		return this;
+	}
 
-    public CodeController editCode(int id, String newContent)
-    {
-        this.code.edit(id, newContent);
-        return this;
-    }
+	public CodeController editCode(int id, String newContent)
+	{
+		this.code.edit(id, newContent);
+		return this;
+	}
 
-    public Code getCode()
-    {
-        return this.code;
-    }
+	public Code getCode()
+	{
+		return this.code;
+	}
 
-    public CodeController mergeCode(Code code)
-    {
-        this.code.merge(code);
-        return this;
-    }
+	public CodeController mergeCode(Code code)
+	{
+		this.code.merge(code);
+		return this;
+	}
 
-    public CodeController clear()
-    {
-        this.code = new Code();
-        return this;
-    }
+	public CodeController clear()
+	{
+		this.code = new Code();
+		stepper = false;
+		return this;
+	}
 
 }

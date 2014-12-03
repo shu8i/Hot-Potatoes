@@ -26,7 +26,7 @@ public class PlayPanel extends JPanel {
     private JFrame parent;
     private Controller controller;
     private Grid grid;
-    private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu;
+    private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu, stepMenu;
     public HintPanel hintPanel;
     public GridPanel gridPanel;
     public CodePanel codePanel;
@@ -66,6 +66,20 @@ public class PlayPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PlayPanel.this.controller.codeController.run();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        PlayPanel.this.controller.playPanel.gridPanel.refresh();
+                    }
+                });
+            }
+        });
+        
+        this.stepMenu = new JMenuItem("Take Step");
+        this.stepMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayPanel.this.controller.codeController.step();
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -149,7 +163,7 @@ public class PlayPanel extends JPanel {
 
     public void updateMenu() {
         this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
-                clearMenu, runMenu, saveMacroMenu, backMenu));
+                clearMenu, runMenu, stepMenu, saveMacroMenu, backMenu));
     }
 
 }

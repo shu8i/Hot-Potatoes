@@ -41,7 +41,7 @@ public class Code implements Serializable {
     {
         return this.head.defaultCondition;
     }
-
+    
 
     public Iterator<CodeBlock> iterator(final CodeBlock codeBlock)
     {
@@ -109,7 +109,8 @@ public class Code implements Serializable {
             @Override
             public CodeBlock next()                 //TODO fix "if x then nothing else something"
             {
-                if (current.trueCondition != null && !visited.contains(current.trueCondition))
+                current.setCurrent(false);
+            	if (current.trueCondition != null && !visited.contains(current.trueCondition))
                 {
                     current = current.trueCondition;
                     elseReturned = false;
@@ -172,6 +173,7 @@ public class Code implements Serializable {
                     }
                 }
                 visited.add(current);
+                current.setCurrent(true);
                 return current;
             }
 
