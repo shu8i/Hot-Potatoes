@@ -59,6 +59,7 @@ public class CodeController extends SwingWorker<Void, Void> {
             }, 5000);
         }
         controller.playPanel.gridPanel.softRefresh();
+        controller.reinitCodeController();
     }
 	
 	/**

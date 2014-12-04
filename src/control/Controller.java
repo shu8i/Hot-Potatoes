@@ -72,6 +72,11 @@ public class Controller
         this.gridController = new GridController();
     }
 
+
+    public void reinitCodeController()
+    {
+        this.codeController = new CodeController(user, this);
+    }
     /**
      * Saves the database.
      */
