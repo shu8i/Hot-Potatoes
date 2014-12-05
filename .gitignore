@@ -1,2 +1,6 @@
 *.class
 *.dat
+.classpath
+data/database.dat
+.classpath
+data/database.dat
