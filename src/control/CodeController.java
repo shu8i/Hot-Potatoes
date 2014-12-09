@@ -2,17 +2,9 @@ package control;
 
 import model.Code;
 import model.CodeBlock;
-import model.Grid;
 import model.User;
 import static model.Direction.*;
-import view.CodePanel;
-
-import javax.swing.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Iterator;
-import java.util.TimerTask;
 
 /**
  * @author Allant Gomez
@@ -27,13 +19,17 @@ import java.util.TimerTask;
 public class CodeController {
 
 	private Code code;
-	private CodePanel codeview;
 	private User user;
 	private Controller controller;
 	private boolean stepper;
 	private CodeBlock ptr, current;
 
 
+	/**
+	 * Constructor for the codeController class
+	 * @param user the current user for this codecontroller
+	 * @param controller the main controller that controls this controller
+	 */
 	public CodeController(User user, Controller controller) {
 		this.controller = controller;
 		this.user = user;		
@@ -52,6 +48,9 @@ public class CodeController {
 	
 	
 
+	/**
+	 * Run the code step by step. 
+	 */
 	public void step()
 	{
 		Iterator<CodeBlock> iterator = this.code.iterator(this.ptr);
@@ -200,10 +199,17 @@ public class CodeController {
 		return this;
 	}
 
+	/**
+	 * @return Iterator for the CodeBlock
+	 */
 	public Iterator<CodeBlock> viewIterator() {
 		return this.code.viewIterator();
 	}
 
+	/**
+	 * @param id
+	 * @return CodeController without the block specified. Same codeController otherwise
+	 */
 	public CodeController removeBlock(int id) {
 		this.code.removeBlock(id);
 		this.stepper = false;
@@ -213,6 +219,12 @@ public class CodeController {
 		return this;
 	}
 
+	/**
+	 * Edit the current code in panel
+	 * @param id id of the code
+	 * @param newContent 	new content for the code
+	 * @return	code controller with modified code. Same codeController if fails otherwise. 
+	 */
 	public CodeController editCode(int id, String newContent)
 	{
 		this.code.edit(id, newContent);
@@ -235,11 +247,18 @@ public class CodeController {
 	}
 
 
+	/**
+	 * @return current Code
+	 */
 	public Code getCode()
 	{
 		return this.code;
 	}
 
+	/**
+	 * @param code
+	 * @return CodeController with merged code.
+	 */
 	public CodeController mergeCode(Code code)
 	{
 		this.code.merge(code);
@@ -248,6 +267,9 @@ public class CodeController {
 	}
 
 
+ 	/**
+ 	 * @return CodeController with a new empty Code. 
+ 	 */
  	public CodeController clear()
  	{
  		this.code = new Code();
@@ -257,11 +279,17 @@ public class CodeController {
         return this;
 	}
 	
+	/**
+	 * @return CodeBlock that is currently selected
+	 */
 	public CodeBlock getCurrentBlock()
 	{
 		return this.current;
 	}
 	
+	/**
+	 * @param curr
+	 */
 	public void setCurrentBlock(CodeBlock curr)
 	{
 		this.current = curr;
