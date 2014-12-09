@@ -14,7 +14,11 @@ import java.util.*;
  */
 public class User implements Serializable {
 
-    private String username, password;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7392993612295711974L;
+	private String username, password;
     private boolean isAdmin;
     private Map<Grid, Integer> gridsPlayed;
     private Map<Grid, Code> codePlayed_inGrid;
@@ -39,6 +43,7 @@ public class User implements Serializable {
     
     /**
      * Get the code that goes with this grid
+     * @param grid 
      * @return code played by the user on this grid
      */
     public Code getCodePlayedinGrid(Grid grid) {    	
@@ -52,6 +57,14 @@ public class User implements Serializable {
      */
     public void addCodePlayedinGrid(Grid key, Code value) {    	
 		this.codePlayed_inGrid.put(key, value);   	
+    }
+    
+    /**
+     * reset code to the grid pass as a parameter
+     * @param key grid to look for
+     */
+    public void resetCodePlayedinGrid(Grid key) {    	
+		this.codePlayed_inGrid.put(key, new Code());   	
     }
         
     /**
@@ -92,11 +105,21 @@ public class User implements Serializable {
         return this;
     }
     
+    /**
+     * @param grid
+     * @return the score of the user in the current grid
+     */
     public int getGridScore(Grid grid) {
         Integer score = this.getGridsPlayed().get(grid);
         return score == null ? 0 : score;
     }
 
+    /**
+     * @param name of the macro
+     * @param code that the macro will include
+     * @param panelMode the current mode of the panel
+     * @return User with the macro added
+     */
     public User addMacro(String name, Code code, Stack<ActionPanel.PanelMode> panelMode)
     {
         this.macros.put(name, code);
@@ -104,16 +127,28 @@ public class User implements Serializable {
         return this;
     }
 
+    /**
+     * @param name
+     * @return the code of the macro specified in the name 
+     * if it does not exists it will return null
+     */
     public Code getMacro(String name)
     {
         return this.macros.get(name);
     }
 
+    /**
+     * @param name
+     * @return The panel mode
+     */
     public Stack<ActionPanel.PanelMode> getMacroPanelMode(String name)
     {
         return this.macrosActionPanel.get(name);
     }
 
+    /**
+     * @return Set of string of all macros of this user
+     */
     public Set<String> getMacros()
     {
         return this.macros.keySet();
@@ -154,7 +189,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return this.username + (isAdmin ? " (admin)" : "");
+        return this.username + (this.isAdmin ? " (admin)" : "");
     }
 
 

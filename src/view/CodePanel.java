@@ -55,98 +55,98 @@ public class CodePanel extends JScrollPane {
     {
         CodeBlockPanel codeBlockPanel;
         List<CodeBlockPanel> value = new ArrayList<CodeBlockPanel>();
-        this.panel.remove(filler);
+        this.panel.remove(this.filler);
 
-        c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.NORTHWEST;
+        this.c = new GridBagConstraints();
+        this.c.anchor = GridBagConstraints.NORTHWEST;
 
-        c.gridx = col;
-        c.gridy = row;
+        this.c.gridx = this.col;
+        this.c.gridy = this.row;
 
         switch(codeBlock.getCodetype().getType())
         {
             case IF:
             case WHILE:
-                codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel);
+                codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), this.controller, this.playPanel);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
                 
-                if(current)
+                if(this.current)
                 {	
                 	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
                 }
                 
-                this.panel.add(codeBlockPanel, c);
-                col++;
+                this.panel.add(codeBlockPanel, this.c);
+                this.col++;
                 if (codeBlock.getCondition() != null)
                 {
-                    c.gridx = col;
-                    codeBlockPanel = new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), controller, this.playPanel);
+                    this.c.gridx = this.col;
+                    codeBlockPanel = new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), this.controller, this.playPanel);
                     
 
-                    if(current)
+                    if(this.current)
                     {	
                     	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
                     }
 
-                    this.panel.add(codeBlockPanel, c);
+                    this.panel.add(codeBlockPanel, this.c);
                     value.add(codeBlockPanel);
-                    row++;
+                    this.row++;
                 }
                 break;
             	case ELSE:
-                c.gridx = --col;
-                codeBlockPanel = new CodeBlockPanel("ELSE", codeBlock.getId(), controller, this.playPanel);
+                this.c.gridx = --this.col;
+                codeBlockPanel = new CodeBlockPanel("ELSE", codeBlock.getId(), this.controller, this.playPanel);
 
-                if(current)
+                if(this.current)
                 {	
                 	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
                 }
 
-                this.panel.add(codeBlockPanel, c);
+                this.panel.add(codeBlockPanel, this.c);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
-                col++;
-                row++;
+                this.col++;
+                this.row++;
                 break;
             	case END:
-                c.gridx = --col;
-                codeBlockPanel = new CodeBlockPanel("END", codeBlock.getId(), controller, this.playPanel);
+                this.c.gridx = --this.col;
+                codeBlockPanel = new CodeBlockPanel("END", codeBlock.getId(), this.controller, this.playPanel);
                 
-                if(current)
+                if(this.current)
                 {	
                 	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
                 }
 
-                this.panel.add(codeBlockPanel, c);
+                this.panel.add(codeBlockPanel, this.c);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
-                row++;
+                this.row++;
                 break;
             case ACTION:
-                codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel);
+                codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), this.controller, this.playPanel);
 
-                if(current)
+                if(this.current)
                 {	
                 	codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
                 }
 
-                this.panel.add(codeBlockPanel, c);
+                this.panel.add(codeBlockPanel, this.c);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
-                row++;
+                this.row++;
                 break;
             default: break;
         }
         
 
-        c = new GridBagConstraints();
-        c.gridy = row + 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.gridwidth = 1000;
-        c.fill = GridBagConstraints.BOTH;
-        this.panel.add(filler, c);
+        this.c = new GridBagConstraints();
+        this.c.gridy = this.row + 1;
+        this.c.weightx = 1;
+        this.c.weighty = 1;
+        this.c.gridwidth = 1000;
+        this.c.fill = GridBagConstraints.BOTH;
+        this.panel.add(this.filler, this.c);
 
         this.panel.revalidate();
     }
@@ -166,25 +166,13 @@ public class CodePanel extends JScrollPane {
         Iterator<CodeBlock> iterator = controller.codeController.viewIterator();
         CodeBlock codeBlock;
         while (iterator.hasNext()) {
-        	
-        	codeBlock = iterator.next();
-
-        while (iterator.hasNext()) 
-        {
-        	codeBlock = iterator.next();
-        	current = false;
-        	
-        	if(codeBlock.equals(controller.codeController.getCurrentBlock()))
-        	{	
-        		current = true;
-        	}
+            codeBlock = iterator.next();
             addCodeBlock(codeBlock);
         }
 
-
+        this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
         this.panel.revalidate();
         this.panel.repaint();
-    }
     }
 
     public void updateBlockForEdit(CodeBlockPanel codeBlockPanel)

@@ -3,6 +3,8 @@ package model;
 import java.io.Serializable;
 import java.util.*;
 
+import util.msgBox;
+
 /**
  * @author Allant Gomez
  * @author Chris Mnich
@@ -12,6 +14,10 @@ import java.util.*;
  */
 public class Code implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private CodeBlock head;
     private CodeBlock curr;
     private Stack<CodeBlock> conditionals;
@@ -51,14 +57,20 @@ public class Code implements Serializable {
 
             @Override
             public boolean hasNext() {
-                return current.defaultCondition != null;
+            	if (this.current!= null){
+            		return this.current.defaultCondition != null;
+            	} return false;
             }
 
             @Override
-            public CodeBlock next()                 //TODO fix "if x then nothing else something"
+            public CodeBlock next()                 
             {
-                current = current.defaultCondition;
-                return current;
+            	if (this.current==null){
+            		msgBox.infoBox("No Code to step into.","Warning");
+            		return null;
+            	}
+                this.current = this.current.defaultCondition;
+                return this.current;
             }
 
             @Override
@@ -290,7 +302,11 @@ public class Code implements Serializable {
     public Code removeBlock(int id)
     {
         CodeBlock block = this.references.get(id);
-
+        
+        if (block==null){
+        	msgBox.infoBox("Nothing to undo", "Warning");
+        	return this;
+        }
         switch (block.getCodetype().getType())
         {
             case IF:

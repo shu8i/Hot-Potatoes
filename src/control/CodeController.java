@@ -46,48 +46,48 @@ public class CodeController {
 	 * Main class that will control the code and view
 	 */	
 	public void run () {
-		runPartial(code.getHead());
-		stepper= false;
+		runPartial(this.code.getHead());
+		this.stepper= false;
 	}
 	
 	
 
 	public void step()
 	{
-		Iterator<CodeBlock> iterator = code.iterator(ptr);
+		Iterator<CodeBlock> iterator = this.code.iterator(this.ptr);
 		
-		if(stepper == false)
+		if(this.stepper == false)
 		{
-			ptr = code.getHead();
-			runCodeBlock(ptr);
-			iterator = code.iterator(ptr);
+			this.ptr = this.code.getHead();
+			runCodeBlock(this.ptr);
+			iterator = this.code.iterator(this.ptr);
 			
-			this.setCurrentBlock(ptr);
+			this.setCurrentBlock(this.ptr);
 			
 			
-			this.setCurrentBlock(ptr);
+			this.setCurrentBlock(this.ptr);
 			
-			ptr = iterator.next();
-			stepper = true;
+			this.ptr = iterator.next();
+			this.stepper = true;
 		}
 		else
 		{
-			runCodeBlock(ptr);
+			runCodeBlock(this.ptr);
 			
-			this.setCurrentBlock(ptr);
+			this.setCurrentBlock(this.ptr);
 			
 
 			
-			this.setCurrentBlock(ptr);
+			this.setCurrentBlock(this.ptr);
 			
-			ptr = iterator.next();
+			this.ptr = iterator.next();
 		}
 	}
 
 	private void runPartial(CodeBlock head)
 	{
 		runCodeBlock(head);
-		Iterator<CodeBlock> iterator = code.iterator(head);
+		Iterator<CodeBlock> iterator = this.code.iterator(head);
 		while (iterator.hasNext())
 		{
 			runCodeBlock(iterator.next());
@@ -132,15 +132,15 @@ public class CodeController {
 		switch (condition)
 		{
 		case "FACING LEFT":
-			return controller.robotController.facing(LEFT);
+			return this.controller.robotController.facing(LEFT);
 		case "FACING RIGHT":
-			return controller.robotController.facing(RIGHT);
+			return this.controller.robotController.facing(RIGHT);
 		case "FACING DOWN":
-			return controller.robotController.facing(DOWN);
+			return this.controller.robotController.facing(DOWN);
 		case "FACING UP":
-			return controller.robotController.facing(UP);
+			return this.controller.robotController.facing(UP);
 		default:
-			return controller.robotController.dirIsFree();
+			return this.controller.robotController.dirIsFree();
 		}
 	}
 
@@ -150,16 +150,16 @@ public class CodeController {
 		switch (codeText)
 		{
 		case "MOVE":
-			controller.robotController.move();
+			this.controller.robotController.move();
 			break;
 		case "TURN LEFT":
-			controller.robotController.turnLeft();
+			this.controller.robotController.turnLeft();
 			break;
 		case "PUT POTATO":
-			controller.robotController.drop();
+			this.controller.robotController.drop();
 			break;
 		case "PICK POTATO":
-			controller.robotController.pickup();
+			this.controller.robotController.pickup();
 			break;
 		case "END":
 		default:
@@ -194,9 +194,9 @@ public class CodeController {
 	public CodeController addCodeBlock(CodeBlock codeBlock){
 		this.code.add(codeBlock);
 		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
-		stepper = false;
-		ptr = code.getHead();
-		ptr = code.getHead();
+		this.stepper = false;
+		this.ptr = this.code.getHead();
+		this.ptr = this.code.getHead();
 		return this;
 	}
 
@@ -206,19 +206,22 @@ public class CodeController {
 
 	public CodeController removeBlock(int id) {
 		this.code.removeBlock(id);
-		stepper = false;
-		ptr = code.getHead();
-		ptr = code.getHead();
+		this.stepper = false;
+		this.ptr = this.code.getHead();
+		this.ptr = this.code.getHead();
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
 		return this;
 	}
 
 	public CodeController editCode(int id, String newContent)
 	{
 		this.code.edit(id, newContent);
-		stepper = false;
-		ptr = code.getHead();
-		stepper = false;
-		ptr = code.getHead();
+		this.stepper = false;
+		this.ptr = this.code.getHead();
+		this.stepper = false;
+		this.ptr = this.code.getHead();
+		
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
 
 		return this;
 	}
@@ -228,6 +231,7 @@ public class CodeController {
 	 */
 	public void setCode(Code code) {
 		this.code = code;
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
 	}
 
 
@@ -239,6 +243,7 @@ public class CodeController {
 	public CodeController mergeCode(Code code)
 	{
 		this.code.merge(code);
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
 		return this;
 	}
 
@@ -246,18 +251,19 @@ public class CodeController {
  	public CodeController clear()
  	{
  		this.code = new Code();
- 		stepper = false;
-		ptr = code.getHead();
+ 		this.user.resetCodePlayedinGrid(this.controller.getCurrent_grid());
+ 		this.stepper = false;
+		this.ptr = this.code.getHead();
         return this;
 	}
 	
 	public CodeBlock getCurrentBlock()
 	{
-		return current;
+		return this.current;
 	}
 	
 	public void setCurrentBlock(CodeBlock curr)
 	{
-		current = curr;
+		this.current = curr;
 	}
 }

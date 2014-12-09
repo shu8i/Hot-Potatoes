@@ -37,7 +37,7 @@ public class PlayPanel extends JPanel {
     private LoginPanel loginPanel;
     private StudentPanel predecessor;
     private JFrame parent;
-    private Controller controller;
+    Controller controller;
     private Grid grid;
     private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu, stepMenu;
     public HintPanel hintPanel;
@@ -46,7 +46,7 @@ public class PlayPanel extends JPanel {
     public MacroPanel macroPanel;
     public ActionPanel actionPanel;
 
-    private User user;
+    User user;
 
     public PlayPanel(JFrame parent, LoginPanel loginPanel, StudentPanel predecessor, Controller controller, Grid grid, User user) {
         super(layout);
@@ -68,7 +68,7 @@ public class PlayPanel extends JPanel {
         highScore = controller.userController.getGridScore(grid);
         score = 0;
         String scoreString = score.toString(); 
-        hintPanel.updateHint("SCORE:" + scoreString + "     " + "HIGH SCORE:" + highScore, Color.blue);
+        this.hintPanel.updateHint("SCORE:" + scoreString + "     " + "HIGH SCORE:" + highScore, Color.blue);
 
         initPanels();
         
@@ -106,7 +106,7 @@ public class PlayPanel extends JPanel {
                        if (scoreChange == true)
                        {
                     	   PlayPanel.this.user.getGridsPlayed().put(PlayPanel.this.grid, score);
-                    	   hintPanel.updateHint("SCORE:" + score.toString() + "     " + "HIGH SCORE:" + PlayPanel.this.controller.userController.getGridScore(PlayPanel.this.grid), Color.blue);
+                    	   PlayPanel.this.hintPanel.updateHint("SCORE:" + score.toString() + "     " + "HIGH SCORE:" + PlayPanel.this.controller.userController.getGridScore(PlayPanel.this.grid), Color.blue);
                        }
                     }
                 });
@@ -193,45 +193,45 @@ public class PlayPanel extends JPanel {
             }
         });
 
-        add(this.gridPanel, c);
+        add(this.gridPanel, this.c);
 
-        c.gridx = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        add(new JPanel(), c);
+        this.c.gridx = 1;
+        this.c.weightx = 1;
+        this.c.weighty = 1;
+        add(new JPanel(), this.c);
 
-        c = new GridBagConstraints();
-        c.gridx = 2;
+        this.c = new GridBagConstraints();
+        this.c.gridx = 2;
         JPanel panel = new JPanel();
         panel.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
         panel.setPreferredSize(new Dimension(300, 500));
-        add(this.codePanel, c);
+        add(this.codePanel, this.c);
 
-        c.gridy = 1;
-        c.gridx = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        add(new JPanel(), c);
+        this.c.gridy = 1;
+        this.c.gridx = 0;
+        this.c.weightx = 1;
+        this.c.weighty = 1;
+        add(new JPanel(), this.c);
 
 
-        c = new GridBagConstraints();
-        c.gridy = 2;
-        c.gridx = 0;
+        this.c = new GridBagConstraints();
+        this.c.gridy = 2;
+        this.c.gridx = 0;
         panel = new JPanel();
         panel.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
         panel.setPreferredSize(new Dimension(500, 100));
-        add(this.actionPanel, c);
+        add(this.actionPanel, this.c);
 
-        c.gridx = 2;
+        this.c.gridx = 2;
         panel = new JPanel();
-        add(this.macroPanel, c);
+        add(this.macroPanel, this.c);
 
-        c.gridx = 0;
-        c.gridy = 3;
-        add(this.hintPanel, c);
+        this.c.gridx = 0;
+        this.c.gridy = 3;
+        add(this.hintPanel, this.c);
 
         updateMenu();
-        this.parent.add(this, c);
+        this.parent.add(this, this.c);
         this.parent.pack();
         this.parent.setLocationRelativeTo(null);
     }
@@ -244,8 +244,8 @@ public class PlayPanel extends JPanel {
     }
 
     public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
-                clearMenu, runMenu, stepMenu, undoMenu, saveMacroMenu, backMenu));
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", this.loginPanel, this.controller, this,
+                this.clearMenu, this.runMenu, this.stepMenu, this.undoMenu, this.saveMacroMenu, this.backMenu));
     }
 
 }

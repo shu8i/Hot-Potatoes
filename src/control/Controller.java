@@ -22,10 +22,25 @@ public class Controller
 {
 
     private User user;
+    /**
+     * Controller for the users
+     */
     public UserController userController;
+    /**
+     * Controller for the grids
+     */
     public GridController gridController;
+    /**
+     * Controller for the robot
+     */
     public RobotController robotController;
+    /**
+     * Controller for the code
+     */
     public CodeController codeController;
+    /**
+     * Playpanel view
+     */
     public PlayPanel playPanel;
     
     /**
@@ -35,6 +50,10 @@ public class Controller
     
     private static Backend mBackend = Backend.readDatabase();
 
+	/**
+	 * @param grid
+	 * @return Controller for this grid
+	 */
 	public Controller initRobot(Grid grid)
     {
 		this.setCurrent_grid(grid);
@@ -42,6 +61,10 @@ public class Controller
         return this;
     }
 
+    /**
+     * @param playPanel
+     * @return Controller for the playpanel
+     */
     public Controller initPlay(PlayPanel playPanel)
     {
         this.playPanel = playPanel;
@@ -53,12 +76,16 @@ public class Controller
      * @param username  the username to be checked for
      * @return  whether the user exists or not
      */
-    public boolean doesUserExist( String username ) {
+    public static boolean doesUserExist( String username ) {
         return mBackend.getUsers().get(username) != null;
     }
     
     //returns grids played for the user assigned to this controller
     
+    /**
+     * @param user
+     * @return Map
+     */
     public Map<Grid, Integer> getGridsPlayed(User user)
     {
     	return user.getGridsPlayed();
@@ -70,7 +97,7 @@ public class Controller
      * @param password the password
      * @return whether the password matches the user account
      */
-    public boolean doesPasswordMatch(String username, String password) {
+    public static boolean doesPasswordMatch(String username, String password) {
         return doesUserExist(username) && mBackend.getUsers().get(username).getPassword().equals(password);
     }
 
@@ -81,22 +108,25 @@ public class Controller
      */
     public void login(String username) {
         this.user = mBackend.getUsers().get(username);
-        this.userController = new UserController(user);
-        this.codeController = new CodeController(user, this);
+        this.userController = new UserController(this.user);
+        this.codeController = new CodeController(this.user, this);
     }
 
     /**
      * Saves the database.
      */
-    public void saveDatabase() {
+    public static void saveDatabase() {
         mBackend.saveDatabase();
     }
 
     /**
      * Logs the user out.
+     * @param loginPanel 
+     * @param currentPanel 
+     * @param <T> 
      */
-	public <T extends JPanel> void logout(LoginPanel loginPanel, T currentPanel) {
-        this.saveDatabase();
+	public static <T extends JPanel> void logout(LoginPanel loginPanel, T currentPanel) {
+        Controller.saveDatabase();
         currentPanel.setVisible(false);
         loginPanel.parent().setJMenuBar(null);
         loginPanel.parent().setTitle("Hot Potatoes");
@@ -168,7 +198,7 @@ public class Controller
      * Returns the grids in the system
      * @return a map of grid name -> grid
      */
-    public Map<String, Grid> getGrids() {
+    public static Map<String, Grid> getGrids() {
         return mBackend.getGrids();
     }
 
@@ -176,7 +206,7 @@ public class Controller
      * Checks whether there is at least one admin available in the system.
      * @return true/false
      */
-    public boolean doesAdminExist() {
+    public static boolean doesAdminExist() {
         for(final Map.Entry<String, User> entry : mBackend.getUsers().entrySet()) {
             if (entry.getValue().isAdmin()) {
                 return true;
@@ -185,10 +215,16 @@ public class Controller
         return false;
     }
 
+	/**
+	 * @return Grid // the current grid being played.
+	 */
 	public Grid getCurrent_grid() {
-		return current_grid;
+		return this.current_grid;
 	}
 
+	/**
+	 * @param current_grid
+	 */
 	public void setCurrent_grid(Grid current_grid) {
 		this.current_grid = current_grid;
 	}
