@@ -85,17 +85,15 @@ public class UserController {
 		return true;
 	}
 
-	/**
-	 * Gets the user's score on a grid, if that grid has been played
-	 * 
-	 * @param grid
-	 *            the grid for which the score should be pulled
-	 * @return a score of 0-100%
-	 */
-	public int getGridScore(Grid grid) {
-		Integer score = this.user.getGridsPlayed().get(grid.getName());
-		return score == null ? 0 : score;
-	}
+    /**
+     * Gets the user's score on a grid, if that grid has been played
+     * @param grid the grid for which the score should be pulled
+     * @return a score of 0-100%
+     */
+    public int getGridScore(Grid grid) {
+        Integer score = this.user.getGridsPlayed().get(grid.getName());
+        return score == null ? 0 : 100 * score / grid.numPotatoes();
+    }
 
 	public UserController addMacro(String name, Code code,
 			Stack<ActionPanel.PanelMode> panelMode)

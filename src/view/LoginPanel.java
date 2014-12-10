@@ -29,11 +29,15 @@ import control.Controller;
  */
 public class LoginPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2867724725971487756L;
 	protected static GridBagLayout layout = new GridBagLayout();
 	protected GridBagConstraints c = new GridBagConstraints();
-	private JFrame parent;
-	private JTextField usernameTextfield;
-	private JPasswordField passwordTextfield;
+	JFrame parent;
+	JTextField usernameTextfield;
+	JPasswordField passwordTextfield;
 
 	/**
 	 * Represents the panel, where a user can log in.
@@ -120,71 +124,71 @@ public class LoginPanel extends JPanel {
 		this.usernameTextfield.addKeyListener(l);
 		this.passwordTextfield.addKeyListener(l);
 
-		c.anchor = GridBagConstraints.WEST;
+		this.c.anchor = GridBagConstraints.WEST;
 		titleLabel.setFont(Constants.FONT_OPEN_SANS_20);
 		titleLabel.setForeground(Constants.COLOR_SMOOTH_GREEN);
-		add(titleLabel, c);
+		add(titleLabel, this.c);
 
-		c = new GridBagConstraints();
-		c.gridx = 1;
-		c.gridwidth = 23;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(new JPanel(), c);
+		this.c = new GridBagConstraints();
+		this.c.gridx = 1;
+		this.c.gridwidth = 23;
+		this.c.fill = GridBagConstraints.HORIZONTAL;
+		add(new JPanel(), this.c);
 
-		c = new GridBagConstraints();
-		c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
+		this.c = new GridBagConstraints();
+		this.c.gridy = 1;
+		this.c.anchor = GridBagConstraints.WEST;
 		usernameLabel.setFont(Constants.FONT_OPEN_SANS_14);
 		usernameLabel.setForeground(Color.GRAY);
-		add(usernameLabel, c);
+		add(usernameLabel, this.c);
 
-		c = new GridBagConstraints();
-		c.gridx = 1;
-		c.gridy = 1;
-		c.gridwidth = 6;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(new JPanel(), c);
+		this.c = new GridBagConstraints();
+		this.c.gridx = 1;
+		this.c.gridy = 1;
+		this.c.gridwidth = 6;
+		this.c.fill = GridBagConstraints.HORIZONTAL;
+		add(new JPanel(), this.c);
 
-		c = new GridBagConstraints();
-		c.gridx = 7;
-		c.gridy = 1;
-		c.gridwidth = 16;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(usernameTextfield, c);
+		this.c = new GridBagConstraints();
+		this.c.gridx = 7;
+		this.c.gridy = 1;
+		this.c.gridwidth = 16;
+		this.c.fill = GridBagConstraints.HORIZONTAL;
+		add(this.usernameTextfield, this.c);
 
-		c = new GridBagConstraints();
-		c.gridy = 2;
-		c.anchor = GridBagConstraints.WEST;
+		this.c = new GridBagConstraints();
+		this.c.gridy = 2;
+		this.c.anchor = GridBagConstraints.WEST;
 		passwordLabel.setFont(Constants.FONT_OPEN_SANS_14);
 		passwordLabel.setForeground(Color.GRAY);
-		add(passwordLabel, c);
+		add(passwordLabel, this.c);
 
-		c = new GridBagConstraints();
-		c.gridx = 1;
-		c.gridy = 2;
-		c.gridwidth = 6;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(new JPanel(), c);
+		this.c = new GridBagConstraints();
+		this.c.gridx = 1;
+		this.c.gridy = 2;
+		this.c.gridwidth = 6;
+		this.c.fill = GridBagConstraints.HORIZONTAL;
+		add(new JPanel(), this.c);
 
-		c = new GridBagConstraints();
-		c.gridx = 7;
-		c.gridy = 2;
-		c.gridwidth = 16;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(passwordTextfield, c);
+		this.c = new GridBagConstraints();
+		this.c.gridx = 7;
+		this.c.gridy = 2;
+		this.c.gridwidth = 16;
+		this.c.fill = GridBagConstraints.HORIZONTAL;
+		add(this.passwordTextfield, this.c);
 
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 21;
-		add(hintPanel, c);
+		this.c = new GridBagConstraints();
+		this.c.gridx = 0;
+		this.c.gridy = 3;
+		this.c.gridwidth = 21;
+		add(hintPanel, this.c);
 
-		c = new GridBagConstraints();
-		c.gridx = 22;
-		c.gridy = 3;
-		c.fill = GridBagConstraints.HORIZONTAL;
+		this.c = new GridBagConstraints();
+		this.c.gridx = 22;
+		this.c.gridy = 3;
+		this.c.fill = GridBagConstraints.HORIZONTAL;
 		loginButton.setFocusable(false);
-		add(loginButton, c);
+		add(loginButton, this.c);
 
 	}
 
@@ -196,6 +200,9 @@ public class LoginPanel extends JPanel {
 		this.passwordTextfield.setText("");
 	}
 
+	/**
+	 * @return parent object
+	 */
 	public JFrame parent() {
 		return this.parent;
 	}
