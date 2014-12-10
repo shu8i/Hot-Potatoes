@@ -9,10 +9,8 @@ import model.Grid;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class GridController
-{
-	   public Grid copy(Grid grid)
-	    {
-	        return new Grid(grid);
-	    }
+public class GridController {
+	public Grid copy(Grid grid) {
+		return new Grid(grid);
+	}
 }

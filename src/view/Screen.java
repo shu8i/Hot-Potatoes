@@ -1,6 +1,6 @@
 package view;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 /**
  * @author Allant Gomez
@@ -11,6 +11,5 @@ import javax.swing.*;
  */
 
 public class Screen extends JFrame {
-
 
 }

@@ -10,24 +10,26 @@ import view.ActionPanel;
  * @author Zachary Guadagno
  */
 public class ActionPanelController {
-    
-    ActionPanel actionPanel;
 
-    
-    /**
-     * Creates a new Action Panel Controller
-     * @param actionPanel the Action Panel
-     */
-    public ActionPanelController(ActionPanel actionPanel){
-        this.actionPanel=actionPanel;
-    }
-    
-    /**
-     * Updates the Action Panel
-     * @return whether the Action Panel is successfully updated
-     */
-    public boolean update(){
-        return true;
-    }
-    
+	ActionPanel actionPanel;
+
+	/**
+	 * Creates a new Action Panel Controller
+	 * 
+	 * @param actionPanel
+	 *            the Action Panel
+	 */
+	public ActionPanelController(ActionPanel actionPanel) {
+		this.actionPanel = actionPanel;
+	}
+
+	/**
+	 * Updates the Action Panel
+	 * 
+	 * @return whether the Action Panel is successfully updated
+	 */
+	public boolean update() {
+		return true;
+	}
+
 }

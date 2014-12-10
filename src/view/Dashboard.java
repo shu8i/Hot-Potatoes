@@ -7,10 +7,11 @@ package view;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class Dashboard extends Screen
-{
+public class Dashboard extends Screen {
 
-	//Displays the Dashboard for either the student or admin depending on login.
-	//Dashboard redirects to LevelSelect for Student user.  Dashboard redirects to either BuildScreen, LevelSelect, or Registration for Admin users.
+	// Displays the Dashboard for either the student or admin depending on
+	// login.
+	// Dashboard redirects to LevelSelect for Student user. Dashboard redirects
+	// to either BuildScreen, LevelSelect, or Registration for Admin users.
 
 }

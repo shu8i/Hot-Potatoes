@@ -5,9 +5,6 @@ package view;
  */
 public enum BuildPanelSelection {
 
-    KAREL,
-    HOME,
-    POTATO,
-    WALL
+	KAREL, HOME, POTATO, WALL
 
 }

@@ -9,20 +9,17 @@ package model;
  */
 public enum Direction {
 
-    UP("UP"),
-    DOWN("DOWN"),
-    LEFT("LEFT"),
-    RIGHT("RIGHT");
+	UP("UP"), DOWN("DOWN"), LEFT("LEFT"), RIGHT("RIGHT");
 
-    private final String direction;
+	private final String direction;
 
-    private Direction(final String direction) {
-        this.direction = direction;
-    }
+	private Direction(final String direction) {
+		this.direction = direction;
+	}
 
-    @Override
-    public String toString() {
-        return direction;
-    }
+	@Override
+	public String toString() {
+		return direction;
+	}
 
 }

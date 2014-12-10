@@ -1,15 +1,18 @@
 package control;
 
-import model.Code;
-import model.CodeBlock;
-import model.User;
-import static model.Direction.*;
+import static model.Direction.DOWN;
+import static model.Direction.LEFT;
+import static model.Direction.RIGHT;
+import static model.Direction.UP;
 
 import java.util.Iterator;
 import java.util.TimerTask;
 
 import javax.swing.SwingWorker;
 
+import model.Code;
+import model.CodeBlock;
+import model.User;
 import util.Constants;
 
 /**
@@ -30,40 +33,43 @@ public class CodeController extends SwingWorker<Void, Void> {
 	private boolean stepper;
 	private CodeBlock ptr, current;
 
-
 	/**
 	 * Constructor for the codeController class
-	 * @param user the current user for this codecontroller
-	 * @param controller the main controller that controls this controller
+	 * 
+	 * @param user
+	 *            the current user for this codecontroller
+	 * @param controller
+	 *            the main controller that controls this controller
 	 */
 	public CodeController(User user, Controller controller) {
 		this.controller = controller;
-		this.user = user;		
+		this.user = user;
 		this.stepper = false;
 		this.code = new Code();
 	}
 
-	
 	/**
 	 * Main class that will control the code and view
-	 */	
-	public void runCode () {
+	 */
+	public void runCode() {
 		runPartial(this.code.getHead(), false);
-		this.stepper= false;
+		this.stepper = false;
 	}
-	
+
 	@Override
 	public void done() {
 		if (this.controller.robotController.getRobot().getCoordinate()
 				.equals(this.controller.playPanel.grid.getHome().coordinates())) {
-			this.controller.userController.addGridPlayed(this.controller.playPanel.grid,
+			this.controller.userController.addGridPlayed(
+					this.controller.playPanel.grid,
 					this.controller.robotController.backpackSize());
-			this.controller.playPanel.hintPanel.updateHint(
-					"Level Completed. "
-							+ this.controller.userController
-									.getGridScore(this.controller.playPanel.grid)
-							+ "% potatoes collected.",
-					Constants.COLOR_DARK_GREEN);
+			this.controller.playPanel.hintPanel
+					.updateHint(
+							"Level Completed. "
+									+ this.controller.userController
+											.getGridScore(this.controller.playPanel.grid)
+									+ "% potatoes collected.",
+							Constants.COLOR_DARK_GREEN);
 			new java.util.Timer().schedule(new TimerTask() {
 				@Override
 				public void run() {
@@ -73,99 +79,77 @@ public class CodeController extends SwingWorker<Void, Void> {
 		}
 		this.controller.playPanel.gridPanel.softRefresh();
 	}
-	
 
 	/**
-	 * Run the code step by step. 
+	 * Run the code step by step.
 	 */
-/*	public void step()
-	{
-		Iterator<CodeBlock> iterator = this.code.iterator(this.ptr);
-		
-		if(this.stepper == false)
-		{
-			this.ptr = this.code.getHead();
-			runCodeBlock(this.ptr);
-			iterator = this.code.iterator(this.ptr);
-			
-			this.setCurrentBlock(this.ptr);
-			
-			
-			this.setCurrentBlock(this.ptr);
-			
-			this.ptr = iterator.next();
-			this.stepper = true;
+	/*
+	 * public void step() { Iterator<CodeBlock> iterator =
+	 * this.code.iterator(this.ptr);
+	 * 
+	 * if(this.stepper == false) { this.ptr = this.code.getHead();
+	 * runCodeBlock(this.ptr); iterator = this.code.iterator(this.ptr);
+	 * 
+	 * this.setCurrentBlock(this.ptr);
+	 * 
+	 * 
+	 * this.setCurrentBlock(this.ptr);
+	 * 
+	 * this.ptr = iterator.next(); this.stepper = true; } else {
+	 * runCodeBlock(this.ptr);
+	 * 
+	 * this.setCurrentBlock(this.ptr);
+	 * 
+	 * 
+	 * 
+	 * this.setCurrentBlock(this.ptr);
+	 * 
+	 * this.ptr = iterator.next(); } }
+	 */
+
+	private void runPartial(CodeBlock head, boolean stepByStep) {
+		runCodeBlock(head, stepByStep);
+		Iterator<CodeBlock> iterator = this.code.iterator(head);
+		while (iterator.hasNext()) {
+			runCodeBlock(iterator.next(), stepByStep);
 		}
-		else
-		{
-			runCodeBlock(this.ptr);
-			
-			this.setCurrentBlock(this.ptr);
-			
+	}
 
-			
-			this.setCurrentBlock(this.ptr);
-			
-			this.ptr = iterator.next();
+	private void runCodeBlock(CodeBlock codeBlock, boolean stepByStep) {
+
+		// TODO Implement worker threads if we want step by step code running.
+		if (stepByStep) {
+			try {
+				Thread.sleep(1000);
+			} catch (Exception e) {
+			}
+			this.controller.playPanel.gridPanel.softRefresh();
+			this.controller.playPanel.codePanel.markBeingProcessed(codeBlock
+					.getId());
 		}
-	}*/
+		if (codeBlock != null && !codeBlock.getCodetext().isEmpty()) {
+			if (codeBlock.isConditional()) {
+				if (conditionalIsTrue(codeBlock)) {
+					runPartial(codeBlock.getTrueCondition(), stepByStep);
+				} else {
+					if (codeBlock.getFalseCondition() != null)
+						runPartial(codeBlock.getFalseCondition(), stepByStep);
+				}
+			} else if (codeBlock.isLoop()) {
+				while (conditionalIsTrue(codeBlock)) {
+					runPartial(codeBlock.getTrueCondition(), stepByStep);
+				}
+			} else {
+				runAction(codeBlock);
+			}
+		}
+	}
 
-    private void runPartial(CodeBlock head, boolean stepByStep)
-    {
-        runCodeBlock(head, stepByStep);
-        Iterator<CodeBlock> iterator = this.code.iterator(head);
-        while (iterator.hasNext())
-        {
-            runCodeBlock(iterator.next(), stepByStep);
-        }
-    }
-
-    private void runCodeBlock(CodeBlock codeBlock, boolean stepByStep)
-    {
-
-        //TODO Implement worker threads if we want step by step code running.
-        if (stepByStep) {
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-            this.controller.playPanel.gridPanel.softRefresh();
-            this.controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId());
-        }
-        if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
-        {
-            if (codeBlock.isConditional())
-            {
-                if (conditionalIsTrue(codeBlock))
-                {
-                    runPartial(codeBlock.getTrueCondition(), stepByStep);
-                }
-                else
-                {
-                    if (codeBlock.getFalseCondition() != null)
-                        runPartial(codeBlock.getFalseCondition(), stepByStep);
-                }
-            }
-            else if (codeBlock.isLoop())
-            {
-                while (conditionalIsTrue(codeBlock))
-                {
-                    runPartial(codeBlock.getTrueCondition(), stepByStep);
-                }
-            }
-            else
-            {
-                runAction(codeBlock);
-            }
-        }
-    }
-
-	private boolean conditionalIsTrue(CodeBlock codeBlock)
-	{
+	private boolean conditionalIsTrue(CodeBlock codeBlock) {
 		String condition = codeBlock.getCondition();
-		System.out.println("EVALUATING CONDITIONAL " + codeBlock.getCondition());
-		switch (condition)
-		{
+		System.out
+				.println("EVALUATING CONDITIONAL " + codeBlock.getCondition());
+		switch (condition) {
 		case "FACING LEFT":
 			return this.controller.robotController.facing(LEFT);
 		case "FACING RIGHT":
@@ -179,12 +163,10 @@ public class CodeController extends SwingWorker<Void, Void> {
 		}
 	}
 
-	private void runAction(CodeBlock codeBlock)
-	{
+	private void runAction(CodeBlock codeBlock) {
 		String codeText = codeBlock.getCodetext();
 		System.out.println("EXECUTING " + codeBlock.getCodetext());
-		switch (codeText)
-		{
+		switch (codeText) {
 		case "MOVE":
 			this.controller.robotController.move();
 			break;
@@ -203,44 +185,46 @@ public class CodeController extends SwingWorker<Void, Void> {
 		}
 	}
 
-
 	/**
 	 * Edit part of the codeblock
-	 * @param code 
-	 * @return  1 if fails 0 if not
-	 */	
-	public int editCodeBlock(CodeBlock code){
+	 * 
+	 * @param code
+	 * @return 1 if fails 0 if not
+	 */
+	public int editCodeBlock(CodeBlock code) {
 		return 0;
 	}
 
 	/**
 	 * remove entire code block from Code
-	 * @param code 
+	 * 
+	 * @param code
 	 * @return 1 if fails 0 if not
-	 */	
-	public int removeCodeBlock(CodeBlock code){
+	 */
+	public int removeCodeBlock(CodeBlock code) {
 		return 0;
 	}
 
 	/**
 	 * add codeblock to the end of the code
+	 * 
 	 * @param codeBlock
-	 * @return  1 if fails 0 if not
-	 */	
-	public CodeController addCodeBlock(CodeBlock codeBlock){
+	 * @return 1 if fails 0 if not
+	 */
+	public CodeController addCodeBlock(CodeBlock codeBlock) {
 		this.code.add(codeBlock);
-		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(),
+				this.code);
 		this.stepper = false;
 		this.ptr = this.code.getHead();
 		this.ptr = this.code.getHead();
 		return this;
 	}
-	
-	public CodeController undo()
-	    {
-	        this.code.undo();
-	        return this;
-	    }
+
+	public CodeController undo() {
+		this.code.undo();
+		return this;
+	}
 
 	/**
 	 * @return Iterator for the CodeBlock
@@ -251,50 +235,56 @@ public class CodeController extends SwingWorker<Void, Void> {
 
 	/**
 	 * @param id
-	 * @return CodeController without the block specified. Same codeController otherwise
+	 * @return CodeController without the block specified. Same codeController
+	 *         otherwise
 	 */
 	public CodeController removeBlock(int id) {
 		this.code.removeBlock(id);
 		this.stepper = false;
 		this.ptr = this.code.getHead();
 		this.ptr = this.code.getHead();
-		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(),
+				this.code);
 		return this;
 	}
 
 	/**
 	 * Edit the current code in panel
-	 * @param id id of the code
-	 * @param newContent 	new content for the code
-	 * @return	code controller with modified code. Same codeController if fails otherwise. 
+	 * 
+	 * @param id
+	 *            id of the code
+	 * @param newContent
+	 *            new content for the code
+	 * @return code controller with modified code. Same codeController if fails
+	 *         otherwise.
 	 */
-	public CodeController editCode(int id, String newContent)
-	{
+	public CodeController editCode(int id, String newContent) {
 		this.code.edit(id, newContent);
 		this.stepper = false;
 		this.ptr = this.code.getHead();
 		this.stepper = false;
 		this.ptr = this.code.getHead();
-		
-		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
+
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(),
+				this.code);
 
 		return this;
 	}
-	
+
 	/**
-	 * @param code the code to set
+	 * @param code
+	 *            the code to set
 	 */
 	public void setCode(Code code) {
 		this.code = code;
-		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(),
+				this.code);
 	}
-
 
 	/**
 	 * @return current Code
 	 */
-	public Code getCode()
-	{
+	public Code getCode() {
 		return this.code;
 	}
 
@@ -302,42 +292,37 @@ public class CodeController extends SwingWorker<Void, Void> {
 	 * @param code
 	 * @return CodeController with merged code.
 	 */
-	public CodeController mergeCode(Code code)
-	{
+	public CodeController mergeCode(Code code) {
 		this.code.merge(code);
-		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(), this.code);
+		this.user.addCodePlayedinGrid(this.controller.getCurrent_grid(),
+				this.code);
 		return this;
 	}
 
-
- 	/**
- 	 * @return CodeController with a new empty Code. 
- 	 */
- 	public CodeController clear()
- 	{
- 		this.code = new Code();
- 		this.user.resetCodePlayedinGrid(this.controller.getCurrent_grid());
- 		this.stepper = false;
+	/**
+	 * @return CodeController with a new empty Code.
+	 */
+	public CodeController clear() {
+		this.code = new Code();
+		this.user.resetCodePlayedinGrid(this.controller.getCurrent_grid());
+		this.stepper = false;
 		this.ptr = this.code.getHead();
-        return this;
+		return this;
 	}
-	
+
 	/**
 	 * @return CodeBlock that is currently selected
 	 */
-	public CodeBlock getCurrentBlock()
-	{
+	public CodeBlock getCurrentBlock() {
 		return this.current;
 	}
-	
+
 	/**
 	 * @param curr
 	 */
-	public void setCurrentBlock(CodeBlock curr)
-	{
+	public void setCurrentBlock(CodeBlock curr) {
 		this.current = curr;
 	}
-
 
 	@Override
 	public Void doInBackground() throws Exception {
