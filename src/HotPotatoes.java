@@ -38,7 +38,7 @@ public class HotPotatoes extends JFrame {
         game.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                controller.saveDatabase();
+                Controller.saveDatabase();
                 System.exit(0);
             }
         });

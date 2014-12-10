@@ -4,7 +4,13 @@ import model.Code;
 import model.CodeBlock;
 import model.User;
 import static model.Direction.*;
+
 import java.util.Iterator;
+import java.util.TimerTask;
+
+import javax.swing.SwingWorker;
+
+import util.Constants;
 
 /**
  * @author Allant Gomez
@@ -16,7 +22,7 @@ import java.util.Iterator;
  * @see Code
  * @see view.CodePanel
  */
-public class CodeController {
+public class CodeController extends SwingWorker<Void, Void> {
 
 	private Code code;
 	private User user;
@@ -41,17 +47,38 @@ public class CodeController {
 	/**
 	 * Main class that will control the code and view
 	 */	
-	public void run () {
-		runPartial(this.code.getHead());
+	public void runCode () {
+		runPartial(this.code.getHead(), false);
 		this.stepper= false;
 	}
 	
+	@Override
+	public void done() {
+		if (this.controller.robotController.getRobot().getCoordinate()
+				.equals(this.controller.playPanel.grid.getHome().coordinates())) {
+			this.controller.userController.addGridPlayed(this.controller.playPanel.grid,
+					this.controller.robotController.backpackSize());
+			this.controller.playPanel.hintPanel.updateHint(
+					"Level Completed. "
+							+ this.controller.userController
+									.getGridScore(this.controller.playPanel.grid)
+							+ "% potatoes collected.",
+					Constants.COLOR_DARK_GREEN);
+			new java.util.Timer().schedule(new TimerTask() {
+				@Override
+				public void run() {
+					CodeController.this.controller.playPanel.goBack();
+				}
+			}, 5000);
+		}
+		this.controller.playPanel.gridPanel.softRefresh();
+	}
 	
 
 	/**
 	 * Run the code step by step. 
 	 */
-	public void step()
+/*	public void step()
 	{
 		Iterator<CodeBlock> iterator = this.code.iterator(this.ptr);
 		
@@ -81,53 +108,62 @@ public class CodeController {
 			
 			this.ptr = iterator.next();
 		}
-	}
+	}*/
 
-	private void runPartial(CodeBlock head)
-	{
-		runCodeBlock(head);
-		Iterator<CodeBlock> iterator = this.code.iterator(head);
-		while (iterator.hasNext())
-		{
-			runCodeBlock(iterator.next());
-		}
-	}
+    private void runPartial(CodeBlock head, boolean stepByStep)
+    {
+        runCodeBlock(head, stepByStep);
+        Iterator<CodeBlock> iterator = this.code.iterator(head);
+        while (iterator.hasNext())
+        {
+            runCodeBlock(iterator.next(), stepByStep);
+        }
+    }
 
-	private void runCodeBlock(CodeBlock codeBlock)
-	{
+    private void runCodeBlock(CodeBlock codeBlock, boolean stepByStep)
+    {
 
-		//        controller.playPanel.codePanel.markBeingProcessed(CODE_BLOCK.getId());
-		//TODO Implement worker threads if we want step by step code running.
-		if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
-		{
-			if (codeBlock.isConditional())
-			{
-				if (conditionalIsTrue(codeBlock))
-				{
-					runPartial(codeBlock.getTrueCondition());
-				}
-				else
-				{
-					runPartial(codeBlock.getFalseCondition());
-				}
-			}
-			else if (codeBlock.isLoop())
-			{
-				while (conditionalIsTrue(codeBlock))
-				{
-					runPartial(codeBlock.getTrueCondition());
-				}
-			}
-			else
-			{
-				runAction(codeBlock);
-			}
-		}
-	}
+        //TODO Implement worker threads if we want step by step code running.
+        if (stepByStep) {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+            this.controller.playPanel.gridPanel.softRefresh();
+            this.controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId());
+        }
+        if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
+        {
+            if (codeBlock.isConditional())
+            {
+                if (conditionalIsTrue(codeBlock))
+                {
+                    runPartial(codeBlock.getTrueCondition(), stepByStep);
+                }
+                else
+                {
+                    if (codeBlock.getFalseCondition() != null)
+                        runPartial(codeBlock.getFalseCondition(), stepByStep);
+                }
+            }
+            else if (codeBlock.isLoop())
+            {
+                while (conditionalIsTrue(codeBlock))
+                {
+                    runPartial(codeBlock.getTrueCondition(), stepByStep);
+                }
+            }
+            else
+            {
+                runAction(codeBlock);
+            }
+        }
+    }
 
 	private boolean conditionalIsTrue(CodeBlock codeBlock)
 	{
 		String condition = codeBlock.getCondition();
+		System.out.println("EVALUATING CONDITIONAL " + codeBlock.getCondition());
 		switch (condition)
 		{
 		case "FACING LEFT":
@@ -146,6 +182,7 @@ public class CodeController {
 	private void runAction(CodeBlock codeBlock)
 	{
 		String codeText = codeBlock.getCodetext();
+		System.out.println("EXECUTING " + codeBlock.getCodetext());
 		switch (codeText)
 		{
 		case "MOVE":
@@ -198,6 +235,12 @@ public class CodeController {
 		this.ptr = this.code.getHead();
 		return this;
 	}
+	
+	public CodeController undo()
+	    {
+	        this.code.undo();
+	        return this;
+	    }
 
 	/**
 	 * @return Iterator for the CodeBlock
@@ -293,5 +336,12 @@ public class CodeController {
 	public void setCurrentBlock(CodeBlock curr)
 	{
 		this.current = curr;
+	}
+
+
+	@Override
+	public Void doInBackground() throws Exception {
+		runPartial(this.code.getHead(), true);
+		return null;
 	}
 }

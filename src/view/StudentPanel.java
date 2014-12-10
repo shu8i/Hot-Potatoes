@@ -2,12 +2,10 @@ package view;
 
 import control.Controller;
 import model.Grid;
-import model.User;
 import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,9 +31,8 @@ public class StudentPanel extends JPanel {
     private JLabel selectWorldLabel;
     private JPanel worldSelectionPanel;
     private JScrollPane worldSelectionScrollPane;
-    private User user;
 
-    public StudentPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller, User user) {
+    public StudentPanel(JFrame parent, LoginPanel loginPanel, JPanel predecessor, Controller controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -44,6 +41,21 @@ public class StudentPanel extends JPanel {
         this.controller = controller;
         this.predecessor.setVisible(false);
 
+        refresh();
+
+        updateMenu();
+        this.parent.add(this, c);
+        this.parent.pack();
+        this.parent.setLocationRelativeTo(null);
+    }
+
+    public void updateMenu() {
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this));
+    }
+
+    public void refresh() {
+        removeAll();
+
         this.selectWorldLabel = new JLabel("Select A World");
         this.worldSelectionPanel = new JPanel();
         this.worldSelectionScrollPane = new JScrollPane(this.worldSelectionPanel);
@@ -51,15 +63,12 @@ public class StudentPanel extends JPanel {
         this.worldSelectionScrollPane.setPreferredSize(new Dimension(620, 410));
         this.worldSelectionScrollPane.setBorder(null);
         this.worldSelectionPanel.setLayout(layout);
-        
-        this.user = user;
-        
 
         int i = 0, j = 0, numWorlds = this.controller.getGrids().size();
         JButton worldSelectButton;
         for (final Map.Entry<String, Grid> entry : this.controller.getGrids().entrySet()) {
             worldSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
-                    + "HIGH SCORE: " + this.controller.userController.getGridScore(entry.getValue())  + "</center></html>");
+                    + this.controller.userController.getGridScore(entry.getValue())  + "%</center></html>");
             worldSelectButton.setPreferredSize(new Dimension(190, 190));
             worldSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
             worldSelectButton.setOpaque(true);
@@ -71,7 +80,8 @@ public class StudentPanel extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new PlayPanel(StudentPanel.this.parent, StudentPanel.this.loginPanel,
-                            StudentPanel.this, StudentPanel.this.controller, entry.getValue(), StudentPanel.this.user);
+                            StudentPanel.this, StudentPanel.this.controller,
+                            StudentPanel.this.controller.gridController.copy(entry.getValue()));
                 }
             });
 
@@ -140,15 +150,8 @@ public class StudentPanel extends JPanel {
         }
 
         add(this.worldSelectionScrollPane, c);
-
-        updateMenu();
-        this.parent.add(this, c);
-        this.parent.pack();
-        this.parent.setLocationRelativeTo(null);
-    }
-
-    public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this));
+        repaint();
+        revalidate();
     }
 
 }

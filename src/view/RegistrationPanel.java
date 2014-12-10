@@ -220,7 +220,7 @@ public class RegistrationPanel extends JPanel {
                        password = new String(RegistrationPanel.this.password.getPassword());
 
                 if( !username.equals("") && !password.equals("") &&
-                        !RegistrationPanel.this.controller.doesUserExist(username) ) {
+                        !Controller.doesUserExist(username) ) {
                     RegistrationPanel.this.add.setEnabled(true);
                 } else {
                     RegistrationPanel.this.add.setEnabled(false);

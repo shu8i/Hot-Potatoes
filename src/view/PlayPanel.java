@@ -1,6 +1,7 @@
 package view;
 
 import control.Controller;
+import util.Constants;
 import model.Code;
 import model.Grid;
 import model.User;
@@ -13,15 +14,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import java.util.List;
-
-import java.util.List;
-
-import java.util.List;
+import java.util.TimerTask;
 
 /**
  * @author Allant Gomez
@@ -38,7 +33,7 @@ public class PlayPanel extends JPanel {
     private StudentPanel predecessor;
     private JFrame parent;
     Controller controller;
-    private Grid grid;
+    public Grid grid;
     private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu, stepMenu;
     public HintPanel hintPanel;
     public GridPanel gridPanel;
@@ -48,7 +43,14 @@ public class PlayPanel extends JPanel {
 
     User user;
 
-    public PlayPanel(JFrame parent, LoginPanel loginPanel, StudentPanel predecessor, Controller controller, Grid grid, User user) {
+    /**
+     * @param parent
+     * @param loginPanel
+     * @param predecessor
+     * @param controller
+     * @param grid
+     */
+    public PlayPanel(JFrame parent, LoginPanel loginPanel, StudentPanel predecessor, Controller controller, Grid grid) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -98,22 +100,31 @@ public class PlayPanel extends JPanel {
         this.runMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayPanel.this.controller.codeController.run();
+                PlayPanel.this.controller.codeController.runCode();
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                       boolean scoreChange = PlayPanel.this.controller.playPanel.gridPanel.refreshPlayPanelGrid(PlayPanel.this, score, highScore);
-                       if (scoreChange == true)
-                       {
-                    	   PlayPanel.this.user.getGridsPlayed().put(PlayPanel.this.grid, score);
-                    	   PlayPanel.this.hintPanel.updateHint("SCORE:" + score.toString() + "     " + "HIGH SCORE:" + PlayPanel.this.controller.userController.getGridScore(PlayPanel.this.grid), Color.blue);
-                       }
+                    	PlayPanel.this.gridPanel.refresh();
+                        if (PlayPanel.this.controller.robotController.levelFinished())
+                        {
+                            PlayPanel.this.controller.userController.addGridPlayed(
+                                    PlayPanel.this.grid, PlayPanel.this.controller.robotController.backpackSize());
+                            PlayPanel.this.hintPanel.updateHint("Level Completed. " +
+                                    PlayPanel.this.controller.userController.getGridScore(PlayPanel.this.grid)+
+                                    "% potatoes collected.", Constants.COLOR_DARK_GREEN);
+                            new java.util.Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    PlayPanel.this.goBack();
+                                }
+                            }, 5000);
+                        }
                     }
                 });
             }
         });
         
-        this.stepMenu = new JMenuItem("Take Step");
+       /* this.stepMenu = new JMenuItem("Take Step");
         this.stepMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,55 +133,40 @@ public class PlayPanel extends JPanel {
                     @Override
                     public void run() {
                         PlayPanel.this.controller.playPanel.gridPanel.refresh();
+						if (PlayPanel.this.controller.robotController
+								.levelFinished()) {
+							PlayPanel.this.controller.userController
+									.addGridPlayed(
+											PlayPanel.this.grid,
+											PlayPanel.this.controller.robotController
+													.backpackSize());
+							PlayPanel.this.hintPanel
+									.updateHint(
+											"Level Completed. "
+													+ PlayPanel.this.controller.userController
+															.getGridScore(PlayPanel.this.grid)
+													+ "% potatoes collected.",
+											Constants.COLOR_DARK_GREEN);
+							new java.util.Timer().schedule(new TimerTask() {
+								@Override
+								public void run() {
+									PlayPanel.this.goBack();
+								}
+							}, 5000);
+						}
                     }
                 });
             }
-        });
+        });*/
         
-        this.stepMenu = new JMenuItem("Take Step");
+        this.stepMenu = new JMenuItem("Run Step by Step");
         this.stepMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayPanel.this.controller.codeController.step();
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        PlayPanel.this.controller.playPanel.gridPanel.refresh();
-                    }
-                });
+                PlayPanel.this.controller.codeController.execute();
             }
         });
         
-        this.stepMenu = new JMenuItem("Take Step");
-        this.stepMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayPanel.this.controller.codeController.step();
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        PlayPanel.this.controller.playPanel.gridPanel.refresh();
-                        PlayPanel.this.codePanel.refreshPanel();
-                    }
-                });
-            }
-        });
-        
-        this.stepMenu = new JMenuItem("Take Step");
-        this.stepMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayPanel.this.controller.codeController.step();
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        PlayPanel.this.controller.playPanel.gridPanel.refresh();
-                        PlayPanel.this.codePanel.refreshPanel();
-                    }
-                });
-            }
-        });
-
         this.clearMenu = new JMenuItem("Clear");
         this.clearMenu.addActionListener(new ActionListener() {
             @Override
@@ -185,11 +181,7 @@ public class PlayPanel extends JPanel {
         this.backMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayPanel.this.setVisible(false);
-                PlayPanel.this.predecessor.updateMenu();
-                PlayPanel.this.predecessor.setVisible(true);
-                PlayPanel.this.parent.pack();
-                PlayPanel.this.parent.setLocationRelativeTo(null);
+            	PlayPanel.this.goBack();
             }
         });
 
@@ -236,16 +228,32 @@ public class PlayPanel extends JPanel {
         this.parent.setLocationRelativeTo(null);
     }
 
-    private void initPanels() {
-        this.gridPanel = new GridPanel(this.grid, this.controller.robotController.getRobot());
-        this.codePanel = new CodePanel(new JPanel(), this.controller, this);
-        this.actionPanel = new ActionPanel(this.codePanel, this.controller);
-        this.macroPanel = new MacroPanel(this, this.controller);
-    }
+	private void initPanels() {
+		this.gridPanel = new GridPanel(this.grid,
+				this.controller.robotController.getRobot());
+		this.codePanel = new CodePanel(new JPanel(), this.controller, this);
+		this.actionPanel = new ActionPanel(this.codePanel, this.controller);
+		this.macroPanel = new MacroPanel(this, this.controller);
+		this.controller.codeController.clear();
+		this.codePanel.refreshPanel();
+		this.actionPanel.reset();
+	}
 
     public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", this.loginPanel, this.controller, this,
-                this.clearMenu, this.runMenu, this.stepMenu, this.undoMenu, this.saveMacroMenu, this.backMenu));
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
+               clearMenu, runMenu, saveMacroMenu, backMenu));
+    }
+
+     public void goBack()
+    {
+        this.setVisible(false);
+        this.predecessor.updateMenu();
+        this.predecessor.refresh();
+        this.predecessor.setVisible(true);
+        this.parent.pack();
+        this.parent.setLocationRelativeTo(null);
+        this.parent.remove(this);
+
     }
 
 }

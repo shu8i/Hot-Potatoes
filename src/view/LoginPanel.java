@@ -74,14 +74,15 @@ public class LoginPanel extends JPanel
                         new AdminPanel(LoginPanel.this.parent, LoginPanel.this, LoginPanel.this, controller);
                     } else {
                         controller.login(username);
-                        new StudentPanel(LoginPanel.this.parent, LoginPanel.this, LoginPanel.this, controller, controller.getUsers().get(username));
+                        new StudentPanel(LoginPanel.this.parent, LoginPanel.this, LoginPanel.this, controller);
                     }
                 }
             }
         });
         KeyListener l =
                 new KeyListener(){
-                    public void keyPressed(KeyEvent e){
+                    @Override
+					public void keyPressed(KeyEvent e){
                     	if(e.getKeyCode() == KeyEvent.VK_ENTER){
                     		loginButton.doClick();
                     	}  

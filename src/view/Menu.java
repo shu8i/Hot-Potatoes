@@ -37,7 +37,7 @@ public class Menu<T extends JPanel> {
         logoutMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Menu.this.controller.logout(Menu.this.loginPanel, Menu.this.currentPanel);
+                Controller.logout(Menu.this.loginPanel, Menu.this.currentPanel);
             }
         });
         this.gameMenu.add(logoutMenu);

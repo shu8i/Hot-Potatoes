@@ -11,21 +11,11 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 
 import javax.swing.*;
-
-import java.awt.*;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import model.Grid;
 import util.Constants;
 import control.Controller;
-import control.UserController;
 
 /**
  * @author Allant Gomez
@@ -34,24 +24,22 @@ import control.UserController;
  * @author Steven Rengifo
  * @author Zachary Guadagno
  */
-public class ScoreView extends JPanel 
+public class ScorePanel extends JPanel
 {
 
     //TODO When a teacher selects a level, this screen comes up and shows the current scores of their students
 	protected static GridBagLayout layout = new GridBagLayout();
     protected  GridBagConstraints c = new GridBagConstraints();
     private LoginPanel loginPanel;
+    private AdminPanel predecessor;
     private JFrame parent;
     private Controller controller;
     private JLabel selectWorldLabel;
     private JPanel worldSelectionPanel;
     private JScrollPane worldSelectionScrollPane;
-    private UserController userController;
     private JMenuItem backMenu;
-    private AdminPanel predecessor;
-    private static Grid grid; 
 
-    public ScoreView(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, Controller controller) {
+    public ScorePanel(JFrame parent, LoginPanel loginPanel, AdminPanel predecessor, Controller controller) {
         super(layout);
         super.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.loginPanel = loginPanel;
@@ -59,7 +47,6 @@ public class ScoreView extends JPanel
         this.parent = parent;
         this.controller = controller;
         this.predecessor.setVisible(false);
-        this.userController = controller.userController;
 
         this.selectWorldLabel = new JLabel("Select A World");
         this.worldSelectionPanel = new JPanel();
@@ -68,24 +55,11 @@ public class ScoreView extends JPanel
         this.worldSelectionScrollPane.setPreferredSize(new Dimension(620, 410));
         this.worldSelectionScrollPane.setBorder(null);
         this.worldSelectionPanel.setLayout(layout);
-        
-        this.backMenu = new JMenuItem("Back");
-        this.backMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ScoreView.this.setVisible(false);
-                ScoreView.this.predecessor.updateMenu();
-                ScoreView.this.predecessor.setVisible(true);
-                ScoreView.this.loginPanel.parent().pack();
-                ScoreView.this.loginPanel.parent().setLocationRelativeTo(null);
-            }
-        });
 
         int i = 0, j = 0, numWorlds = this.controller.getGrids().size();
         JButton worldSelectButton;
         for (final Map.Entry<String, Grid> entry : this.controller.getGrids().entrySet()) {
             worldSelectButton = new JButton("<html><center>" + entry.getKey());
-            grid = entry.getValue(); 
             worldSelectButton.setPreferredSize(new Dimension(190, 190));
             worldSelectButton.setBackground(Constants.COLOR_SMOOTH_GREEN);
             worldSelectButton.setOpaque(true);
@@ -96,10 +70,8 @@ public class ScoreView extends JPanel
             worldSelectButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-          
-       
-                	new ScoreList(ScoreView.this.parent, ScoreView.this.loginPanel,
-                            ScoreView.this, ScoreView.this.controller, ScoreView.this.predecessor, ScoreView.grid); 
+                	new StudentScorePanel(ScorePanel.this.parent, ScorePanel.this.loginPanel,
+                            ScorePanel.this, ScorePanel.this.controller, entry.getKey());
                 }
             });
 
@@ -118,6 +90,18 @@ public class ScoreView extends JPanel
                 @Override
                 public void mouseExited(MouseEvent e) {
                     e.getComponent().setBackground(Constants.COLOR_SMOOTH_GREEN);
+                }
+            });
+
+            this.backMenu = new JMenuItem("Back");
+            this.backMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ScorePanel.this.setVisible(false);
+                    ScorePanel.this.predecessor.updateMenu();
+                    ScorePanel.this.predecessor.setVisible(true);
+                    ScorePanel.this.parent.pack();
+                    ScorePanel.this.parent.setLocationRelativeTo(null);
                 }
             });
 
@@ -176,6 +160,6 @@ public class ScoreView extends JPanel
     }
 
     public void updateMenu() {
-        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this, this.backMenu));
+        this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this, backMenu));
     }
 }

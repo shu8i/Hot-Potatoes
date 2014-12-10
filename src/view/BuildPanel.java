@@ -84,7 +84,7 @@ public class BuildPanel extends JPanel {
                     new SaveDialog(BuildPanel.this, BuildPanel.this.gridPanel.getGrid(), BuildPanel.this.controller);
                 } else {
                     BuildPanel.this.controller.updateGrid(BuildPanel.this.gridPanel.getGrid());
-                    BuildPanel.this.controller.saveDatabase();
+                    Controller.saveDatabase();
                     BuildPanel.this.hintPanel.updateHint("Saved Successfully.", Constants.COLOR_DARK_GREEN, 3000);
                 }
             }
@@ -170,7 +170,7 @@ public class BuildPanel extends JPanel {
     public BuildPanel updateLoadMenu() {
         this.loadMenu.removeAll();
         JMenuItem loadMenuSubItem;
-        for (final Map.Entry<String, Grid> entry : this.controller.getGrids().entrySet()) {
+        for (final Map.Entry<String, Grid> entry : Controller.getGrids().entrySet()) {
             loadMenuSubItem = new JMenuItem(entry.getKey());
             loadMenuSubItem.addActionListener(new ActionListener() {
                 @Override
@@ -192,14 +192,14 @@ public class BuildPanel extends JPanel {
     public BuildPanel updateDeleteMenu() {
         this.deleteMenu.removeAll();
         JMenuItem loadMenuSubItem;
-        for (final Map.Entry<String, Grid> entry : this.controller.getGrids().entrySet()) {
+        for (final Map.Entry<String, Grid> entry : Controller.getGrids().entrySet()) {
             loadMenuSubItem = new JMenuItem(entry.getKey());
             loadMenuSubItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     BuildPanel.this.updateGrid();
                     BuildPanel.this.controller.removeGrid(entry.getValue());
-                    BuildPanel.this.controller.saveDatabase();
+                    Controller.saveDatabase();
                     BuildPanel.this.updateLoadMenu();
                     BuildPanel.this.updateDeleteMenu();
                 }

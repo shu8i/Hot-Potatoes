@@ -1,7 +1,6 @@
 package view;
 
 import control.Controller;
-import model.CodeBlock;
 import util.Constants;
 
 import javax.swing.*;

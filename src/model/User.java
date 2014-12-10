@@ -20,7 +20,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -7392993612295711974L;
 	private String username, password;
     private boolean isAdmin;
-    private Map<Grid, Integer> gridsPlayed;
+    private Map<String, Integer> gridsPlayed;
     private Map<Grid, Code> codePlayed_inGrid;
     private Map<String, Code> macros;
     private Map<String, Stack<ActionPanel.PanelMode>> macrosActionPanel;
@@ -35,7 +35,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = encrypt(password);
         this.isAdmin = isAdmin;
-        this.gridsPlayed = new HashMap<Grid, Integer>();
+        this.gridsPlayed = new HashMap<String, Integer>();
         this.codePlayed_inGrid = new HashMap<Grid, Code>();
         this.macros = new HashMap<String, Code>();
         this.macrosActionPanel = new HashMap<String, Stack<ActionPanel.PanelMode>>();
@@ -71,7 +71,7 @@ public class User implements Serializable {
      * Gets a map of grids (worlds) played by the user
      * @return a map of grids (worlds) played by the user
      */
-    public Map<Grid, Integer> getGridsPlayed() {
+    public Map<String, Integer> getGridsPlayed() {
         return this.gridsPlayed;
     }
 
@@ -178,6 +178,17 @@ public class User implements Serializable {
         return this.isAdmin;
     }
 
+	public User addGrid(Grid grid, int potatoesCollected) {
+		if (this.gridsPlayed.get(grid.getName()) != null
+				&& this.gridsPlayed.get(grid.getName()) < potatoesCollected) {
+			this.gridsPlayed.remove(grid.getName());
+			this.gridsPlayed.put(grid.getName(), potatoesCollected);
+		} else if (this.gridsPlayed.get(grid.getName()) == null) {
+			this.gridsPlayed.put(grid.getName(), potatoesCollected);
+		}
+		return this;
+	}
+    
     /**
      * Encrypts a plain text password
      * @param password the plain text password

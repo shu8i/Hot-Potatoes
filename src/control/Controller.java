@@ -6,6 +6,7 @@ import model.Grid;
 import model.User;
 import view.LoginPanel;
 import view.PlayPanel;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -80,16 +81,6 @@ public class Controller
         return mBackend.getUsers().get(username) != null;
     }
     
-    //returns grids played for the user assigned to this controller
-    
-    /**
-     * @param user
-     * @return Map
-     */
-    public Map<Grid, Integer> getGridsPlayed(User user)
-    {
-    	return user.getGridsPlayed();
-    }
 
     /**
      * Checks whether a password provided by the user is correct
@@ -110,6 +101,7 @@ public class Controller
         this.user = mBackend.getUsers().get(username);
         this.userController = new UserController(this.user);
         this.codeController = new CodeController(this.user, this);
+        this.gridController = new GridController();     
     }
 
     /**
@@ -214,6 +206,25 @@ public class Controller
         }
         return false;
     }
+    
+    public static Map<String, Integer> getGridScores(String gridName)
+        {
+            Map<String, User> users = mBackend.getUsers();
+            Map<String, Grid> grids = mBackend.getGrids();
+            Map<String, Integer> scores = new HashMap<String, Integer>();
+            for (final Map.Entry<String, User> userEntry : users.entrySet())
+            {
+                Map<String, Integer> gridsPlayed = userEntry.getValue().getGridsPlayed();
+                for (final Map.Entry<String, Integer> gridEntry : gridsPlayed.entrySet())
+                {
+                    if (gridEntry.getKey().equals(gridName))
+                    {
+                        scores.put(userEntry.getKey(), 100 * gridEntry.getValue() / grids.get(gridName).numPotatoes() );
+                    }
+                }
+            }
+            return scores;
+        }
 
 	/**
 	 * @return Grid // the current grid being played.

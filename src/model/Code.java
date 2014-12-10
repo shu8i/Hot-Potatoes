@@ -34,6 +34,7 @@ public class Code implements Serializable {
     private int ids;
     private Map<Integer, CodeBlock> references;
 
+
     public Code() {
         this.head = new CodeBlock();
         this.curr = head;
@@ -455,6 +456,9 @@ public class Code implements Serializable {
             this.references.put(ids, block);
         }
         add(newCode.head.defaultCondition);
+        if (this.mode.size() > 1) {
+        	this.mode.pop();
+        }
         this.mode.addAll(newCode.mode);
         this.curr = newCode.curr;
         return this;
@@ -503,8 +507,8 @@ public class Code implements Serializable {
         while (!oldCode.mode.isEmpty())
             reversedModes.push(oldCode.mode.pop());
 
-        if (!reversedModes.isEmpty())
-            reversedModes.pop();
+       // if (!reversedModes.isEmpty())
+        //    reversedModes.pop();
 
         while (!reversedConditionals.isEmpty())
             code.conditionals.push(reversedConditionals.pop());
@@ -516,4 +520,32 @@ public class Code implements Serializable {
         code.curr = code.references.get(oldCode.curr.getId());
         return code;
     }
-}
+    public Code undo()
+        {
+            Iterator<CodeBlock> iterator = viewIterator();
+            CodeBlock secondToLast, last;
+            while (iterator.hasNext())
+            {
+                secondToLast = iterator.next();
+                if (iterator.hasNext())
+                    last = iterator.next();
+            }
+            if (this.mode.pop().equals(Mode.ELSE)) return this;
+            if (curr == curr.parent.defaultCondition)
+            {
+                curr = curr.parent;
+                curr.defaultCondition = null;
+            }
+            else if (curr == curr.parent.trueCondition)
+            {
+                curr = curr.parent;
+                curr.trueCondition = null;
+            }
+            else
+           {
+                curr = curr.parent;
+                curr.falseCondition = null;
+            }
+            return this;
+        }
+    }

@@ -1,9 +1,7 @@
 package view;
 
-import model.Block;
+import model.*;
 import model.Robot;
-import model.Grid;
-import model.Coordinate;
 import util.Constants;
 
 import static model.BlockState.*;
@@ -16,6 +14,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Allant Gomez
@@ -31,9 +31,11 @@ public class GridPanel extends JPanel {
     private Grid grid;
     private Robot robot;
     private BuildPanel buildPanel;
+    private Map<Coordinate, GridCell> references;
 
     public GridPanel(final int GRID_SIZE, final BuildPanel buildPanel) {
         setLayout(layout);
+        this.references = new HashMap<Coordinate, GridCell>();
         this.grid = new Grid(GRID_SIZE);
         this.buildPanel = buildPanel;
 
@@ -65,6 +67,7 @@ public class GridPanel extends JPanel {
 
     public GridPanel(final Grid grid, final BuildPanel buildPanel) {
         setLayout(layout);
+        this.references = new HashMap<Coordinate, GridCell>();
         this.grid = grid;
         this.buildPanel = buildPanel;
 
@@ -111,6 +114,7 @@ public class GridPanel extends JPanel {
 
     public GridPanel(final Grid grid, final Robot robot) {
         setLayout(layout);
+        this.references = new HashMap<Coordinate, GridCell>();
         this.grid = grid;
         this.robot = robot;
         refresh();
@@ -164,63 +168,33 @@ public class GridPanel extends JPanel {
         repaint();
         revalidate();
     }
-    
-    //same as refresh but returns a boolean to tell whether there was a high score change
-    
-    public boolean refreshPlayPanelGrid(PlayPanel playPanel, Integer score, Integer highScore)
+
+    public void softRefresh()
     {
-        removeAll();
-        boolean scoreChange = false;
-        for (int row = 0; row < grid.getSize(); row++) {
-            for (int col = 0; col < grid.getSize(); col++) {
-                c.gridx = col;
-                c.gridy = row;
 
-                GridCell gridCell = new GridCell(grid.getSize(), row, col);
-                Border border;
-                if (row < 4) {
-                    if (col < 4) {
-                        border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
-                    } else {
-                        border = new MatteBorder(1, 1, 0, 1, Color.GRAY);
-                    }
-                } else {
-                    if (col < 4) {
-                        border = new MatteBorder(1, 1, 1, 0, Color.GRAY);
-                    } else {
-                        border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
-                    }
-                }
-                gridCell.setBorder(border);
+        for (final Map.Entry<Coordinate, GridCell> entry : this.references.entrySet()) {
 
-                Block block = grid.getBlock(gridCell.coordinate);
-
-                if (!block.isEmpty()) {
-                    if (block.is(KAREL)) {
-                        gridCell.addKarel(false);
-                    }
-                    if (block.is(HOME)) {
-                        gridCell.addHome(false);
-                    }
-                    if (block.is(POTATO)) {
-                        gridCell.addPotato(false);
-                    }
-                    if (block.is(WALL)) {
-                        gridCell.addWall();
-                    }
-                }
-
-                add(gridCell, c);
+            if (entry.getValue().getContent() != null &&
+                    entry.getValue().getContent().equals(BuildPanelSelection.KAREL)) {
+                entry.getValue().removeContent();
             }
-        }
-        if (score >= highScore)
-        {
-        	highScore = score;
-        	scoreChange = true;
+
+            if (!this.grid.getBlock(entry.getKey()).is(POTATO) &&
+                    entry.getValue().getContent() != null &&
+                    entry.getValue().getContent().equals(BuildPanelSelection.POTATO)) {
+                entry.getValue().removeContent();
+            }
+
+            if (this.grid.getBlock(entry.getKey()).is(KAREL)) {
+                entry.getValue().addKarel(false);
+            }
+
+            if (this.grid.getBlock(entry.getKey()).is(POTATO)) {
+                entry.getValue().addPotato(false);
+            }
         }
         repaint();
         revalidate();
-        return scoreChange;
     }
 
     public Grid getGrid() {
@@ -239,6 +213,7 @@ public class GridPanel extends JPanel {
         public GridCell(int gridSize, final BuildPanel buildPanel, int row, int col) {
             this.cellSize = 500 / gridSize;
             this.coordinate = new Coordinate(col + 1, gridSize - row);
+            references.put(this.coordinate, this);
             ((FlowLayout)GridCell.this.getLayout()).setVgap(0);
 
             addMouseListener(new MouseAdapter() {
@@ -314,6 +289,11 @@ public class GridPanel extends JPanel {
         public GridCell(int gridSize, int row, int col) {
             this.cellSize = 500 / gridSize;
             this.coordinate = new Coordinate(col + 1, gridSize - row);
+            if (grid.getBlock(this.coordinate).is(KAREL)) this.content = BuildPanelSelection.KAREL;
+            else if (grid.getBlock(this.coordinate).is(WALL)) this.content = BuildPanelSelection.WALL;
+            else if (grid.getBlock(this.coordinate).is(POTATO)) this.content = BuildPanelSelection.POTATO;
+            else if (grid.getBlock(this.coordinate).is(HOME)) this.content = BuildPanelSelection.HOME;
+            references.put(this.coordinate, this);
             ((FlowLayout)GridCell.this.getLayout()).setVgap(0);
         }
 
@@ -345,7 +325,8 @@ public class GridPanel extends JPanel {
                 GridCell.this.add(GridCell.this.karelWrapper);
                 GridCell.this.revalidate();
                 content = BuildPanelSelection.KAREL;
-                if (EDIT_MODE) GridPanel.this.grid.setKarel(GridCell.this.coordinate);
+                if (EDIT_MODE)
+                    GridPanel.this.grid.setKarel(GridCell.this.coordinate);
                 if (EDIT_MODE) buildPanel.switchKarelActiveStatus();
             } catch(IOException ioe) {}
         }
@@ -383,6 +364,20 @@ public class GridPanel extends JPanel {
             backgroundColor = Color.GRAY;
             content = BuildPanelSelection.WALL;
             GridPanel.this.grid.addWall(GridCell.this.coordinate);
+        }
+
+        public BuildPanelSelection getContent()
+        {
+            return this.content;
+        }
+
+        public GridCell removeContent()
+        {
+            this.removeAll();
+            this.content = null;
+            repaint();
+            revalidate();
+            return this;
         }
 
         @Override

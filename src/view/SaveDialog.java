@@ -47,7 +47,7 @@ public class SaveDialog {
                     return;
                 }
 
-                SaveDialog.this.controller.saveDatabase();
+                Controller.saveDatabase();
                 SaveDialog.this.buildPanel.updateLoadMenu().updateDeleteMenu();
                 SaveDialog.this.buildPanel.enterEditMode(SaveDialog.this.nameTextField.getText());
                 SaveDialog.this.frame.dispatchEvent(new WindowEvent(SaveDialog.this.frame, WindowEvent.WINDOW_CLOSING));
@@ -73,7 +73,7 @@ public class SaveDialog {
                     return;
                 }
 
-                SaveDialog.this.controller.saveDatabase();
+                Controller.saveDatabase();
                 SaveDialog.this.playPanel.macroPanel.refreshPanel();
                 SaveDialog.this.frame.dispatchEvent(new WindowEvent(SaveDialog.this.frame, WindowEvent.WINDOW_CLOSING));
                 SaveDialog.this.playPanel.hintPanel.updateHint("Saved Successfully.", Constants.COLOR_DARK_GREEN, 3000);

@@ -50,7 +50,8 @@ public class Block implements Serializable {
      * @return the block
      */
     public Block add(BlockState state) {
-        this.blockState.add(state);
+    	 if (!is(state))
+    		            this.blockState.add(state);
         return this;
     }
 

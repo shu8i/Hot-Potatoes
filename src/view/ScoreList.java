@@ -9,12 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.*;
-
-import java.awt.*;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,7 +21,6 @@ import model.Grid;
 import model.User;
 import util.Constants;
 import control.Controller;
-import control.UserController;
 
 /**
  * @author Allant Gomez
@@ -85,9 +78,9 @@ public class ScoreList extends JPanel
             }
         });
 
-        int i = 0, j = 0, numStudents = this.controller.getGrids().size();
+        int i = 0, j = 0, numStudents = Controller.getGrids().size();
         JButton studentSelectButton;
-        for (final Map.Entry<String, User> entry : this.controller.getUsers().entrySet())
+        for (final Map.Entry<String, User> entry : Controller.getUsers().entrySet())
         {
         	if(entry.getValue().isAdmin() == true)
         	{
@@ -95,9 +88,9 @@ public class ScoreList extends JPanel
         	}
         	else
         	{
-        		if (highScore != controller.getUsers().get(entry.getKey()).getGridScore(this.grid))
+        		if (highScore != Controller.getUsers().get(entry.getKey()).getGridScore(this.grid))
         		{
-        			highScore = controller.getUsers().get(entry.getKey()).getGridScore(this.grid);
+        			highScore = Controller.getUsers().get(entry.getKey()).getGridScore(this.grid);
         		}
         		studentSelectButton = new JButton("<html><center>" + entry.getKey() + "<br>"
                     + "HIGH SCORE: " + highScore.toString() + "</center></html>");
