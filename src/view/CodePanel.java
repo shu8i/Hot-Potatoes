@@ -68,13 +68,19 @@ public class CodePanel extends JScrollPane {
                 codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel);
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
-                this.panel.add(codeBlockPanel, c);
+                
+                if(codeBlock.getMacroParent() == null)
+                	this.panel.add(codeBlockPanel, c);
+                
                 col++;
                 if (codeBlock.getCondition() != null)
                 {
                     c.gridx = col;
                     codeBlockPanel = new CodeBlockPanel(codeBlock.getCondition(), codeBlock.getId(), controller, this.playPanel);
-                    this.panel.add(codeBlockPanel, c);
+                    
+                    if(codeBlock.getMacroParent() == null)
+                    	this.panel.add(codeBlockPanel, c);
+                    
                     value.add(codeBlockPanel);
                     row++;
                 }
@@ -83,7 +89,10 @@ public class CodePanel extends JScrollPane {
                 c.gridx = --col;
                 codeBlockPanel = new CodeBlockPanel("ELSE", codeBlock.getId(), controller, this.playPanel);
                 this.panel.add(codeBlockPanel, c);
-                value.add(codeBlockPanel);
+                
+                if(codeBlock.getMacroParent() == null)
+                	this.panel.add(codeBlockPanel, c);
+                
                 this.references.put(codeBlock.getId(), value);
                 col++;
                 row++;
@@ -91,14 +100,31 @@ public class CodePanel extends JScrollPane {
             case END:
                 c.gridx = --col;
                 codeBlockPanel = new CodeBlockPanel("END", codeBlock.getId(), controller, this.playPanel);
-                this.panel.add(codeBlockPanel, c);
+                
+                if(codeBlock.getMacroParent() == null)
+                	this.panel.add(codeBlockPanel, c);
+                
+                value.add(codeBlockPanel);
+                this.references.put(codeBlock.getId(), value);
+                row++;
+                break;
+            case MACRO:
+            	codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel);
+            	codeBlockPanel.updateBorderColor(Constants.COLOR_MACRO);
+                
+                if(codeBlock.getMacroParent() == null)
+                	this.panel.add(codeBlockPanel, c);
+                
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
                 row++;
                 break;
             case ACTION:
                 codeBlockPanel = new CodeBlockPanel(codeBlock.getCodetext(), codeBlock.getId(), controller, this.playPanel);
-                this.panel.add(codeBlockPanel, c);
+                
+                if(codeBlock.getMacroParent() == null)
+                	this.panel.add(codeBlockPanel, c);
+                
                 value.add(codeBlockPanel);
                 this.references.put(codeBlock.getId(), value);
                 row++;
@@ -150,7 +176,7 @@ public class CodePanel extends JScrollPane {
         return this.blockBeingEdited.getId();
     }
 
-    public CodePanel markBeingProcessed(int id)
+    public CodePanel markBeingProcessed(int id, int macNum)
     {
         for (final CodeBlockPanel codeBlockPanel : this.previouslyBeingProcessed)
         {
@@ -159,13 +185,16 @@ public class CodePanel extends JScrollPane {
         this.previouslyBeingProcessed.clear();
 
         List<CodeBlockPanel> currentlyBeingProcessed = this.references.get(id);
-
+        
+        if(macNum != -1)
+        	currentlyBeingProcessed = (this.references.get(macNum));
+        
         for (final CodeBlockPanel codeBlockPanel : currentlyBeingProcessed)
         {
             codeBlockPanel.updateBorderColor(Constants.COLOR_DARK_GREEN);
         }
-
-        this.previouslyBeingProcessed = currentlyBeingProcessed;
+        if(macNum ==-1)
+        	this.previouslyBeingProcessed = currentlyBeingProcessed;
         return this;
     }
 	

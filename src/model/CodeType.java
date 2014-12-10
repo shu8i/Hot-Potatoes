@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 public class CodeType implements Serializable {
 	
-    public enum Type {IF, WHILE, ELSE, END, ACTION}
+    public enum Type {IF, WHILE, ELSE, END, ACTION, MACRO}
     private Type type;
     private Color color;
 
@@ -36,6 +36,9 @@ public class CodeType implements Serializable {
             case ACTION:
                 this.color = Constants.COLOR_ACTIONS;
                 break;
+            case MACRO:
+            	this.color = Constants.COLOR_MACRO;
+            	break;
             default: break;
         }
     }

@@ -82,14 +82,24 @@ public class CodeController extends SwingWorker<Void, Void> {
     private void runCodeBlock(CodeBlock codeBlock, boolean stepByStep)
     {
 
-        //TODO Implement worker threads if we want step by step code running.
+        boolean inMacro = false;
+        int macNum = -1;
+        
+        if(codeBlock.getMacroParent() != null)
+        {	
+        	inMacro = true;
+        	macNum = codeBlock.getMacroParent().getId();
+        	System.out.println(macNum);
+        }	
+        
+    	//TODO Implement worker threads if we want step by step code running.
         if (stepByStep) {
             try {
                 Thread.sleep(1000);
             } catch (Exception e) {
             }
             controller.playPanel.gridPanel.softRefresh();
-            controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId());
+            controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId(), macNum);
         }
         if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
         {
@@ -111,6 +121,11 @@ public class CodeController extends SwingWorker<Void, Void> {
                 {
                     runPartial(codeBlock.getTrueCondition(), stepByStep);
                 }
+            }
+            else if (codeBlock.isMacro())
+            {
+            	runPartial(codeBlock.getMacroBranch(), stepByStep);
+            	
             }
             else
             {
@@ -216,6 +231,12 @@ public class CodeController extends SwingWorker<Void, Void> {
     {
         this.code.merge(code);
         return this;
+    }
+    
+    public CodeController macroAdd(Code code, String name)
+    {
+    	this.code.macroAdd(code, name);
+    	return this;
     }
 
     public CodeController clear()

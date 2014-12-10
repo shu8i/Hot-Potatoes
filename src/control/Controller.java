@@ -1,6 +1,5 @@
 package control;
 
-import com.google.common.eventbus.EventBus;
 import model.Backend;
 import model.Grid;
 import model.User;

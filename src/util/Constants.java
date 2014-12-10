@@ -26,5 +26,6 @@ public abstract class Constants {
     public static final Color COLOR_CONDITIONALS_HOVER = new Color(255, 69, 0);
     public static final Color COLOR_ACTIONS = new Color(70, 130, 180);
     public static final Color COLOR_ACTIONS_HOVER = new Color(65, 105, 255);
+    public static final Color COLOR_MACRO = new Color(255,128,0);
 
 }

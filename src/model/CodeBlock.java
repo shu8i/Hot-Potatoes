@@ -13,7 +13,7 @@ public class CodeBlock implements Serializable {
 
 	private CodeType codeType;
 	private String codeText, condition;
-    protected CodeBlock defaultCondition, trueCondition, falseCondition, condParent, parent;
+    protected CodeBlock defaultCondition, trueCondition, falseCondition, condParent, parent, macroBranch, macroParent;
     private int id;
 
     public CodeBlock() {
@@ -26,6 +26,8 @@ public class CodeBlock implements Serializable {
         this.defaultCondition = null;
         this.trueCondition = null;
         this.falseCondition = null;
+        this.macroBranch = null;
+        this.macroParent = null;
     }
 
     public CodeBlock setCondition(String condition) {
@@ -96,6 +98,31 @@ public class CodeBlock implements Serializable {
     public CodeBlock getFalseCondition()
     {
         return this.falseCondition;
+    }
+    
+    public boolean isMacro()
+    {
+    	return this.codeType.getType().equals(CodeType.Type.MACRO);
+    }
+    
+    public CodeBlock getMacroBranch()
+    {
+    	return macroBranch;
+    }
+    
+    public void setMacroBranch(CodeBlock macro)
+    {
+    	macroBranch = macro;
+    }
+    
+    public CodeBlock getMacroParent()
+    {
+    	return macroParent;
+    }
+    
+    public void setMacroParent(CodeBlock parent)
+    {
+    	macroParent = parent;
     }
 
 }

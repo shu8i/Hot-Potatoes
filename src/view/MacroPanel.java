@@ -45,7 +45,7 @@ public class MacroPanel extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (!MacroPanel.this.playPanel.actionPanel.inConditional()) {
-                        MacroPanel.this.controller.codeController.mergeCode(MacroPanel.this.controller.userController.getMacro(name));
+                        MacroPanel.this.controller.codeController.macroAdd(MacroPanel.this.controller.userController.getMacro(name), name);
                         MacroPanel.this.playPanel.actionPanel.mergeStack(MacroPanel.this.controller.userController.getMacroPanelMode(name));
                         MacroPanel.this.playPanel.actionPanel.repaintActionPanel();
                         MacroPanel.this.playPanel.codePanel.refreshPanel();
