@@ -86,7 +86,7 @@ public class Robot {
 	}
 
 	/**
-	 * Gets the size of the robot's backpack
+	 * Gets the number of potatoes picked up currently
 	 * 
 	 * @return the robot's backpack size
 	 */

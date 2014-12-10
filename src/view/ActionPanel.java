@@ -27,11 +27,38 @@ public class ActionPanel extends JPanel {
 			putPotatoButton, pickPotatoButton, facingLeftButton,
 			facingRightButton, facingUpButton, facingDownButton, endButton,
 			elseButton, dirIsFree;
-	private CodePanel codePanel;
-	private Controller controller;
+	Controller controller;
 
+	/**
+	 * @author Shahab
+	 * @author Allant
+	 *	Code modes.
+	 */
 	public enum PanelMode {
-		CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION, IN_ELSE
+		/**
+		 * Condition to be set
+		 */
+		CONDITIONAL_DECLARATION,
+		/**
+		 * While is being used
+		 */
+		WHILE_DECLARATION,
+		/**
+		 * Code currently in condition
+		 */
+		IN_CONDITIONAL, 
+		/**
+		 * Code currently in While
+		 */
+		IN_WHILE,
+		/**
+		 * Code currently in Action
+		 */
+		ACTION, 
+		/**
+		 * Code currently in else
+		 */
+		IN_ELSE
 	}
 
 	protected Stack<PanelMode> mode;
@@ -39,7 +66,6 @@ public class ActionPanel extends JPanel {
 
 	public ActionPanel(final CodePanel codePanel, Controller controller) {
 		super(new FlowLayout());
-		this.codePanel = codePanel;
 		this.controller = controller;
 		this.mode = new Stack<PanelMode>();
 		setPreferredSize(new Dimension(500, 100));
@@ -66,7 +92,7 @@ public class ActionPanel extends JPanel {
 						.addCodeBlock(new CodeBlock("WHILE", new CodeType(
 								CodeType.Type.WHILE)));
 
-				mode.push(PanelMode.WHILE_DECLARATION);
+				ActionPanel.this.mode.push(PanelMode.WHILE_DECLARATION);
 				repaintActionPanel();
 				codePanel.refreshPanel();
 			}
@@ -75,7 +101,7 @@ public class ActionPanel extends JPanel {
 		this.turnLeftButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("TURN LEFT",
 									new CodeType(CodeType.Type.ACTION)));
@@ -86,7 +112,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -94,7 +120,7 @@ public class ActionPanel extends JPanel {
 		this.moveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("MOVE", new CodeType(
 									CodeType.Type.ACTION)));
@@ -105,7 +131,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -117,7 +143,7 @@ public class ActionPanel extends JPanel {
 						.addCodeBlock(new CodeBlock("IF", new CodeType(
 								CodeType.Type.IF)));
 
-				mode.push(PanelMode.CONDITIONAL_DECLARATION);
+				ActionPanel.this.mode.push(PanelMode.CONDITIONAL_DECLARATION);
 				repaintActionPanel();
 				codePanel.refreshPanel();
 			}
@@ -130,8 +156,8 @@ public class ActionPanel extends JPanel {
 						.addCodeBlock(new CodeBlock("ELSE", new CodeType(
 								CodeType.Type.ELSE)));
 
-				mode.pop();
-				mode.push(PanelMode.IN_ELSE);
+				ActionPanel.this.mode.pop();
+				ActionPanel.this.mode.push(PanelMode.IN_ELSE);
 				repaintActionPanel();
 				codePanel.refreshPanel();
 			}
@@ -140,7 +166,7 @@ public class ActionPanel extends JPanel {
 		this.pickPotatoButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("PICK POTATO",
 									new CodeType(CodeType.Type.ACTION)));
@@ -151,7 +177,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -159,7 +185,7 @@ public class ActionPanel extends JPanel {
 		this.putPotatoButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("PUT POTATO",
 									new CodeType(CodeType.Type.ACTION)));
@@ -170,7 +196,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -178,12 +204,12 @@ public class ActionPanel extends JPanel {
 		this.dirIsFree.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("DIR IS FREE",
 									new CodeType(CodeType.Type.ACTION)));
 
-					mode.push(mode.pop().equals(
+					ActionPanel.this.mode.push(ActionPanel.this.mode.pop().equals(
 							PanelMode.CONDITIONAL_DECLARATION) ? PanelMode.IN_CONDITIONAL
 							: PanelMode.IN_WHILE);
 					repaintActionPanel();
@@ -194,7 +220,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -202,12 +228,12 @@ public class ActionPanel extends JPanel {
 		this.facingLeftButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("FACING LEFT",
 									new CodeType(CodeType.Type.ACTION)));
 
-					mode.push(mode.pop().equals(
+					ActionPanel.this.mode.push(ActionPanel.this.mode.pop().equals(
 							PanelMode.CONDITIONAL_DECLARATION) ? PanelMode.IN_CONDITIONAL
 							: PanelMode.IN_WHILE);
 					repaintActionPanel();
@@ -218,7 +244,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -226,12 +252,12 @@ public class ActionPanel extends JPanel {
 		this.facingRightButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("FACING RIGHT",
 									new CodeType(CodeType.Type.ACTION)));
 
-					mode.push(mode.pop().equals(
+					ActionPanel.this.mode.push(ActionPanel.this.mode.pop().equals(
 							PanelMode.CONDITIONAL_DECLARATION) ? PanelMode.IN_CONDITIONAL
 							: PanelMode.IN_WHILE);
 					repaintActionPanel();
@@ -242,7 +268,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -250,12 +276,12 @@ public class ActionPanel extends JPanel {
 		this.facingUpButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("FACING UP",
 									new CodeType(CodeType.Type.ACTION)));
 
-					mode.push(mode.pop().equals(
+					ActionPanel.this.mode.push(ActionPanel.this.mode.pop().equals(
 							PanelMode.CONDITIONAL_DECLARATION) ? PanelMode.IN_CONDITIONAL
 							: PanelMode.IN_WHILE);
 					repaintActionPanel();
@@ -266,7 +292,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -274,12 +300,12 @@ public class ActionPanel extends JPanel {
 		this.facingDownButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!editMode) {
+				if (!ActionPanel.this.editMode) {
 					ActionPanel.this.controller.codeController
 							.addCodeBlock(new CodeBlock("FACING DOWN",
 									new CodeType(CodeType.Type.ACTION)));
 
-					mode.push(mode.pop().equals(
+					ActionPanel.this.mode.push(ActionPanel.this.mode.pop().equals(
 							PanelMode.CONDITIONAL_DECLARATION) ? PanelMode.IN_CONDITIONAL
 							: PanelMode.IN_WHILE);
 					repaintActionPanel();
@@ -290,7 +316,7 @@ public class ActionPanel extends JPanel {
 					codePanel.updateBlockForEdit(null);
 					repaintActionPanel();
 					codePanel.refreshPanel();
-					editMode = !editMode;
+					ActionPanel.this.editMode = !ActionPanel.this.editMode;
 				}
 			}
 		});
@@ -302,67 +328,67 @@ public class ActionPanel extends JPanel {
 						.addCodeBlock(new CodeBlock("END", new CodeType(
 								CodeType.Type.END)));
 
-				mode.pop();
+				ActionPanel.this.mode.pop();
 				repaintActionPanel();
 				codePanel.refreshPanel();
 			}
 		});
 
-		mode.push(PanelMode.ACTION);
+		this.mode.push(PanelMode.ACTION);
 		repaintActionPanel();
 	}
 
 	public void repaintActionPanel() {
 		removeAll();
-		switch (mode.peek()) {
+		switch (this.mode.peek()) {
 		case WHILE_DECLARATION:
 		case CONDITIONAL_DECLARATION:
-			add(facingLeftButton);
-			add(facingRightButton);
-			add(facingUpButton);
-			add(facingDownButton);
-			add(dirIsFree);
+			add(this.facingLeftButton);
+			add(this.facingRightButton);
+			add(this.facingUpButton);
+			add(this.facingDownButton);
+			add(this.dirIsFree);
 			add(new CodeBlockPanel(""));
 			add(new CodeBlockPanel(""));
 			add(new CodeBlockPanel(""));
 			break;
 		case IN_CONDITIONAL:
-			add(elseButton);
-			add(endButton);
-			add(ifButton);
-			add(whileButton);
-			add(turnLeftButton);
-			add(moveButton);
-			add(putPotatoButton);
-			add(pickPotatoButton);
+			add(this.elseButton);
+			add(this.endButton);
+			add(this.ifButton);
+			add(this.whileButton);
+			add(this.turnLeftButton);
+			add(this.moveButton);
+			add(this.putPotatoButton);
+			add(this.pickPotatoButton);
 			break;
 		case IN_WHILE:
-			add(endButton);
-			add(ifButton);
-			add(whileButton);
-			add(turnLeftButton);
-			add(moveButton);
-			add(putPotatoButton);
-			add(pickPotatoButton);
+			add(this.endButton);
+			add(this.ifButton);
+			add(this.whileButton);
+			add(this.turnLeftButton);
+			add(this.moveButton);
+			add(this.putPotatoButton);
+			add(this.pickPotatoButton);
 			add(new CodeBlockPanel(""));
 			break;
 		case IN_ELSE:
-			add(endButton);
-			add(ifButton);
-			add(whileButton);
-			add(turnLeftButton);
-			add(moveButton);
-			add(putPotatoButton);
-			add(pickPotatoButton);
+			add(this.endButton);
+			add(this.ifButton);
+			add(this.whileButton);
+			add(this.turnLeftButton);
+			add(this.moveButton);
+			add(this.putPotatoButton);
+			add(this.pickPotatoButton);
 			add(new CodeBlockPanel(""));
 			break;
 		case ACTION:
-			add(whileButton);
-			add(ifButton);
-			add(turnLeftButton);
-			add(moveButton);
-			add(putPotatoButton);
-			add(pickPotatoButton);
+			add(this.whileButton);
+			add(this.ifButton);
+			add(this.turnLeftButton);
+			add(this.moveButton);
+			add(this.putPotatoButton);
+			add(this.pickPotatoButton);
 			add(new CodeBlockPanel(""));
 			add(new CodeBlockPanel(""));
 		default:
@@ -376,20 +402,20 @@ public class ActionPanel extends JPanel {
 		removeAll();
 		switch (mode) {
 		case CONDITIONAL_DECLARATION:
-			add(facingLeftButton);
-			add(facingRightButton);
-			add(facingUpButton);
-			add(facingDownButton);
-			add(dirIsFree);
+			add(this.facingLeftButton);
+			add(this.facingRightButton);
+			add(this.facingUpButton);
+			add(this.facingDownButton);
+			add(this.dirIsFree);
 			add(new CodeBlockPanel(""));
 			add(new CodeBlockPanel(""));
 			add(new CodeBlockPanel(""));
 			break;
 		case ACTION:
-			add(turnLeftButton);
-			add(moveButton);
-			add(putPotatoButton);
-			add(pickPotatoButton);
+			add(this.turnLeftButton);
+			add(this.moveButton);
+			add(this.putPotatoButton);
+			add(this.pickPotatoButton);
 			add(new CodeBlockPanel(""));
 			add(new CodeBlockPanel(""));
 			add(new CodeBlockPanel(""));
@@ -404,15 +430,15 @@ public class ActionPanel extends JPanel {
 	public void updateActionPanel(CodeBlockPanel codeBlock) {
 		if (codeBlock.isConditional() || codeBlock.isElseButton()
 				|| codeBlock.isEndButton()) {
-			editMode = false;
+			this.editMode = false;
 			return;
 		}
 		if (codeBlock.getText().contains("FACING")) {
 			repaintActionPanel(PanelMode.CONDITIONAL_DECLARATION);
-			editMode = true;
+			this.editMode = true;
 		} else {
 			repaintActionPanel(PanelMode.ACTION);
-			editMode = true;
+			this.editMode = true;
 		}
 	}
 

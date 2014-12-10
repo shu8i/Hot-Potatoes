@@ -43,8 +43,21 @@ public class PlayPanel extends JPanel {
 	public CodePanel codePanel;
 	public MacroPanel macroPanel;
 	public ActionPanel actionPanel;
+	protected Integer score;
 
-	User user;
+	/**
+	 * @return the score
+	 */
+	public Integer getScore() {
+		return this.score;
+	}
+
+	/**
+	 * @param score the score to set
+	 */
+	public void setScore(Integer score) {
+		this.score = score;
+	}
 
 	/**
 	 * @param parent
@@ -67,13 +80,12 @@ public class PlayPanel extends JPanel {
 		this.controller.initRobot(this.grid);
 		this.controller.initPlay(this);
 		this.controller.setCode(); // if user had previous code then set it.
-		this.user = user;
 		final Integer highScore;
-		final Integer score;
+		
 
 		highScore = controller.userController.getGridScore(grid);
-		score = 0;
-		String scoreString = score.toString();
+		this.score = this.controller.robotController.getRobot().getBackpackSize();
+		String scoreString = this.score.toString();
 		this.hintPanel.updateHint("SCORE:" + scoreString + "     "
 				+ "HIGH SCORE:" + highScore, Color.blue);
 
@@ -120,8 +132,7 @@ public class PlayPanel extends JPanel {
 							PlayPanel.this.hintPanel
 									.updateHint(
 											"Level Completed. "
-													+ PlayPanel.this.controller.userController
-															.getGridScore(PlayPanel.this.grid)
+													+ 100 * PlayPanel.this.controller.robotController.getRobot().getBackpackSize() / PlayPanel.this.grid.numPotatoes()
 													+ "% potatoes collected.",
 											Constants.COLOR_DARK_GREEN);
 							new java.util.Timer().schedule(new TimerTask() {
@@ -239,8 +250,8 @@ public class PlayPanel extends JPanel {
 	}
 
 	public void updateMenu() {
-		this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel,
-				controller, this, clearMenu, runMenu, saveMacroMenu, backMenu));
+		this.parent.setJMenuBar(new Menu().buildMenu("Menu", this.loginPanel,
+				this.controller, this, this.clearMenu, this.runMenu, this.saveMacroMenu, this.backMenu));
 	}
 
 	public void goBack() {

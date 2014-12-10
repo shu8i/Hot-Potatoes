@@ -227,6 +227,10 @@ public class Controller {
 		return false;
 	}
 
+	/**
+	 * @param gridName the name of the grid
+	 * @return the maximum score of all users.
+	 */
 	public static Map<String, Integer> getGridScores(String gridName) {
 		Map<String, User> users = mBackend.getUsers();
 		Map<String, Grid> grids = mBackend.getGrids();

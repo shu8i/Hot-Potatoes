@@ -5,6 +5,7 @@ import static model.Direction.LEFT;
 import static model.Direction.RIGHT;
 import static model.Direction.UP;
 
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.TimerTask;
 
@@ -29,7 +30,7 @@ public class CodeController extends SwingWorker<Void, Void> {
 
 	private Code code;
 	private User user;
-	private Controller controller;
+	Controller controller;
 	private boolean stepper;
 	private CodeBlock ptr, current;
 
@@ -66,8 +67,7 @@ public class CodeController extends SwingWorker<Void, Void> {
 			this.controller.playPanel.hintPanel
 					.updateHint(
 							"Level Completed. "
-									+ this.controller.userController
-											.getGridScore(this.controller.playPanel.grid)
+									+ 100 * this.controller.robotController.getRobot().getBackpackSize() / this.controller.getCurrent_grid().numPotatoes()
 									+ "% potatoes collected.",
 							Constants.COLOR_DARK_GREEN);
 			new java.util.Timer().schedule(new TimerTask() {
@@ -178,6 +178,9 @@ public class CodeController extends SwingWorker<Void, Void> {
 			break;
 		case "PICK POTATO":
 			this.controller.robotController.pickup();
+			this.controller.playPanel.hintPanel.updateHint("SCORE:" + this.controller.robotController.getRobot().getBackpackSize() + "     "
+					+ "HIGH SCORE:" + this.controller.userController
+					.getGridScore(this.controller.playPanel.grid), Color.blue);
 			break;
 		case "END":
 		default:
