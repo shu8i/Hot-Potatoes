@@ -455,8 +455,9 @@ public class Code implements Serializable {
                     }
 		    count++;
                 }
-                
+   
 		nextBlock.parent.defaultCondition=newCodeBlock;
+                newCodeBlock.parent = nextBlock.parent;
                 nextBlock.parent = nextBlock.parent.defaultCondition;
                 newCodeBlock.defaultCondition=nextBlock;
                             
