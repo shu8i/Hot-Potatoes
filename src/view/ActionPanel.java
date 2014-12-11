@@ -69,7 +69,7 @@ public class ActionPanel extends JPanel {
         this.turnLeftButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!editMode && !insertMode) {
+            	if (!editMode && !insertMode) {
                     ActionPanel.this.controller.codeController
                             .addCodeBlock(new CodeBlock("TURN LEFT", new CodeType(CodeType.Type.ACTION)));
                     codePanel.refreshPanel();
