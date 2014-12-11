@@ -455,6 +455,15 @@ public class Code implements Serializable {
                     count++;
                 }
                 
+                nextBlock.parent.defaultCondition=newCodeBlock;
+                nextBlock.parent = nextBlock.parent.defaultCondition;
+                newCodeBlock.defaultCondition=nextBlock;
+               
+                Iterator<CodeBlock> iter2 = viewIterator();
+                while(iter2.hasNext()){
+                    System.out.println(iter2.next().getId());
+                }
+                
                 //Make nextBlock's parent newCodeBlock and make newCodeBlock's child nextBlock
                 //position is for knowing where in the stack to push?
                 

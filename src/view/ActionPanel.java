@@ -94,17 +94,24 @@ public class ActionPanel extends JPanel {
         this.moveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!editMode) {
+                if (!editMode && !insertMode) {
                     ActionPanel.this.controller.codeController
                             .addCodeBlock(new CodeBlock("MOVE", new CodeType(CodeType.Type.ACTION)));
                     codePanel.refreshPanel();
-                } else {
+                } else if(editMode){
                     ActionPanel.this.controller.codeController
                             .editCode(codePanel.getEditableCodeId(), "MOVE");
                     codePanel.updateBlockForEdit(null);
                     repaintActionPanel();
                     codePanel.refreshPanel();
                     editMode = !editMode;
+                } else if(insertMode){
+                    ActionPanel.this.controller.codeController.insertCode(
+                            codePanel.getInsertableCodeId(), new CodeBlock("MOVE",new CodeType(CodeType.Type.ACTION)));
+                    codePanel.updateBlockForInsert(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    ActionPanel.this.insertMode = !ActionPanel.this.insertMode;
                 }
             }
         });
@@ -137,17 +144,24 @@ public class ActionPanel extends JPanel {
         this.pickPotatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!editMode) {
+                if (!editMode && !insertMode) {
                     ActionPanel.this.controller.codeController
                             .addCodeBlock(new CodeBlock("PICK POTATO", new CodeType(CodeType.Type.ACTION)));
                     codePanel.refreshPanel();
-                } else {
+                } else if(editMode){
                     ActionPanel.this.controller.codeController
                             .editCode(codePanel.getEditableCodeId(), "PICK POTATO");
                     codePanel.updateBlockForEdit(null);
                     repaintActionPanel();
                     codePanel.refreshPanel();
                     editMode = !editMode;
+                } else if(insertMode){
+                    ActionPanel.this.controller.codeController.insertCode(
+                            codePanel.getInsertableCodeId(), new CodeBlock("PICK POTATO",new CodeType(CodeType.Type.ACTION)));
+                    codePanel.updateBlockForInsert(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    ActionPanel.this.insertMode = !ActionPanel.this.insertMode;
                 }
             }
         });
@@ -155,17 +169,24 @@ public class ActionPanel extends JPanel {
         this.putPotatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!editMode) {
+                if (!editMode && !insertMode) {
                     ActionPanel.this.controller.codeController
                             .addCodeBlock(new CodeBlock("PUT POTATO", new CodeType(CodeType.Type.ACTION)));
                     codePanel.refreshPanel();
-                } else {
+                } else if(editMode){
                     ActionPanel.this.controller.codeController
                             .editCode(codePanel.getEditableCodeId(), "PUT POTATO");
                     codePanel.updateBlockForEdit(null);
                     repaintActionPanel();
                     codePanel.refreshPanel();
                     editMode = !editMode;
+                } else if(insertMode){
+                    ActionPanel.this.controller.codeController.insertCode(
+                            codePanel.getInsertableCodeId(), new CodeBlock("PUT POTATO",new CodeType(CodeType.Type.ACTION)));
+                    codePanel.updateBlockForInsert(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    ActionPanel.this.insertMode = !ActionPanel.this.insertMode;
                 }
             }
         });

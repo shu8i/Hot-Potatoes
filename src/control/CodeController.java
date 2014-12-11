@@ -225,7 +225,7 @@ public class CodeController extends SwingWorker<Void, Void> {
     public CodeController insertCode(int id, CodeBlock newCodeBlock) {
                 this.code.insert(id, newCodeBlock);
                 return this;
-        }
+    }
 
     public Code getCode()
     {
