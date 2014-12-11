@@ -445,7 +445,9 @@ public class ActionPanel extends JPanel {
 
     public ActionPanel mergeStack(Stack<PanelMode> mode)
     {
+        PanelMode oldMode = this.mode.pop();
         this.mode.addAll(mode);
+        this.mode.push(oldMode);
         return this;
     }
 
@@ -453,6 +455,11 @@ public class ActionPanel extends JPanel {
     {
         return this.mode.peek().equals(PanelMode.CONDITIONAL_DECLARATION) ||
                 this.mode.peek().equals(PanelMode.WHILE_DECLARATION);
+    }
+    
+    public boolean insideLoopIforElse(){
+        return this.mode.peek().equals(PanelMode.IN_CONDITIONAL) ||
+                this.mode.peek().equals(PanelMode.IN_WHILE) || this.mode.peek().equals(PanelMode.IN_ELSE);
     }
 
     public void reset()
