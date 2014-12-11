@@ -1,6 +1,7 @@
 package view;
 
 import control.Controller;
+import model.Code;
 import model.Grid;
 import util.Constants;
 
@@ -10,6 +11,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import java.util.TimerTask;
 
 /**
@@ -28,12 +30,14 @@ public class PlayPanel extends JPanel {
     private JFrame parent;
     private Controller controller;
     public Grid grid;
-    private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, saveGameMenu, backMenu, stepMenu;
+    private JMenu loadProgramMenu;
+    private JMenuItem runMenu, undoMenu, clearMenu, saveMacroMenu, backMenu, stepMenu, saveProgramMenu;
     public HintPanel hintPanel;
     public GridPanel gridPanel;
     public CodePanel codePanel;
     public MacroPanel macroPanel;
     public ActionPanel actionPanel;
+    public enum DialogType {MACRO, CODE}
 
     public PlayPanel(JFrame parent, LoginPanel loginPanel, StudentPanel predecessor, Controller controller, Grid grid) {
         super(layout);
@@ -54,9 +58,20 @@ public class PlayPanel extends JPanel {
         this.saveMacroMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SaveDialog(PlayPanel.this, PlayPanel.this.controller);
+                new SaveDialog(PlayPanel.this, PlayPanel.this.controller, DialogType.MACRO);
             }
         });
+
+        this.saveProgramMenu = new JMenuItem("Save Program");
+        this.saveProgramMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SaveDialog(PlayPanel.this, PlayPanel.this.controller, DialogType.CODE);
+            }
+        });
+
+        this.loadProgramMenu = new JMenu("Load Program");
+        updateLoadMenu();
 
         this.runMenu = new JMenuItem("Run");
         this.runMenu.addActionListener(new ActionListener() {
@@ -167,7 +182,7 @@ public class PlayPanel extends JPanel {
 
     public void updateMenu() {
         this.parent.setJMenuBar(new Menu().buildMenu("Menu", loginPanel, controller, this,
-               clearMenu, runMenu, stepMenu, saveMacroMenu, backMenu));
+               clearMenu, runMenu, stepMenu, saveMacroMenu, saveProgramMenu, loadProgramMenu, backMenu));
     }
 
     public void goBack()
@@ -179,7 +194,29 @@ public class PlayPanel extends JPanel {
         this.parent.pack();
         this.parent.setLocationRelativeTo(null);
         this.parent.remove(this);
+    }
 
+    public void updateLoadMenu()
+    {
+        this.loadProgramMenu.removeAll();
+        JMenuItem loadMenuSubItem;
+        for (final Map.Entry<String, Code> entry : this.controller.userController.getSavedCodes().entrySet()) {
+            loadMenuSubItem = new JMenuItem(entry.getKey());
+            loadMenuSubItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    PlayPanel.this.controller.codeController.setCode(entry.getValue());
+                    PlayPanel.this.actionPanel.reset();
+                    PlayPanel.this.actionPanel.mode =
+                            PlayPanel.this.controller.userController.getActionPanelMode(entry.getKey());
+                    PlayPanel.this.codePanel.refreshPanel();
+                    PlayPanel.this.actionPanel.repaintActionPanel();
+                    PlayPanel.this.updateLoadMenu();
+                }
+            });
+            PlayPanel.this.loadProgramMenu.add(loadMenuSubItem);
+        }
+        this.loadProgramMenu.setEnabled(this.loadProgramMenu.getMenuComponentCount() != 0);
     }
 
 }

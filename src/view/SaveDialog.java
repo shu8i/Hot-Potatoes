@@ -56,7 +56,7 @@ public class SaveDialog {
         });
     }
 
-    public SaveDialog(PlayPanel playPanel, Controller controller)
+    public SaveDialog(PlayPanel playPanel, Controller controller, final PlayPanel.DialogType type)
     {
         this.playPanel = playPanel;
         setup(controller);
@@ -64,17 +64,26 @@ public class SaveDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    SaveDialog.this.controller.userController.addMacro(
-                            SaveDialog.this.nameTextField.getText(),
-                            SaveDialog.this.controller.codeController.getCode(),
-                            SaveDialog.this.playPanel.actionPanel.getActionStack());
+                    if (type == PlayPanel.DialogType.MACRO) {
+                        SaveDialog.this.controller.userController.addMacro(
+                                SaveDialog.this.nameTextField.getText(),
+                                SaveDialog.this.controller.codeController.getCode(),
+                                SaveDialog.this.playPanel.actionPanel.getActionStack());
+                    } else {
+                        SaveDialog.this.controller.userController.saveCode(
+                                SaveDialog.this.nameTextField.getText(),
+                                SaveDialog.this.controller.codeController.getCode(),
+                                SaveDialog.this.playPanel.actionPanel.getActionStack());
+                    }
                 } catch (IllegalArgumentException ie) {
                     SaveDialog.this.hintPanel.updateHint(ie.getMessage(), Color.RED);
                     return;
                 }
 
                 SaveDialog.this.controller.saveDatabase();
-                SaveDialog.this.playPanel.macroPanel.refreshPanel();
+                if (type == PlayPanel.DialogType.MACRO) {
+                    SaveDialog.this.playPanel.macroPanel.refreshPanel();
+                }
                 SaveDialog.this.frame.dispatchEvent(new WindowEvent(SaveDialog.this.frame, WindowEvent.WINDOW_CLOSING));
                 SaveDialog.this.playPanel.hintPanel.updateHint("Saved Successfully.", Constants.COLOR_DARK_GREEN, 3000);
             }

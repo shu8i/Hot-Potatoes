@@ -258,4 +258,10 @@ public class CodeController extends SwingWorker<Void, Void> {
         return this;
     }
 
+    public CodeController setCode(Code code)
+    {
+        this.code = code;
+        return this;
+    }
+
 }

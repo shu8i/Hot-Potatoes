@@ -112,4 +112,20 @@ public class UserController {
         this.user.addGrid(grid, potatoesCollected);
         return this;
     }
+
+    public Map<String, Code> getSavedCodes()
+    {
+        return this.user.getSavedCodes();
+    }
+
+    public UserController saveCode(String name, Code code, Stack<ActionPanel.PanelMode> mode)
+    {
+        this.user.saveCode(name, code, mode);
+        return this;
+    }
+
+    public Stack<ActionPanel.PanelMode> getActionPanelMode(String name)
+    {
+        return this.user.getcodeActionPanel(name);
+    }
 }

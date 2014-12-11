@@ -19,6 +19,8 @@ public class User implements Serializable {
     private Map<String, Integer> gridsPlayed;
     private Map<String, Code> macros;
     private Map<String, Stack<ActionPanel.PanelMode>> macrosActionPanel;
+    private Map<String, Code> savedCodes;
+    private Map<String, Stack<ActionPanel.PanelMode>> codeActionPanel;
 
     /**
      * Creates a new user account.
@@ -33,6 +35,8 @@ public class User implements Serializable {
         this.gridsPlayed = new HashMap<String, Integer>();
         this.macros = new HashMap<String, Code>();
         this.macrosActionPanel = new HashMap<String, Stack<ActionPanel.PanelMode>>();
+        this.savedCodes = new HashMap<>();
+        this.codeActionPanel = new HashMap<>();
     }
 
     /**
@@ -130,6 +134,30 @@ public class User implements Serializable {
             this.gridsPlayed.put(grid.getName(), potatoesCollected);
         }
         return this;
+    }
+
+    public User saveCode(String name, Code code, Stack<ActionPanel.PanelMode> actionPanelMode)
+    {
+        if (this.savedCodes.containsKey(name))
+            this.savedCodes.remove(name);
+        this.savedCodes.put(name, code);
+        this.codeActionPanel.put(name, actionPanelMode);
+        return this;
+    }
+
+    public Code getCode(String name)
+    {
+        return this.savedCodes.get(name);
+    }
+
+    public Stack<ActionPanel.PanelMode> getcodeActionPanel(String name)
+    {
+        return this.codeActionPanel.get(name);
+    }
+
+    public Map<String, Code> getSavedCodes()
+    {
+        return this.savedCodes;
     }
 
     /**
