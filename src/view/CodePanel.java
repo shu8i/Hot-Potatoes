@@ -171,8 +171,10 @@ public class CodePanel extends JScrollPane {
 			this.blockBeingEdited.exitEditMode();
 		}
 
-		if(!codeBlockPanel.isMacroButton())
+		if(codeBlockPanel!=null && !codeBlockPanel.isMacroButton())
 			this.blockBeingEdited = codeBlockPanel;
+                
+                this.blockBeingEdited = codeBlockPanel;
 	}
 
 	public void updateBlockForInsert(CodeBlockPanel codeBlockPanel) {

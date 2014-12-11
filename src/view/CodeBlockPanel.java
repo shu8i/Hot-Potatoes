@@ -110,8 +110,8 @@ public class CodeBlockPanel extends JButton {
 					if (!conditional && !endButton && !elseButton)
 					{
 						setBorder(new MatteBorder(2, 2, 2, 2, Color.WHITE));
+                                                editMode = true;
 						playPanel.actionPanel.updateActionPanel(CodeBlockPanel.this);
-						editMode = true;
 						playPanel.codePanel.updateBlockForEdit(CodeBlockPanel.this);
 					}
 					else
