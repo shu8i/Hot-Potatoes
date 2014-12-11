@@ -32,6 +32,7 @@ public class Grid implements Serializable {
         this.gridSize = gridSize;
         this.grid = new Block[gridSize][gridSize];
         this.potatoes = new ArrayList<Block>();
+        this.name = "";
         initializeEmptyGrid();
     }
 
