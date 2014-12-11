@@ -14,6 +14,7 @@ public class CodeBlock implements Serializable {
 	private CodeType codeType;
 	private String codeText, condition;
     protected CodeBlock defaultCondition, trueCondition, falseCondition, condParent, parent, macroBranch, macroParent;
+    private boolean inMacro;
     private int id;
 
     public CodeBlock() {
@@ -28,6 +29,7 @@ public class CodeBlock implements Serializable {
         this.falseCondition = null;
         this.macroBranch = null;
         this.macroParent = null;
+        this.inMacro = false;
     }
 
     public CodeBlock setCondition(String condition) {
@@ -123,6 +125,12 @@ public class CodeBlock implements Serializable {
     public void setMacroParent(CodeBlock parent)
     {
     	macroParent = parent;
+    	inMacro = true;
+    }
+    
+    public boolean isInMacro()
+    {
+    	return inMacro;
     }
 
 }

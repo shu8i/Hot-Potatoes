@@ -1,6 +1,6 @@
 package model;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 import util.Constants;
 
 import java.io.*;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+//import org.junit.Test;
 
 /**
  * Created by Shahab Shekari on 11/9/14.
@@ -38,11 +38,11 @@ public class Backend implements Serializable {
         }
     }
     
-    @Test
+ /*   @Test
     public void notNullBackend() {
     	Backend test = new Backend();
     	assertNotNull("new backend should have hashmaps", test);
-    }
+    } */
 
     public void saveDatabase() {
         try {
@@ -57,38 +57,38 @@ public class Backend implements Serializable {
         this.users.remove( username );
     }
     
-    @Test
+ /*   @Test
     public void removeUserFromBackend() {
     	Backend test = new Backend();
     	User testUser = new User("a", "a", false);
     	test.users.put("a", testUser);
     	test.removeUser("a");
     	assertFalse("testUser should not be in the user hashmap anymore", test.users.containsValue(testUser));
-    }
+    } */
 
     public void addUser( User user ) {
         this.users.put(user.getUsername(), user);
     }
     
-    @Test
+/*    @Test
     public void addUserToBackend() {
     	Backend test = new Backend();
     	User testUser = new User("a", "a", false);
     	test.addUser(testUser);
     	assertTrue("testUser should be in the backend hashmap now", test.users.containsValue(testUser));
-    }
+    } */
 
     public Map<String, User> getUsers() {
         return users;
     }
     
-    @Test
+/*    @Test
     public void usersIsNotNull() {
     	Backend test = new Backend();
     	Map<String, User> testUsers = new HashMap<String, User>();
     	test.users = testUsers;
     	assertNotNull("test.users should not be null", test.getUsers());
-    }
+    } */
 
     /**
      * Adds a grid to the grids class
@@ -109,7 +109,7 @@ public class Backend implements Serializable {
         this.grids.put(grid.getName(), grid);
     }
     
-    @Test (expected = IllegalArgumentException.class)
+/*    @Test (expected = IllegalArgumentException.class)
     public void gridNameMissing() {
     	Backend test = new Backend();
     	Grid testGrid = new Grid(10);
@@ -145,7 +145,7 @@ public class Backend implements Serializable {
     	testGrid.setKarel(new Coordinate(2, 2));
     	test.addGrid(testGrid);
     	assertTrue("testGrid should be in the backend hashmap now", test.grids.containsValue(testGrid));
-    }
+    } */
 
     /**
      * Updates a grid, by removes the old grid and adds the new grid.
@@ -156,7 +156,7 @@ public class Backend implements Serializable {
         this.grids.put(grid.getName(), grid);
     }
     
-    @Test
+ /*   @Test
     public void updatedGridInBackend() {
     	Backend test = new Backend();
     	Grid testGrid = new Grid(10);
@@ -167,7 +167,7 @@ public class Backend implements Serializable {
     	testGrid.setHome(new Coordinate(4, 4));
     	test.updateGrid(testGrid);
     	assertTrue("testGrid should be in the backend hashmap now", test.grids.containsValue(testGrid));
-    }
+    } */
 
     /**
      * Removes a grid from the grids class.
@@ -177,7 +177,7 @@ public class Backend implements Serializable {
         this.grids.remove(grid.getName());
     }
     
-    @Test
+ /*   @Test
     public void removeGridFromBackend() {
     	Backend test = new Backend();
     	Grid testGrid = new Grid(10);
@@ -187,7 +187,7 @@ public class Backend implements Serializable {
     	test.addGrid(testGrid);
     	test.removeGrid(testGrid);
     	assertFalse("testGrid should not be in the backend hashmap now", test.grids.containsValue(testGrid));
-    }
+    } */
 
     /**
      * Returns the grids in the system
@@ -197,13 +197,13 @@ public class Backend implements Serializable {
         return this.grids;
     }
     
-    @Test
+ /*   @Test
     public void gridsIsNotNull() {
     	Backend test = new Backend();
     	Map<String, Grid> testGrids = new HashMap<String, Grid>();
     	test.grids = testGrids;
     	assertNotNull("test.grids should not be null", test.getGrids());
-    }
+    } */
 
     @Override
     public String toString() {
