@@ -455,12 +455,26 @@ public class Code implements Serializable {
                     }
 		    count++;
                 }
-   
-		nextBlock.parent.defaultCondition=newCodeBlock;
-                newCodeBlock.parent = nextBlock.parent;
-                nextBlock.parent = nextBlock.parent.defaultCondition;
-                newCodeBlock.defaultCondition=nextBlock;
-                            
+               
+                if(nextBlock.parent.isConditional()){
+                    if(nextBlock.parent.trueCondition == nextBlock){
+                        nextBlock.parent.trueCondition = newCodeBlock;
+                        newCodeBlock.parent = nextBlock.parent;
+                        nextBlock.parent = newCodeBlock;
+                        newCodeBlock.defaultCondition = nextBlock;
+                    }else if(nextBlock.parent.falseCondition == nextBlock){
+                        nextBlock.parent.falseCondition = newCodeBlock;
+                        newCodeBlock.parent = nextBlock.parent;
+                        nextBlock.parent = newCodeBlock;
+                        newCodeBlock.defaultCondition = nextBlock;
+                    }
+                }else{
+                    nextBlock.parent.defaultCondition=newCodeBlock;
+                    newCodeBlock.parent = nextBlock.parent;
+                    nextBlock.parent = newCodeBlock;
+                    newCodeBlock.defaultCondition=nextBlock;
+                }
+                       
 		return this;
         }
 
