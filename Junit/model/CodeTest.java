@@ -3,6 +3,9 @@ package model;
 import static org.junit.Assert.*;
 
 import java.util.Iterator;
+import model.Code;
+import model.CodeBlock;
+import model.CodeType;
 
 import org.junit.Test;
 
