@@ -468,6 +468,18 @@ public class Code implements Serializable {
                         nextBlock.parent = newCodeBlock;
                         newCodeBlock.defaultCondition = nextBlock;
                     }
+                }else if(nextBlock.parent.isLoop()){
+                    if(nextBlock.parent.trueCondition == nextBlock){
+                        nextBlock.parent.trueCondition = newCodeBlock;
+                        newCodeBlock.parent = nextBlock.parent;
+                        nextBlock.parent = newCodeBlock;
+                        newCodeBlock.defaultCondition = nextBlock;
+                    }else if(nextBlock.parent.falseCondition == nextBlock){
+                        nextBlock.parent.falseCondition = newCodeBlock;
+                        newCodeBlock.parent = nextBlock.parent;
+                        nextBlock.parent = newCodeBlock;
+                        newCodeBlock.defaultCondition = nextBlock;
+                    }   
                 }else{
                     nextBlock.parent.defaultCondition=newCodeBlock;
                     newCodeBlock.parent = nextBlock.parent;
