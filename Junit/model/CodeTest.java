@@ -77,15 +77,15 @@ public class CodeTest {
 	public void testInsert() {
 		Code test = new Code();	
 		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));
+		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));        
 		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));
-                test.insert(2, new CodeBlock("MOVE",new CodeType(CodeType.Type.ACTION)));
-		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));
+		test.insert(2, new CodeBlock("MOVE",new CodeType(CodeType.Type.ACTION)));
 		
 		Iterator<CodeBlock> iter = test.viewIterator();
 		assertEquals(iter.next().getCodetext(), "TURN LEFT");
 		assertEquals(iter.next().getCodetext(), "MOVE");
 		assertEquals(iter.next().getCodetext(), "TURN LEFT");
-                assertEquals(iter.next().getCodetext(), "TURN LEFT");
+        assertEquals(iter.next().getCodetext(), "TURN LEFT");
 	}
 
 	@SuppressWarnings({ "javadoc", "static-method" })
