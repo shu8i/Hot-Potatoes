@@ -66,7 +66,7 @@ public class CodeController extends SwingWorker<Void, Void> {
 	 * Main class that will control the code and view
 	 */	
 	public void runCode() {
-		
+
 		if(code.getHead() != null)
 			runPartial(code.getHead(), false);
 	}
@@ -92,14 +92,14 @@ public class CodeController extends SwingWorker<Void, Void> {
 			}
 
 			controller.playPanel.gridPanel.softRefresh();
-			
+
 			if(inMacro || codeBlock.isMacro())
 			{	
 				controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId(), true);
 			}
 			else
 				controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId(), false);
-			
+
 		}
 		if (codeBlock != null && !codeBlock.getCodetext().isEmpty())
 		{
@@ -206,7 +206,6 @@ public class CodeController extends SwingWorker<Void, Void> {
 	 */	
 	public CodeController addCodeBlock(CodeBlock codeBlock){
 		this.code.add(codeBlock);
-<<<<<<< HEAD
 		return this;
 	}
 
@@ -222,6 +221,11 @@ public class CodeController extends SwingWorker<Void, Void> {
 	public CodeController editCode(int id, String newContent)
 	{
 		this.code.edit(id, newContent);
+		return this;
+	}
+
+	public CodeController insertCode(int id, CodeBlock newCodeBlock) {
+		this.code.insert(id, newCodeBlock);
 		return this;
 	}
 
@@ -253,58 +257,6 @@ public class CodeController extends SwingWorker<Void, Void> {
 		this.code.undo();
 		return this;
 	}
-=======
-        return this;
-	}
 
-    public Iterator<CodeBlock> viewIterator() {
-        return this.code.viewIterator();
-    }
-
-    public CodeController removeBlock(int id) {
-        this.code.removeBlock(id);
-        return this;
-    }
-
-    public CodeController editCode(int id, String newContent)
-    {
-        this.code.edit(id, newContent);
-        return this;
-    }
-    
-    public CodeController insertCode(int id, CodeBlock newCodeBlock) {
-                this.code.insert(id, newCodeBlock);
-                return this;
-        }
-
-    public Code getCode()
-    {
-        return this.code;
-    }
-
-    public CodeController mergeCode(Code code)
-    {
-        this.code.merge(code);
-        return this;
-    }
-    
-    public CodeController macroAdd(Code code, String name)
-    {
-    	this.code.macroAdd(code, name);
-    	return this;
-    }
-
-    public CodeController clear()
-    {
-        this.code = new Code();
-        return this;
-    }
-
-    public CodeController undo()
-    {
-        this.code.undo();
-        return this;
-    }
->>>>>>> db25332c4d7302ae696b9d8b28d9fed1196ecf5f
 
 }
