@@ -23,10 +23,12 @@ public class CodeBlockPanel extends JButton {
     private boolean conditional = false;
     private boolean endButton = false;
     private boolean elseButton = false;
+    private boolean declarationButton = false;
     private Controller controller;
     private int id;
     private PlayPanel playPanel;
     private boolean editMode = false;
+    private boolean insertMode = false;
 
 
     public CodeBlockPanel(String buttonText) {
@@ -71,6 +73,7 @@ public class CodeBlockPanel extends JButton {
         this.conditional = buttonText.equals("IF") || buttonText.equals("WHILE");
         this.endButton = buttonText.equals("END");
         this.elseButton = buttonText.equals("ELSE");
+        this.declarationButton = buttonText.contains("FACING") || buttonText.contains("DIR");
         setText(buttonText);
         setFocusable(false);
         setFont(Constants.FONT_OPEN_SANS_14);
@@ -84,17 +87,19 @@ public class CodeBlockPanel extends JButton {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
                     CodeBlockPanel.this.controller.codeController.removeBlock(CodeBlockPanel.this.id);
                     playPanel.codePanel.refreshPanel();
                     playPanel.actionPanel.editMode = false;
+                    playPanel.actionPanel.insertMode = false;
                     playPanel.actionPanel.repaintActionPanel();
-                } else {
+                } else if(SwingUtilities.isLeftMouseButton(e)){
                     if (!conditional && !endButton && !elseButton)
                     {
                         setBorder(new MatteBorder(2, 2, 2, 2, Color.WHITE));
-                        playPanel.actionPanel.updateActionPanel(CodeBlockPanel.this);
                         editMode = true;
+                        insertMode = false;
+                        playPanel.actionPanel.updateActionPanel(CodeBlockPanel.this);
                         playPanel.codePanel.updateBlockForEdit(CodeBlockPanel.this);
                     }
                     else
@@ -103,19 +108,32 @@ public class CodeBlockPanel extends JButton {
                         playPanel.actionPanel.repaintActionPanel();
                         playPanel.codePanel.updateBlockForEdit(null);
                     }
+                } else if(SwingUtilities.isRightMouseButton(e)){
+                    if (!conditional && !endButton && !elseButton && !declarationButton){
+                        setBorder(new MatteBorder(2, 2, 2, 2, Color.YELLOW));
+                        editMode = false;
+                        insertMode = true;
+                        playPanel.actionPanel.updateActionPanel(CodeBlockPanel.this);
+                        playPanel.codePanel.updateBlockForInsert(CodeBlockPanel.this);
+                    }else{
+                        playPanel.actionPanel.editMode = false;
+                        playPanel.actionPanel.insertMode = false;
+                        playPanel.actionPanel.repaintActionPanel();
+                        playPanel.codePanel.updateBlockForInsert(null);
+                    }
                 }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (!editMode)
+                if (!editMode && !insertMode)
                     setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
                             Constants.COLOR_CONDITIONALS_HOVER : Constants.COLOR_ACTIONS_HOVER));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if (!editMode)
+                if (!editMode && !insertMode)
                     setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
                             Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
             }
@@ -133,6 +151,14 @@ public class CodeBlockPanel extends JButton {
     public boolean isElseButton() {
         return elseButton;
     }
+    
+    public boolean isInsertMode() {
+        return insertMode;
+    }
+        
+    public boolean isEditMode() {
+        return editMode;
+    }
 
     public int getId() {
         return this.id;
@@ -143,6 +169,12 @@ public class CodeBlockPanel extends JButton {
         setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ?
                 Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
         this.editMode = false;
+    }
+
+    public void exitInsertMode(){
+        setBorder(new MatteBorder(2, 2, 2, 2, conditional || endButton || elseButton ? 
+                Constants.COLOR_CONDITIONALS : Constants.COLOR_ACTIONS));
+	this.insertMode = false;
     }
 
     public void updateBorderColor(Color color)

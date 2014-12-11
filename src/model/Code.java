@@ -434,6 +434,32 @@ public class Code implements Serializable {
 		 }
 		 return this;
 	 }
+         
+         public Code insert(int id, CodeBlock newCodeBlock){
+                newCodeBlock.setId(++ids);
+		this.references.put(newCodeBlock.getId(), newCodeBlock);
+                
+                CodeBlock block = null;
+                CodeBlock nextBlock = null;
+                
+                int position = 0;
+                int count = 0;
+                
+                Iterator<CodeBlock> iter = viewIterator();
+                while(iter.hasNext()){
+                    block=iter.next();
+                    if(block.getId() == id){
+                        position = count;
+                        nextBlock = this.references.get(block.getId());
+                    }
+                    count++;
+                }
+                
+                //Make nextBlock's parent newCodeBlock and make newCodeBlock's child nextBlock
+                //position is for knowing where in the stack to push?
+                
+                return this;
+        }
 
 	 public boolean isEmpty()
 	 {

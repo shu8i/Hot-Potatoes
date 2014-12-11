@@ -30,6 +30,7 @@ public class ActionPanel extends JPanel {
     public enum PanelMode{CONDITIONAL_DECLARATION, WHILE_DECLARATION, IN_CONDITIONAL, IN_WHILE, ACTION, IN_ELSE}
     protected Stack<PanelMode> mode;
     protected boolean editMode = false;
+    protected boolean insertMode = false;
 
     public ActionPanel(final CodePanel codePanel, Controller controller) {
         super(new FlowLayout());
@@ -68,17 +69,24 @@ public class ActionPanel extends JPanel {
         this.turnLeftButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!editMode) {
+                if (!editMode && !insertMode) {
                     ActionPanel.this.controller.codeController
                             .addCodeBlock(new CodeBlock("TURN LEFT", new CodeType(CodeType.Type.ACTION)));
                     codePanel.refreshPanel();
-                } else {
+                } else if(editMode) {
                     ActionPanel.this.controller.codeController
                             .editCode(codePanel.getEditableCodeId(), "TURN LEFT");
                     codePanel.updateBlockForEdit(null);
                     repaintActionPanel();
                     codePanel.refreshPanel();
                     editMode = !editMode;
+                } else if(insertMode){
+                    ActionPanel.this.controller.codeController.insertCode(
+                            codePanel.getInsertableCodeId(), new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));
+                    codePanel.updateBlockForInsert(null);
+                    repaintActionPanel();
+                    codePanel.refreshPanel();
+                    ActionPanel.this.insertMode = !ActionPanel.this.insertMode;
                 }
             }
         });

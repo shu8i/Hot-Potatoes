@@ -31,6 +31,7 @@ public class CodePanel extends JScrollPane {
     private Controller controller;
     private PlayPanel playPanel;
     private CodeBlockPanel blockBeingEdited;
+    private CodeBlockPanel blockBeingInserted;
     private Map<Integer, List<CodeBlockPanel>> references;
     private List<CodeBlockPanel> previouslyBeingProcessed;
 
@@ -170,10 +171,21 @@ public class CodePanel extends JScrollPane {
         }
         this.blockBeingEdited = codeBlockPanel;
     }
+    
+    public void updateBlockForInsert(CodeBlockPanel codeBlockPanel) {
+        if (this.blockBeingInserted != null) {
+            this.blockBeingInserted.exitInsertMode();
+        }
+	this.blockBeingInserted = codeBlockPanel;
+    }
 
     public int getEditableCodeId()
     {
         return this.blockBeingEdited.getId();
+    }
+
+    public int getInsertableCodeId() {
+        return this.blockBeingInserted.getId();
     }
 
     public CodePanel markBeingProcessed(int id, int macNum)
