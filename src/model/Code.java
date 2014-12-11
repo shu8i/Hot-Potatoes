@@ -445,30 +445,21 @@ public class Code implements Serializable {
 		CodeBlock block = null;
 		CodeBlock nextBlock = null;
 		                 
-		int position = 0;
 		int count = 0;
 		                 
 		Iterator<CodeBlock> iter = viewIterator();
                 while(iter.hasNext()){
                     block=iter.next();
 		    if(block.getId() == id){
-                        position = count;
                         nextBlock = this.references.get(block.getId());
                     }
 		    count++;
                 }
                 
-                System.out.println("New Block ID="+newCodeBlock.getId());
-                System.out.println("Next Block ID="+nextBlock.getId());
-                
 		nextBlock.parent.defaultCondition=newCodeBlock;
                 nextBlock.parent = nextBlock.parent.defaultCondition;
                 newCodeBlock.defaultCondition=nextBlock;
-               
-                Iterator<CodeBlock> iter2 = viewIterator();
-                while(iter2.hasNext()){
-                    System.out.println(iter2.next().getId());
-                }               
+                            
 		return this;
         }
 
