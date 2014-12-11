@@ -87,14 +87,14 @@ public class CodeController extends SwingWorker<Void, Void> {
 
 		if (stepByStep) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (Exception e) {
 			}
 
 			controller.playPanel.gridPanel.softRefresh();
 
 			if(inMacro || codeBlock.isMacro())
-			{	
+			{
 				controller.playPanel.codePanel.markBeingProcessed(codeBlock.getId(), true);
 			}
 			else

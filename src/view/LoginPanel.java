@@ -179,7 +179,7 @@ public class LoginPanel extends JPanel
         c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 3;
-        c.gridwidth = 21;
+        c.gridwidth = 16;
         add(hintPanel, c);
 
         c = new GridBagConstraints();
@@ -190,7 +190,7 @@ public class LoginPanel extends JPanel
         add(loginButton, c);
         
         c = new GridBagConstraints();
-        c.gridx = 25;
+        c.gridx = 17;
         c.gridy = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         helpButton.setFocusable(false);
