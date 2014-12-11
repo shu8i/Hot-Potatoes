@@ -3,9 +3,6 @@ package model;
 import static org.junit.Assert.*;
 
 import java.util.Iterator;
-import model.Code;
-import model.CodeBlock;
-import model.CodeType;
 
 import org.junit.Test;
 
@@ -42,10 +39,10 @@ public class CodeTest {
 	@Test
 	public void testViewIterator() {
 		Code test = new Code();	
-		test.insert(0, new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
-		test.insert(1, new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
-		test.insert(2, new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
-		test.insert(3, new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
+		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
+		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
+		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
+		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));	
 		assertNotNull(test.viewIterator().hasNext());
 	}
 
@@ -81,13 +78,14 @@ public class CodeTest {
 		Code test = new Code();	
 		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));
 		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));
+                test.insert(2, new CodeBlock("MOVE",new CodeType(CodeType.Type.ACTION)));
 		test.add(new CodeBlock("TURN LEFT",new CodeType(CodeType.Type.ACTION)));
-		test.insert(4, new CodeBlock("MOVE",new CodeType(CodeType.Type.ACTION)));
 		
 		Iterator<CodeBlock> iter = test.viewIterator();
 		assertEquals(iter.next().getCodetext(), "TURN LEFT");
+		assertEquals(iter.next().getCodetext(), "MOVE");
 		assertEquals(iter.next().getCodetext(), "TURN LEFT");
-		assertEquals(iter.next().getCodetext(), "TURN LEFT");
+                assertEquals(iter.next().getCodetext(), "TURN LEFT");
 	}
 
 	@SuppressWarnings({ "javadoc", "static-method" })
