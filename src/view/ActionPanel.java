@@ -389,21 +389,31 @@ public class ActionPanel extends JPanel {
 
     public void updateActionPanel(CodeBlockPanel codeBlock)
     {
-        if (codeBlock.isConditional() || codeBlock.isElseButton() ||
-                codeBlock.isEndButton())
-        {
-            editMode = false;
+        if (codeBlock.isConditional() || codeBlock.isElseButton()
+				|| codeBlock.isEndButton()) {
+            this.editMode = false;
+            this.insertMode = false;
             return;
         }
-        if (codeBlock.getText().contains("FACING"))
-        {
-            repaintActionPanel(PanelMode.CONDITIONAL_DECLARATION);
-            editMode = true;
-        }
-        else
-        {
-            repaintActionPanel(PanelMode.ACTION);
-            editMode = true;
+        if (codeBlock.getText().contains("FACING")||codeBlock.getText().contains("DIR")) {
+            if(codeBlock.isEditMode()){
+                repaintActionPanel(PanelMode.CONDITIONAL_DECLARATION);
+                this.editMode = true;
+                this.insertMode = false;
+            }else if(codeBlock.isInsertMode()){
+                this.insertMode = false;
+                this.editMode = false;
+            }
+	} else {
+             if(codeBlock.isEditMode()){
+                repaintActionPanel(PanelMode.ACTION);
+                this.editMode = true;
+                this.insertMode = false;
+             }else if(codeBlock.isInsertMode()){
+                repaintActionPanel(PanelMode.ACTION);
+                this.insertMode = true;
+                this.editMode = false;
+             }
         }
     }
 
