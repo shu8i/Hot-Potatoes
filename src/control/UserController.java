@@ -80,7 +80,7 @@ public class UserController {
      */
     public int getGridScore(Grid grid) {
         Integer score = this.user.getGridsPlayed().get(grid.getName());
-        return score == null ? 0 : 100 * score / grid.numPotatoes();
+        return score == null ? 0 : (grid.numPotatoes() != 0 ? 100 * score / grid.numPotatoes() : score);
     }
 
     public UserController addMacro(String name, Code code, Stack<ActionPanel.PanelMode> panelMode)

@@ -8,10 +8,7 @@ import util.Constants;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -200,7 +197,7 @@ public class CodePanel extends JScrollPane {
 			codeBlockPanel.updateBorderColor(null);
 		}
 
-		this.previouslyBeingProcessed.clear();
+        this.previouslyBeingProcessed = new LinkedList<>();
 
 		List<CodeBlockPanel> currentlyBeingProcessed = this.references.get(id);
 
