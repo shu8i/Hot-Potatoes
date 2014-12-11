@@ -9,7 +9,6 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import view.ActionPanel.PanelMode;
 
 /**
  * @author Allant Gomez
@@ -45,12 +44,7 @@ public class MacroPanel extends JPanel {
             codeBlockPanel.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (!MacroPanel.this.playPanel.actionPanel.inConditional() && !MacroPanel.this.playPanel.actionPanel.insideLoopIforElse()) {
-                        MacroPanel.this.controller.codeController.macroAdd(MacroPanel.this.controller.userController.getMacro(name), name);
-                        MacroPanel.this.playPanel.actionPanel.mergeStack(MacroPanel.this.controller.userController.getMacroPanelMode(name));
-                        MacroPanel.this.playPanel.actionPanel.repaintActionPanel();
-                        MacroPanel.this.playPanel.codePanel.refreshPanel();
-                    } else if(MacroPanel.this.playPanel.actionPanel.insideLoopIforElse()){
+                    if (!MacroPanel.this.playPanel.actionPanel.inConditional()) {
                         MacroPanel.this.controller.codeController.macroAdd(MacroPanel.this.controller.userController.getMacro(name), name);
                         MacroPanel.this.playPanel.actionPanel.mergeStack(MacroPanel.this.controller.userController.getMacroPanelMode(name));
                         MacroPanel.this.playPanel.actionPanel.repaintActionPanel();
